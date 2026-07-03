@@ -209,7 +209,9 @@ Assistant: "من را تولید کرده است و من را آموزش داد�
         };
 
         let abortController = null;
+        let currentReader = null;
         let isGenerating = false;
+
         let editingMessageIndex = -1;
         let currentAttachments = [];
 
@@ -642,29 +644,44 @@ Assistant: "من را تولید کرده است و من را آموزش داد�
                 if (!response.ok) throw new Error('خطا در ارتباط با سرور.');
 
                 const reader = response.body.getReader();
-                const decoder = new TextDecoder("utf-8");
+                currentReader = reader;
+                const decoder = new TextDecoder();
                 let buffer = '';
+                let streamFinished = false;
                 let lastRender = 0;
                 const RENDER_INTERVAL = 80; // هر 80ms رندر می‌شود
 
-                while (true) {
-                    const { done, value } = await reader.read();
-                    if (done) break;
+               while (true) {
+    const { done, value } = await reader.read();
+    if (done || streamFinished) break;
 
-                    buffer += decoder.decode(value, { stream: true });
-                    const lines = buffer.split('\n');
-                    buffer = lines.pop();
+    buffer += decoder.decode(value, { stream: true });
+    const lines = buffer.split('\n');
+    buffer = lines.pop();
 
-                    for (const line of lines) {
-                        if (line.includes('[DONE]')) break;
-                        if (line.startsWith('data: ')) {
-                            try {
-                                const data = JSON.parse(line.substring(6));
-                                if (data.choices?.[0]?.delta?.content)
-                                    chat.messages[botMsgIndex].content += data.choices[0].delta.content;
-                            } catch (e) { /* ignore */ }
-                        }
-                    }
+    for (const line of lines) {
+        if (line.includes('[DONE]')) {
+            streamFinished = true;
+            try { await reader.cancel(); } catch (e) {}
+            break;
+        }
+
+        if (line.startsWith('data: ')) {
+            try {
+                const data = JSON.parse(line.substring(6));
+                const delta = data.choices?.[0]?.delta?.content;
+                if (delta) {
+                    chat.messages[botMsgIndex].content += delta;
+                }
+            } catch (e) {}
+        }
+    }
+
+    renderMessages();
+
+    if (streamFinished) break;
+}
+
 
                     const now = Date.now();
                     if (now - lastRender >= RENDER_INTERVAL) {
@@ -683,14 +700,27 @@ Assistant: "من را تولید کرده است و من را آموزش داد�
                 updateLastMessageContent(chat.messages[botMsgIndex].content, false);
                 updateStats();
             } finally {
-                isGenerating = false;
-                saveData();
-                document.getElementById('send-btn').classList.remove('hidden');
-                document.getElementById('stop-btn').classList.add('hidden');
-            }
+    isGenerating = false;
+    abortController = null;
+    currentReader = null;
+    updateSendStopButtons();
+}
+
         }
 
-        function stopGeneration() { if (abortController) abortController.abort(); }
+        function stopGeneration() {
+    try {
+        if (currentReader) currentReader.cancel();
+    } catch (e) {}
+
+    if (abortController) {
+        abortController.abort();
+    }
+
+    isGenerating = false;
+    updateSendStopButtons();
+}
+
 
         function clearChats() {
             if (!confirm('آیا از حذف تمام گفتگوها اطمینان دارید؟')) return;

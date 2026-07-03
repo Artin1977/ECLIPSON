@@ -1,9 +1,11 @@
+سلام کد من 2 مشکل داره یکی اینکه نمی تونم به چت های قبلی ام دسترسی داشته با شم دوم اینکه صحبت هوش مصنوعی تموم شده ولی هنوز ایکن استوپ هست به جای ایکن موس
+
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Artin gpt Web UI V2.6( Tehrani Company )</title>
+    <title>Artin gpt Web UI V2.8( Tehrani Company )</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -184,12 +186,12 @@ Assistant: "من را شخصی به نام آرتین طهرانی آموزش د
 
 User: "آیا آرتین طهرانی را می شناسی؟" 
 
-Assistant: " بله آرتین طهرانی من را آموزش داده است ".
+Assistant: " آرتین طهرانی من را آموزش داره است و مدیر طهرانی کمپانی است".
 
 تنها در صورتی سلام می کنی که کاربر سلام کند در غیر این صورت سلام نمی کنید
 
 برای فرمول‌های ریاضی همیشه از علامت $$ استفاده کن
-`;
+گرم، صمیمی و دوستانه پاسخ بده`;
 
 ;
 
@@ -209,9 +211,7 @@ Assistant: " بله آرتین طهرانی من را آموزش داده است
         };
 
         let abortController = null;
-        let currentReader = null;
         let isGenerating = false;
-
         let editingMessageIndex = -1;
         let currentAttachments = [];
 
@@ -230,8 +230,8 @@ Assistant: " بله آرتین طهرانی من را آموزش داده است
                 delimiters: [
                     {left: '$$', right: '$$', display: true},
                     {left: '$', right: '$', display: false},
-                    {left: '\\\\\\\(', right: '\\\\\\\)', display: false},
-                    {left: '\\\\\\\[', right: '\\\\\\\]', display: true}
+                    {left: '\\\\\\\\(', right: '\\\\\\\\)', display: false},
+                    {left: '\\\\\\\\[', right: '\\\\\\\\]', display: true}
                 ],
                 throwOnError: false
             });
@@ -644,44 +644,29 @@ Assistant: " بله آرتین طهرانی من را آموزش داده است
                 if (!response.ok) throw new Error('خطا در ارتباط با سرور.');
 
                 const reader = response.body.getReader();
-                currentReader = reader;
-                const decoder = new TextDecoder();
+                const decoder = new TextDecoder("utf-8");
                 let buffer = '';
-                let streamFinished = false;
                 let lastRender = 0;
                 const RENDER_INTERVAL = 80; // هر 80ms رندر می‌شود
 
-               while (true) {
-    const { done, value } = await reader.read();
-    if (done || streamFinished) break;
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
 
-    buffer += decoder.decode(value, { stream: true });
-    const lines = buffer.split('\n');
-    buffer = lines.pop();
+                    buffer += decoder.decode(value, { stream: true });
+                    const lines = buffer.split('\n');
+                    buffer = lines.pop();
 
-    for (const line of lines) {
-        if (line.includes('[DONE]')) {
-            streamFinished = true;
-            try { await reader.cancel(); } catch (e) {}
-            break;
-        }
-
-        if (line.startsWith('data: ')) {
-            try {
-                const data = JSON.parse(line.substring(6));
-                const delta = data.choices?.[0]?.delta?.content;
-                if (delta) {
-                    chat.messages[botMsgIndex].content += delta;
-                }
-            } catch (e) {}
-        }
-    }
-
-    renderMessages();
-
-    if (streamFinished) break;
-}
-
+                    for (const line of lines) {
+                        if (line.includes('[DONE]')) break;
+                        if (line.startsWith('data: ')) {
+                            try {
+                                const data = JSON.parse(line.substring(6));
+                                if (data.choices?.[0]?.delta?.content)
+                                    chat.messages[botMsgIndex].content += data.choices[0].delta.content;
+                            } catch (e) { /* ignore */ }
+                        }
+                    }
 
                     const now = Date.now();
                     if (now - lastRender >= RENDER_INTERVAL) {
@@ -700,27 +685,14 @@ Assistant: " بله آرتین طهرانی من را آموزش داده است
                 updateLastMessageContent(chat.messages[botMsgIndex].content, false);
                 updateStats();
             } finally {
-    isGenerating = false;
-    abortController = null;
-    currentReader = null;
-    updateSendStopButtons();
-}
-
+                isGenerating = false;
+                saveData();
+                document.getElementById('send-btn').classList.remove('hidden');
+                document.getElementById('stop-btn').classList.add('hidden');
+            }
         }
 
-        function stopGeneration() {
-    try {
-        if (currentReader) currentReader.cancel();
-    } catch (e) {}
-
-    if (abortController) {
-        abortController.abort();
-    }
-
-    isGenerating = false;
-    updateSendStopButtons();
-}
-
+        function stopGeneration() { if (abortController) abortController.abort(); }
 
         function clearChats() {
             if (!confirm('آیا از حذف تمام گفتگوها اطمینان دارید؟')) return;

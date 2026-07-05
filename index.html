@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Artin gpt Web UI V2.8( Tehrani Company )</title>
+    <title>Artin gpt Web UI V2.9( Tehrani Company )</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -197,7 +197,7 @@ Assistant: " آرتین طهرانی من را آموزش داره است و م�
 
         // ==========================================
 
-        const API_URL = 'http://127.0.0.1:1234/v1/chat/completions';
+        const API_URL = 'http://127.0.0.1:11434/api/chat';
         const MAX_TOKENS = 36671;
         const MAX_HISTORY_MESSAGES = 30; // برش تاریخچه برای جلوگیری از هنگ
 
@@ -631,11 +631,12 @@ Assistant: " آرتین طهرانی من را آموزش داره است و م�
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        model: "local-model",
-                        messages: apiMessages,
-                        stream: true,
-                        temperature: 0.7,
-                        enable_thinking: settings.showThink
+                    model: "minimax-m3:cloud",
+                    messages: apiMessages,
+                    stream: true,
+                    options: {
+                    temperature: 0.7
+                    }
                     }),
                     signal: abortController.signal
                 });
@@ -661,11 +662,14 @@ Assistant: " آرتین طهرانی من را آموزش داره است و م�
                         if (line.startsWith('data: ')) {
                             try {
                                 const data = JSON.parse(line.substring(6));
-                                if (data.choices?.[0]?.delta?.content)
-                                    chat.messages[botMsgIndex].content += data.choices[0].delta.content;
-                            } catch (e) { /* ignore */ }
+
+                                if (data.message?.content) {
+                                    chat.messages[botMsgIndex].content += data.message.content;
+                                }
+
+                            } catch (e) {
+    // ignore
                         }
-                    }
 
                     const now = Date.now();
                     if (now - lastRender >= RENDER_INTERVAL) {

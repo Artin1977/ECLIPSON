@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فلای شاپ آر سی | هواپیماهای مدل آماده پرواز</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for beautiful Persian Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: #0c0f0a;
+            color: #f3f4f6;
+        }
+        /* Custom scrollbar for premium feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0c0f0a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #10b981;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #059669;
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden min-h-screen flex flex-col">
+
+    <!-- Header / Navigation -->
+    <header class="sticky top-0 z-40 bg-[#0c0f0a]/95 border-b border-zinc-800 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Logo and Brand -->
+            <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('home')">
+                <svg class="w-10 h-10 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                </svg>
+                <div>
+                    <span class="text-2xl font-black tracking-wider text-white">FLY SHOP RC</span>
+                    <span class="text-xs block text-emerald-500 font-bold -mt-1">فروشگاه فلای شاپ آر سی</span>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center gap-8">
+                <button onclick="navigateTo('home')" id="nav-home" class="text-emerald-500 font-bold transition-colors">خانه</button>
+                <button onclick="navigateTo('airplanes')" id="nav-airplanes" class="text-zinc-400 hover:text-white transition-colors">هواپیماها</button>
+                <button onclick="navigateTo('recommended')" id="nav-recommended" class="text-zinc-400 hover:text-white transition-colors">قطعات جانبی و یدکی</button>
+                <button onclick="navigateTo('orderinfo')" id="nav-orderinfo" class="text-zinc-400 hover:text-white transition-colors">راهنمای سفارش</button>
+            </nav>
+
+            <!-- Actions (Cart) -->
+            <div class="flex items-center gap-4">
+                <button onclick="toggleCart()" class="relative p-2.5 bg-zinc-900 rounded-full text-zinc-300 hover:text-emerald-400 border border-zinc-800 transition-all">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                    <span id="cart-badge" class="absolute -top-1 -right-1 bg-emerald-500 text-black text-xs font-black rounded-full w-5 h-5 flex items-center justify-center">0</span>
+                </button>
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 bg-zinc-900 rounded-lg text-zinc-400">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-zinc-800 bg-[#0c0f0a] px-4 py-4 space-y-3">
+            <button onclick="navigateTo('home'); toggleMobileMenu()" class="block w-full text-right py-2 text-emerald-400 font-bold">خانه</button>
+            <button onclick="navigateTo('airplanes'); toggleMobileMenu()" class="block w-full text-right py-2 text-zinc-300">هواپیماها</button>
+            <button onclick="navigateTo('recommended'); toggleMobileMenu()" class="block w-full text-right py-2 text-zinc-300">قطعات جانبی و یدکی</button>
+            <button onclick="navigateTo('orderinfo'); toggleMobileMenu()" class="block w-full text-right py-2 text-zinc-300">راهنمای سفارش</button>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow">
+        
+        <!-- SECTION 1: HOME PAGE -->
+        <section id="page-home" class="transition-opacity duration-300">
+            <!-- Hero Showcase Banner -->
+            <div class="relative overflow-hidden bg-gradient-to-b from-emerald-950/20 via-[#0c0f0a] to-[#0c0f0a] py-16 sm:py-28">
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.08),transparent_50%)]"></div>
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    
+                    <div class="space-y-6 text-center lg:text-right">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                            هواپیماهای مدل آکروباتیک و آموزشی فیزیکی
+                        </span>
+                        <h1 class="text-4xl sm:text-5xl font-black text-white leading-tight animate-fade-in">
+                            هواپیمای شخصی خود را <br class="hidden sm:inline">
+                            <span class="text-transparent bg-clip-text bg-gradient-to-l from-emerald-400 to-teal-200">کامل و آماده پرواز تحویل بگیرید!</span>
+                        </h1>
+                        <p class="text-zinc-400 text-base max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                            به فروشگاه فلای شاپ آر سی خوش آمدید. ما هواپیماهای رادیوکنترل از برند Eclipson را که در داخل ایران توسط شرکت فلای شاپ آرسی تولید شده است را با بالاترین کیفیت، با استفاده از متریال فوق سبک و مقاوم می‌سازیم و به دست شما می‌رسانیم. شما می‌توانید فقط بدنه هواپیما را تهیه کنید یا آن را به صورت کیت کامل آماده به پرواز (مجهز به موتور، ملخ، سرووها و اسپید کنترل) سفارش دهید! هواپیماهای ما فعلاً دارای باتری و رادیوکنترل نمی‌باشد.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
+                            <button onclick="navigateTo('airplanes')" class="px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-black font-black text-lg rounded-xl shadow-lg shadow-emerald-500/20 transition-all transform hover:-translate-y-0.5">
+                                کاتالوگ هواپیماها و ثبت سفارش
+                            </button>
+                            <button onclick="navigateTo('orderinfo')" class="px-8 py-4 bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-lg rounded-xl border border-zinc-800 transition-all">
+                                راهنمای سفارش و پشتیبانی
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Hero Visual -->
+                    <div class="relative flex justify-center items-center">
+                        <div class="absolute w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-emerald-500/5 blur-3xl"></div>
+                        <!-- Beautiful illustration of Model B V2 Plane -->
+                        <div class="relative bg-zinc-900/40 p-8 rounded-3xl border border-zinc-800/80 backdrop-blur-sm shadow-2xl w-full max-w-lg">
+                            <div class="absolute top-4 right-4 bg-emerald-500 text-black text-xs font-black px-2.5 py-1 rounded">پرفروش‌ترین مدل پروازی</div>
+                            <img src="model-b-v2-1.jpg" alt="Model B V2" onerror="this.src='https://placehold.co/600x400/10b981/000000?text=Model+B+V2'" class="rounded-2xl shadow-lg w-full h-64 object-cover mb-6 border border-zinc-800">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h3 class="text-xl font-bold text-white">Model B V2</h3>
+                                    <p class="text-zinc-500 text-sm mt-1">ساخته شده با متریال سبک LW-PLA</p>
+                                </div>
+                                <span class="text-xl font-black text-emerald-400">از ۲,۳۰۰,۰۰۰ تومان</span>
+                            </div>
+                            <div class="grid grid-cols-3 gap-3 mt-6 border-t border-zinc-800 pt-6">
+                                <div class="text-center">
+                                    <span class="block text-zinc-500 text-xs">طول بال</span>
+                                    <span class="font-bold text-white text-sm">۱.۱ متر</span>
+                                </div>
+                                <div class="text-center border-x border-zinc-800">
+                                    <span class="block text-zinc-500 text-xs">وزن پرواز</span>
+                                    <span class="font-bold text-white text-sm">۷۰۰ گرم</span>
+                                </div>
+                                <div class="text-center">
+                                    <span class="block text-zinc-500 text-xs">بار بال</span>
+                                    <span class="font-bold text-white text-sm">۳۶ گرم/دسی‌متر</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Features Quick Grid -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-zinc-900">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="p-8 bg-zinc-900/20 rounded-2xl border border-zinc-800/50 hover:border-emerald-500/30 transition-all group">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 mb-6 group-hover:scale-110 transition-transform">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                        </div>
+                        <h4 class="text-lg font-bold text-white mb-2">ساخت با متریال باکیفیت و سبک</h4>
+                        <p class="text-zinc-400 text-sm leading-relaxed">تمام بدنه‌ها با فیلامنت درجه‌یک و پف‌کننده پلیمری (LW-PLA) ساخته می‌شوند تا هواپیما با کمترین وزن ممکن، بیشترین مداومت پرواز را داشته باشد.</p>
+                    </div>
+
+                    <div class="p-8 bg-zinc-900/20 rounded-2xl border border-zinc-800/50 hover:border-emerald-500/30 transition-all group">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 mb-6 group-hover:scale-110 transition-transform">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <h4 class="text-lg font-bold text-white mb-2">پرواز تست‌شده و آیرودینامیک عالی</h4>
+                        <p class="text-zinc-400 text-sm leading-relaxed">مدل‌ها تماماً بر اساس محاسبات دقیق طراحی آیرودینامیک شرکت Eclipson مهندسی شده‌اند و تعادل و پایداری پروازی فوق‌العاده بالایی دارند.</p>
+                    </div>
+
+                    <div class="p-8 bg-zinc-900/20 rounded-2xl border border-zinc-800/50 hover:border-emerald-500/30 transition-all group">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 mb-6 group-hover:scale-110 transition-transform">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </div>
+                        <h4 class="text-lg font-bold text-white mb-2">خدمات تعمیرات و قطعات یدکی</h4>
+                        <p class="text-zinc-400 text-sm leading-relaxed">بزرگترین مزیت این هواپیماها تعمیرپذیری راحت آن‌هاست! اگر در هنگام فرود قطعه‌ای آسیب دید، ما همان قطعه را برایتان مجدداً ساخته و ارسال می‌کنیم.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: ALL PLANES CATALOG PAGE -->
+        <section id="page-airplanes" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 transition-opacity duration-300">
+            <div class="text-center space-y-4 mb-12">
+                <h2 class="text-3xl sm:text-5xl font-black text-white">کلکسیون هواپیماهای مدل فیزیکی</h2>
+                <p class="text-zinc-400 max-w-xl mx-auto">هواپیمای مورد علاقه خود را انتخاب کنید، مشخصات فنی را ببینید و آن را به صورت بدنه خالی یا کیت کامل الکترونیکی سفارش دهید.</p>
+            </div>
+
+            <!-- Grid -->
+            <div id="planes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- JavaScript renders items dynamically here -->
+            </div>
+        </section>
+
+        <!-- SECTION 3: PRODUCT DETAIL PAGE -->
+        <section id="page-product-detail" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 transition-opacity duration-300">
+            <!-- Back button -->
+            <button onclick="navigateTo('airplanes')" class="inline-flex items-center gap-2 text-zinc-400 hover:text-emerald-400 font-bold mb-8 transition-colors">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+                بازگشت به گالری هواپیماها
+            </button>
+
+            <div id="product-detail-content" class="space-y-12">
+                <!-- Rendered dynamically by JS -->
+            </div>
+        </section>
+
+        <!-- SECTION 4: RECOMMENDED PARTS (قطعات پیشنهادی و یدکی) -->
+        <section id="page-recommended" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 transition-opacity duration-300">
+            <div class="text-center space-y-4 mb-12">
+                <h2 class="text-3xl sm:text-5xl font-black text-white">قطعات جانبی و لوازم یدکی هواپیما</h2>
+                <p class="text-zinc-400 max-w-xl mx-auto">باکیفیت‌ترین قطعات تست‌شده و اورجینال پروازی. برای مشاهده مشخصات فنی، انواع مدل‌ها و انتخاب آپشن‌های هر قطعه روی آن کلیک کنید.</p>
+            </div>
+
+            <div id="accessories-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Injected Dynamically by JS -->
+            </div>
+        </section>
+
+        <!-- SECTION 4.5: ACCESSORY DETAIL PAGE (صفحه جزئیات قطعه جانبی) -->
+        <section id="page-accessory-detail" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 transition-opacity duration-300">
+            <!-- Back button -->
+            <button onclick="navigateTo('recommended')" class="inline-flex items-center gap-2 text-zinc-400 hover:text-emerald-400 font-bold mb-8 transition-colors">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+                بازگشت به گالری قطعات جانبی
+            </button>
+
+            <div id="accessory-detail-content" class="space-y-12">
+                <!-- Rendered dynamically by JS -->
+            </div>
+        </section>
+
+        <!-- SECTION 5: ORDER INFO PAGE (راهنمای سفارش) -->
+        <section id="page-orderinfo" class="hidden max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 transition-opacity duration-300">
+            <div class="text-center space-y-4 mb-12">
+                <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 rounded-full font-bold text-xs border border-emerald-500/20">روند خرید آسان در ایران</span>
+                <h2 class="text-3xl sm:text-4xl font-black text-white">مراحل ثبت سفارش و تحویل هواپیما</h2>
+                <p class="text-zinc-400">به دلیل دست‌ساز بودن مدل‌ها و نیاز به هماهنگی برای ارسال امن هواپیما به تمام نقاط ایران، ثبت سفارشات به صورت مستقیم و تلفنی انجام می‌شود.</p>
+            </div>
+
+            <!-- Steps -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-6 bg-zinc-900/30 rounded-2xl border border-zinc-800 text-center space-y-3">
+                    <div class="w-10 h-10 rounded-full bg-emerald-500 text-black font-black flex items-center justify-center mx-auto">۱</div>
+                    <h3 class="text-lg font-bold text-white">انتخاب هواپیما و آپشن</h3>
+                    <p class="text-zinc-400 text-xs leading-relaxed">هواپیماهای دلخواه خود را به همراه آپشن (فقط بدنه یا کیت الکترونیک) به سبد خرید اضافه کنید تا قیمت کل مشخص شود.</p>
+                </div>
+
+                <div class="p-6 bg-zinc-900/30 rounded-2xl border border-zinc-800 text-center space-y-3">
+                    <div class="w-10 h-10 rounded-full bg-emerald-500 text-black font-black flex items-center justify-center mx-auto">۲</div>
+                    <h3 class="text-lg font-bold text-white">کلیک بر روی دکمه سفارش</h3>
+                    <p class="text-zinc-400 text-xs leading-relaxed">در سبد خرید، دکمه «ثبت سفارش» را بزنید. سیستم متنی زیبا شامل فاکتور شما را برای ارسال به پیام رسان‌ها آماده می‌کند.</p>
+                </div>
+
+                <div class="p-6 bg-zinc-900/30 rounded-2xl border border-zinc-800 text-center space-y-3">
+                    <div class="w-10 h-10 rounded-full bg-emerald-500 text-black font-black flex items-center justify-center mx-auto">۳</div>
+                    <h3 class="text-lg font-bold text-white">تماس در واتساپ</h3>
+                    <p class="text-zinc-400 text-xs leading-relaxed">سفارش شما در پیام رسان واتساپ برای ما ارسال می‌شود و پس از دریافت هزینه و آدرس، هواپیما به سرعت بسته‌بندی و ارسال خواهد شد.</p>
+                </div>
+            </div>
+
+            <!-- Urgent Banner/Notice -->
+            <div class="bg-emerald-950/20 border border-emerald-500/30 rounded-2xl p-6 mt-12 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div>
+                    <h4 class="text-base font-bold text-emerald-400">سوالی دارید؟ نیاز به مشاوره دارید؟</h4>
+                    <p class="text-zinc-400 text-xs mt-1">اگر در انتخاب نوع باتری، تعداد کانال‌های رادیو کنترل یا سرووها مردد هستید، با ما تماس بگیرید.</p>
+                </div>
+                <div class="flex gap-3">
+                    <a href="tel:09123456789" class="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-black font-black text-xs rounded-xl transition-all">تماس مستقیم با فلای شاپ آر سی</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Side Cart Slide-Over Back-drop & Panel -->
+    <div id="cart-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden transition-opacity duration-300 opacity-0" onclick="toggleCart()"></div>
+
+    <div id="cart-panel" class="fixed inset-y-0 left-0 w-full max-w-md bg-zinc-950 border-r border-zinc-800 shadow-2xl flex flex-col justify-between z-50 transform -translate-x-full transition-transform duration-300 ease-in-out">
+        
+        <!-- Cart Header -->
+        <div class="p-6 border-b border-zinc-800 flex items-center justify-between">
+            <div class="flex items-center gap-2 text-emerald-400">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                <h3 class="text-lg font-black text-white">لیست سفارشات</h3>
+            </div>
+            <button onclick="toggleCart()" class="text-zinc-400 hover:text-white p-2">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Cart Items List -->
+        <div id="cart-items" class="flex-grow overflow-y-auto p-6 space-y-4">
+            <!-- Items injected by JS -->
+            <p class="text-zinc-500 text-center py-12">لیست سفارشات شما خالی است.</p>
+        </div>
+
+        <!-- Cart Footer Summary -->
+        <div class="p-6 border-t border-zinc-800 bg-zinc-900/40 space-y-4">
+            <div class="flex items-center justify-between text-zinc-400">
+                <span>مجموع سبد خرید:</span>
+                <span id="cart-total-price" class="text-xl font-black text-white">۰ تومان</span>
+            </div>
+            <p class="text-[10px] text-zinc-500 leading-relaxed">توجه: فاکتور فوق بدون احتساب هزینه پست/پیک در نظر گرفته شده است. قطعات جانبی دارای قیمت استعلامی بوده و به مبلغ فوق افزوده می‌شوند.</p>
+            <button onclick="openCheckoutModal()" class="w-full py-4 bg-emerald-500 hover:bg-emerald-400 text-black font-black rounded-xl text-center shadow-lg transition-colors">
+                ثبت سفارش (در واتساپ)
+            </button>
+        </div>
+
+    </div>
+
+    <!-- STUNNING PERSISTENT ORDER MODAL (برای نحوه تماس و ارسال پیام) -->
+    <div id="checkout-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-zinc-900 border border-zinc-800 p-6 sm:p-8 rounded-3xl max-w-lg w-full relative space-y-6">
+            <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 text-zinc-400 hover:text-white">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <div class="text-center space-y-2">
+                <div class="w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto text-xl">💬</div>
+                <h3 class="text-2xl font-black text-white">نهایی کردن سفارش در واتساپ</h3>
+                <p class="text-zinc-400 text-xs">پیش فاکتور شما آماده شده است. کافیست با زدن دکمه‌ی زیر پیام سفارش خود را برای پشتیبانی فلای شاپ ارسال کنید.</p>
+            </div>
+
+            <!-- Text Representation of the order -->
+            <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800">
+                <span class="text-zinc-500 text-[10px] block mb-2 font-bold">متن پیام کپی شده برای سفارش:</span>
+                <textarea id="order-message-text" readonly class="bg-transparent text-xs text-zinc-300 w-full h-32 resize-none focus:outline-none font-mono leading-relaxed"></textarea>
+            </div>
+
+            <!-- Direct Contact buttons -->
+            <div class="flex justify-center w-full">
+                <a id="whatsapp-order-btn" target="_blank" href="#" class="w-full py-4 bg-green-600 hover:bg-green-500 text-white font-bold text-sm rounded-xl text-center flex items-center justify-center gap-2 transition-all">
+                    <span>ارسال سفارش در واتساپ</span>
+                </a>
+            </div>
+
+            <div class="text-center border-t border-zinc-800 pt-4">
+                <span class="text-xs text-zinc-500 block">یا سفارش مستقیم و مشاوره با یک تماس تلفنی:</span>
+                <a href="tel:09034499880" class="text-emerald-400 font-bold text-sm mt-2 inline-block hover:underline">شماره تماس پشتیبانی: ۰۹۰۳۴۴۹۹۸۸۰</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert / Custom Message modal instead of alert() -->
+    <div id="custom-toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 max-w-sm w-full bg-zinc-900 border border-emerald-500/40 text-white px-5 py-4 rounded-xl shadow-2xl flex items-center gap-3">
+        <span class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center">✔</span>
+        <div>
+            <h5 id="toast-title" class="font-bold text-sm">پیام سیستم</h5>
+            <p id="toast-msg" class="text-xs text-zinc-400 mt-0.5">عملیات با موفقیت انجام شد.</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-zinc-950 border-t border-zinc-900 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="space-y-4">
+                <div class="flex items-center gap-3">
+                    <svg class="w-8 h-8 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    </svg>
+                    <span class="text-xl font-black text-white tracking-wider">ECLIPSON</span>
+                </div>
+                <p class="text-xs text-zinc-500 leading-relaxed">ما تحولی بزرگ در ساخت هواپیماهای رادیوکنترلی ایجاد کرده‌ایم. با تکنولوژی مدل‌سازی پیشرفته، هواپیمای مورد نظر شما را با بالاترین ظرافت و پایداری پروازی تولید می‌کنیم.</p>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold text-white mb-4">مدل‌های پروازی</h4>
+                <ul class="space-y-2 text-xs text-zinc-400">
+                    <li><a href="#" onclick="navigateTo('airplanes')" class="hover:text-emerald-400 transition-colors">هواپیماهای ورزشی و سرعتی</a></li>
+                    <li><a href="#" onclick="navigateTo('airplanes')" class="hover:text-emerald-400 transition-colors">هواپیماهای آموزشی و پایداری بالا</a></li>
+                    <li><a href="#" onclick="navigateTo('airplanes')" class="hover:text-emerald-400 transition-colors">گلایدرهای بدون موتور پرواز طولانی</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold text-white mb-4">ارتباط و پشتیبانی</h4>
+                <ul class="space-y-2 text-xs text-zinc-400">
+                    <li>تلفن تماس: 09034499880</li>
+                    <li>پشتیبانی واتساپ: 09034499880</li>
+                    <li>آدرس تحویل: ایران، تهران، پونک، میرزا بابایی، عدل شمالی، بهار شرقی، خ فتح، ک فتح 2</li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold text-white mb-4">فلای شاپ آر سی</h4>
+                <p class="text-xs text-zinc-500 mb-3">تمام قطعات و بدنه هواپیماها قبل از ارسال تست پایداری و صحت فرامین شده و تضمین پرواز عالی دارند.</p>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-8 border-t border-zinc-900 flex flex-col sm:flex-row items-center justify-between text-zinc-600 text-xs gap-4">
+            <span>© ۲۰۲۶ فلای شاپ آر سی. تمام حقوق مادی و معنوی محفوظ است.</span>
+            <div class="flex gap-4">
+                <span class="text-emerald-500/80 font-bold">فلای شاپ آر سی تنها تولید کننده هواپیما از برند ECLIPSON در ایران</span>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- JavaScript / Interactive logic -->
+    <script>
+        // Database of Eclipson Airplanes physical models
+        const airplanesData = [
+            {
+                id: "model-b-v2",
+                name: "Model B V2",
+                title: "هواپیمای دوچرخه‌ای آموزشی و آکروباتیک سبک",
+                basePrice: 2300000, // Tomans for bare airframe
+                electronicsDelta: 1600000, // Additional cost for full electronics package
+                wingspan: "1.1 متر",
+                weight: "700 gram",
+                wingload: "36 g/dm²",
+                images: [
+                    "model-b-v2-1.jpg",
+                    "model-b-v2-2.jpg",
+                    "model-b-v2-3.jpg",
+                    "model-b-v2-4.jpg",
+                    "model-b-v2-5.jpg"
+                ],
+                description: "هواپیما اکلیپسون مدل B نسخه ۲ با طراحی مستحکم و جذابیت ماندگار خود، جوهره‌ی یک هواپیما بوش کلاسیک آلاسکایی را به تصویر می‌کشد. این نسخه‌ی دوم، جدیدترین بهبودهای طراحی را در خود جای داده است که عملکرد و دوام آن را ارتقا می‌بخشد. این هواپیما با بهره‌مندی از چرخ‌های بزرگ تاندرا و سیستم ارابه‌ی فرود بادوامِ تقویت‌شده با میله‌های فولادی، قابلیت برخاست و فرود بر روی تقریباً هر سطحی را دارد. افزودن پایه‌های بال نه تنها ظاهر مقیاسی آن را بهبود می‌بخشد، بلکه استحکام ساختاری را نیز افزایش داده و آن را برای مانورهای تهاجمی و آکروباتیک ایده‌آل می‌سازد. سطوح کنترلی بزرگ آن چابکی قابل‌توجهی را ارائه می‌دهند، در حالی که سرعت واماندگی پایین، ویژگی‌های پروازی پایدار و مطمئنی را تضمین می‌کند. اکلیپسون مدل B نسخه ۲ انتخابی عالی برای خلبانان در تمامی سطوح مهارتی، از مبتدیان تا متخصصان باتجربه است.",
+                componentsNeeded: [
+                    "موتور براشلس XXD 2212 پرقدرت",
+                    "اسپید کنترل ESC 40A باکیفیت",
+                    "۴ عدد مینی سروو موتور ۹ گرمی SG90",
+                    "ملخ بالانس شده پروازی مناسب موتور",
+                    "مونتاژ کامل با سیم‌کشی تمیز فرامین بال"
+                ]
+            },
+            {
+                id: "model-k",
+                name: "Model K",
+                title: "هواپیمای مسابقه‌ای و آکروباتیک پرسرعت نئورترو",
+                basePrice: 2800000,
+                electronicsDelta: 1900000,
+                wingspan: "1.50 متر",
+                weight: "1500 gram",
+                wingload: "45 g/dm²",
+                images: [
+                    "model-k-1.jpg",
+                    "model-k-2.jpg",
+                    "model-k-3.jpg",
+                    "model-k-4.jpg",
+                    "model-k-5.jpg"
+                ],
+                description: `تجربه پرواز خود را با این هواپیمای ورزشی تماماً چاپ سه‌بعدی به سطح بالاتری ارتقا دهید؛ هواپیمایی که عملکرد مدرن را با زیبایی‌شناسی متمایز نئو-رترو (کلاسیکِ نوین) ترکیب کرده و هم در آسمان و هم بر روی زمین متمایز جلوه می‌کند.
+
+این مدل که بر پایه‌ی یک پلتفرم ورزشی کلاسیک طراحی شده است، کنترل روان و پاسخگو را با جذابیت بصری ماندگارِ الهام‌گرفته از هوانوردی قدیمی در هم می‌آمیزد. سبک نئو-رترو به این هواپیما شخصیتی منحصربه‌فرد می‌بخشد، در حالی که چابکی و دقت مورد انتظار از یک پرنده‌ی ورزشی را حفظ می‌کند و آن را به یک اندازه برای پروازهای آرام و مانورهای پویا مناسب می‌سازد.
+
+یکی از ویژگی‌های بارز این طراحی، سیستم خنک‌کننده‌ی بسیار کارآمد موتور آن است. تهویه‌ی دقیق و یکپارچه، جریان هوای عالی را برای سیستم قدرت تضمین می‌کند و به حفظ دمای عملیاتی مطلوب، حتی در طول پروازهای طولانی یا پرفشار، کمک می‌کند. این امر موجب بهبود قابلیت اطمینان و عملکرد پایدار در طیف گسترده‌ای از شرایط می‌شود.`,
+                componentsNeeded: [
+                    "موتور براشلس ۲۸۲۰ دور بالا",
+                    "اسپید کنترل ESC 50A Hobbywing",
+                    "۴ عدد مینی سروو موتور فلزی",
+                    "ملخ فیبر کربن مسابقه‌ای",
+                    "سیم‌کشی و هورن‌های نصب‌شده فلزی"
+                ]
+            },
+            {
+                id: "yak-55",
+                name: "YAK-55",
+                title: "هواپیمای آکروباتیک ۳D بی حد و مرز",
+                basePrice: 3200000,
+                electronicsDelta: 1700000,
+                wingspan: "1.10 متر",
+                weight: "800 gram",
+                wingload: "28 g/dm²",
+                images: [
+                    "yak-55-1.jpg",
+                    "yak-55-2.jpg",
+                    "yak-55-3.jpg",
+                    "yak-55-4.jpg",
+                    "yak-55-5.jpg"
+                ],
+                description: `عملکرد آکروباتیک خود را با YAK-55 به سطح بالاتری ببرید؛ یک نسخه‌ی رادیوکنترل (RC) و تماماً چاپ سه‌بعدی از طراحی نمادین یاکوولف که برای دقت، چابکی و لذت خالص پرواز مهندسی شده است.
+
+این مدل که بر پایه‌ی YAK-55 کلاسیک ساخته شده، به عنوان یک پلتفرم آکروباتیک چاپ سه‌بعدی با عملکرد بالا بازطراحی شده است و پاسخ کنترلی دقیق و مانورپذیری فوق‌العاده‌ای را ارائه می‌دهد. آیرودینامیک آن با استفاده از مدل اثبات‌شده‌ی Eclipson Model 3D به عنوان پایه‌ی توسعه، به دقت اصلاح شده است؛ هواپیما که به‌طور خاص برای پرواز دقیق سه‌بعدی و عملکرد بسیار کارآمد طراحی شده است. این امر منجر به جریان هوای روان‌تر، بهبود قدرت کنترل و رفتار قابل پیش‌بینی در تمام محدوده‌ی پروازی (Flight Envelope) می‌شود.
+
+برای بهینه‌سازی هزینه‌ها و دسترسی‌پذیری، YAK-55 از قطعات و سخت‌افزار پلتفرم Eclipson Model 3D مجدداً استفاده می‌کند. این کار نه تنها هزینه‌ی کلی را کاهش می‌دهد، بلکه به خلبانانی که با این سیستم آشنا هستند اجازه می‌دهد تا قطعات را به راحتی منتقل کرده و ضمن بهره‌مندی از طراحی جدید بدنه، یکپارچگی را حفظ کنند.
+
+این هواپیما همچنین شامل بهبودهای مستمر در هر دو فرآیند چاپ و مونتاژ است. هندسه‌ی بهینه‌شده‌ی قطعات، قابلیت اطمینان چاپ را افزایش داده و زمان ساخت را کاهش می‌دهد، در حالی که روند اصلاح‌شده‌ی مونتاژ، فرآیند ساخت را ساده‌تر و لذت‌بخش‌تر می‌سازد.
+
+توجه به جزئیات در سراسر این مدل مشهود است و دارای ویژگی‌های متعددِ الهام‌گرفته از مدل مقیاسی است که جوهره‌ی YAK-55 واقعی را به تصویر می‌کشد، در حالی که کارایی سبک‌وزنِ مورد نیاز برای پرواز با عملکرد بالا را نیز حفظ می‌کند.`,
+                componentsNeeded: [
+                    "موتور براشلس با تراست بالا ۲۲۱۶",
+                    "اسپید کنترل ESC 40A",
+                    "۴ عدد سروو موتور با گشتاور و سرعت بالا",
+                    "ملخ پروازی تری‌بلید آکروباتیک",
+                    "سیستم کامل اهرم و فرامین بال"
+                ]
+            },
+            {
+                id: "vortex",
+                name: "VORTEX",
+                title: "گلایدر پرواز حرارتی دشت با مداومت بالا",
+                basePrice: 3500000,
+                electronicsDelta: 2100000,
+                wingspan: "2.10 متر",
+                weight: "950 gram",
+                wingload: "24 g/dm²",
+                images: [
+                    "vortex-1.jpg",
+                    "vortex-2.jpg",
+                    "vortex-3.jpg",
+                    "vortex-4.jpg",
+                    "vortex-5.jpg"
+                ],
+                description: `تجربه‌ی عملکرد پرواز در شیب (Slope Soaring) خود را با این هواپیمای رادیوکنترل (RC) پیشرفته‌ی چاپ سه‌بعدی به سطح بالاتری ارتقا دهید؛ هواپیمایی که برای ارائه‌ی محدوده‌ی سرعت استثنایی، کنترل دقیق و کارایی ساختاری طراحی شده است.
+
+در اصل، این هواپیما یک گلایدر شیب‌پیمای با عملکرد بالاست که به یک موتور قدرتمند مجهز شده است و به آن اجازه می‌دهد در شرایط پرواز بدون موتور (گِلاید خالص) یا پرواز موتوردار به یک اندازه عالی عمل کند. این طراحی یک محدوده‌ی پروازی فوق‌العاده وسیع را ارائه می‌دهد: هنگام پرواز با فلپ‌های کامل در سرعت‌های بسیار پایین، راحت و پایدار باقی می‌ماند، اما زمانی که به حد نهایی خود رانده می‌شود، به پرنده‌ای بی‌نهایت سریع و چابک تبدیل می‌گردد. در آسمان، این هواپیما مانند یک تیر مسیر خود را طی می‌کند و دقت و پاسخگویی ایده‌آلی را ارائه می‌دهد که مورد تحسین خلبانان باتجربه قرار خواهد گرفت.
+
+برای دستیابی به بارگذاری بالِ مطلوب و کارایی کلی، استفاده از متریال LW-PLA منحصراً به بخش دم تقلیل یافته است. حذف محدودیت‌های رایج طراحی مرتبط با فیلامنت‌های فوم‌شونده، امکان توسعه‌ی راه‌حل‌های ساختاری پیشرفته‌تر و پیچیده‌تری را در سراسر بدنه‌ی هواپیما فراهم نموده است.`,
+                componentsNeeded: [
+                    "موتور براشلس ۲۲۱۲ با دور پایین جهت افزایش مداومت",
+                    "ملخ تاشو مگنتی پروازی مخصوص گلایدر",
+                    "اسپید کنترل ESC 30A Hobbywing",
+                    "۶ عدد سروو موتور میکرو دقیق برای شهپر و سکان"
+                ]
+            },
+            {
+                id: "skyward",
+                name: "SKYWARD",
+                title: "بهترین انتخاب برای خلبانان مبتدی و تازه کار",
+                basePrice: 2100000,
+                electronicsDelta: 1500000,
+                wingspan: "1.20 متر",
+                weight: "750 gram",
+                wingload: "31 g/dm²",
+                images: [
+                    "skyward-1.jpg",
+                    "skyward-2.jpg",
+                    "skyward-3.jpg",
+                    "skyward-4.jpg",
+                    "skyward-5.jpg"
+                ],
+                description: `با «اسکای‌وارد» (Skyward) به ارتفاعات جدیدی دست یابید؛ یک هواپیمای رادیوکنترل (RC) تماماً چاپ سه‌بعدی که برای ارائه‌ی استحکام استثنایی، تطبیق‌پذیری و ویژگی‌های پروازی مطمئن برای خلبانان در تمامی سطوح مهارتی طراحی شده است.
+
+اسکای‌وارد دارای یک ساختار ترکیبیِ پیشرفته است که PLA، LW-PLA و تقویت‌کننده‌های فیبر کربن را برای دستیابی به نسبت استحکام به وزنِ فوق‌العاده با یکدیگر ترکیب می‌کند. این ترکیبِ مواد به بدنه‌ی هواپیما اجازه می‌دهد تا ضمن حفظ سختیِ ساختاریِ لازم برای عملکردی مطمئن و بادوام، سبک‌وزن باقی بماند که این امر آن را هم برای پروازهای آرام و هم برای شرایط پروازی چالش‌برانگیز ایده‌آل می‌سازد.
+
+اسکای‌وارد که با اولویت قرار دادن پایداری طراحی شده است، از پیکربندی بال‌بالا در کنار پلتفرم بالِ تقریباً مستطیلی بهره می‌برد که کنترلی ذاتاً قابل پیش‌بینی و منعطف را فراهم می‌کند. این چیدمان، پرواز با این هواپیما را فوق‌العاده آسان کرده و پاسخ کنترلیِ روان و رفتار عالی در سرعت‌های پایین را ارائه می‌دهد. فلپ‌های یکپارچه، سرعت فرود را به میزان قابل‌توجهی کاهش می‌دهند و امکان تقرب‌های ایمن‌تر و کنترل‌شده‌تری را، حتی در مناطق پروازی محدودتر، فراهم می‌آورند.
+
+برای بهبود کنترل روی زمین و عملکرد فرود، اسکای‌وارد شامل یک سیستم تعلیق جلوی قابل تعویض با دو مفهوم طراحی متمایز است. خلبانان می‌توانند بسته به محیط پروازی یا ترجیح شخصی خود، به راحتی پیکربندی‌ها را تغییر دهند و بدون افزودن پیچیدگی‌های غیرضروری، از جذب بهینه‌ی ضربه و انعطاف‌پذیری عملیاتی اطمینان حاصل کنند.
+
+اسکای‌وارد به عنوان یک هواپیما کاملاً چاپ سه‌بعدی، از تکنیک‌های تولید مدرن بهره می‌برد که امکان تولید دقیق قطعات, مونتاژ ساده، و نگهداری یا تعویض آسانِ قطعات را در صورت نیاز فراهم می‌کند. هر قطعه به گونه‌ای طراحی شده است که میان کارایی چاپ، یکپارچگی ساختاری و عملکرد آیرودینامیکی تعادل برقرار کند.`,
+                componentsNeeded: [
+                    "موتور براشلس ۲۲۰۸ با دور مناسب برای پروازهای آرام",
+                    "ملخ سایز ۸ اینچ استاندارد",
+                    "اسپید کنترل ESC 30A",
+                    "۳ عدد سروو موتور ۹ گرمی SG90"
+                ]
+            },
+            {
+                id: "dual-edf",
+                name: "DUAL ACRO",
+                title: "جت نظامی مجهز به دو موتور داکتدفن پر صدا و مهیج",
+                basePrice: 4200000,
+                electronicsDelta: 3100000,
+                wingspan: "1.00 متر",
+                weight: "1600 gram",
+                wingload: "58 g/dm²",
+                images: [
+                    "dual-edf-1.jpg",
+                    "dual-edf-2.jpg",
+                    "dual-edf-3.jpg",
+                    "dual-edf-4.jpg",
+                    "dual-edf-5.jpg"
+                ],
+                description: `دقت و قدرت را با «دوآل آکرو» (Dual Acro) رها سازید؛ یک هواپیمای دوموتوره‌ی با عملکرد بالا که برای تسلط بر هر دو زمینه‌ی آکروباتیک دقیق و پرواز روان و پایدار طراحی شده است.
+
+دوآل آکرو با یک هدف روشن خلق شده است: ارائه‌ی یک تجربه‌ی آکروباتیک بی‌نظیر. طراحی آن شامل یک ایرفویل کاملاً متقارن، سطوح کنترلی بزرگ و یک دم بلند و کارآمد است که همگی توسط دو موتور با نیروی رانش (تراست) بالا تغذیه می‌شوند تا پاسخگویی فوری و کنترل دقیق را تضمین کنند.
+
+علی‌رغم ماهیت آکروباتیک، دوآل آکرو به شکلی چشمگیر تطبیق‌پذیر و منعطف است. بال مستطیلیِ بزرگ و ابعاد کلیِ وسیع آن، پایداری عالی و قابلیت پرواز کُند را فراهم می‌کنند؛ که این امر آن را نه تنها به یک پرنده‌ی توانمند برای خلبانان باتجربه، بلکه به یک هواپیمای الهام‌بخشِ اعتمادبه‌نفس برای مبتدیان تبدیل می‌سازد. چه پرواز آرام و روان را ترجیح دهید و چه مانورهای آکروباتیک تهاجمی را، دوآل آکرو بدون زحمت با سبک شما سازگار می‌شود.
+
+از نظر بصری، دوآل آکرو زیبایی‌شناسی کلاسیک و دوموتوره‌ی هواپیماهای مسافربری کوچک STOL (نشست و برخاست کوتاه) مانند «ده هاویلند توئین اوتر» (De Havilland Twin Otter) را تجسم می‌بخشد که خطوط نمادین آن، الهام‌بخش طراحی بدنه‌ی این مدل بوده است.
+
+کنترل روی زمین نیز به لطف پیکربندی ارابه‌ی فرود سه‌چرخِ آن، به همان اندازه اصلاح شده است. برای چرخ دماغه، دو گزینه‌ی سیستم تعلیق در دسترس است:
+
+نسخه ۱: یک سیستم تعلیق با دامنه‌ی حرکت (کورس) طولانی با استفاده از فنر چاپ سه‌بعدی، که جذب ضربه‌ی عالی و فرودهای نرم را فراهم می‌کند.
+
+نسخه ۲: یک سیستم تعلیق مبتنی بر فیلامنت انعطاف‌پذیر، که دوام بیشتری را با دامنه‌ی حرکت کمی کمتر ارائه می‌دهد.
+
+هر دو گزینه کنترل فوق‌العاده‌ای را ارائه می‌دهند و به خلبانان اجازه می‌دهند تا عملکرد را متناسب با محیط پروازی خود تنظیم کنند.
+
+دوآل آکرو که برای رسیدن به نسبت استحکام به وزنِ بهینه مهندسی شده است، از یک ساختار ترکیبی شامل PLA، LW-PLA، و تقویت‌کننده‌های فیبر کربن و فولاد بهره می‌برد. به دلیل مقیاس بزرگ آن، استفاده از مواد فوم‌شونده‌ی سبک‌وزن، با دقت و در جهت دستیابی به استحکام و کارایی متعادل شده است. تکنیک‌های پیشرفته‌ی چاپ در حالت گلدان (vase-mode) در قطعات کلیدی LW-PLA به کار گرفته شده‌اند تا ضمن به حداقل رساندن زمان چاپ، کیفیت سطح و عملکرد ساختاری به حداکثر برسند.
+
+همانند تمامی طراحی‌های ما، به لطف سیستم قفل‌شونده‌ی نر و مادگیِ یکپارچه که هم‌راستایی بی‌نقص و مونتاژ یکپارچه را تضمین می‌کند، فرآیند مونتاژ سریع و دقیق است.`,
+                componentsNeeded: [
+                    "دو عدد موتور X2814 900KV",
+                    "اسپید کنترل ESC 50A",
+                    "۷ عدد سروو موتور پرقدرت فرامین",
+                    "سیم‌کشی ایزوله شده جت جهت جلوگیری از اختلال فرکانسی"
+                ]
+            }
+        ];
+
+        // Database of Accessories and Spare parts (No static prices, fully dynamic options)
+        const accessoriesData = [
+            {
+                id: "motor",
+                name: "موتور براشلس (Brushless Motor)",
+                title: "تامین‌کننده پیشرانش هواپیماهای رادیوکنترل با راندمان فوق‌العاده",
+                image: "motor.jpg",
+                fallbackText: "موتور براشلس",
+                description: "موتورهای الکتریکی براشلس (High-Torque Outrunner) با طراحی بهینه‌شده به منظور ایجاد تراست (کشش آیرودینامیکی) عالی با کمترین جریان مصرفی. هاب موتور بالانس‌شده ارتعاش هواپیما را به حداقل رسانده و طول عمر سروو موتورها را افزایش می‌دهد.",
+                options: [
+                    "موتور XXD 2212 - 1000KV (بهینه برای ملخ‌های بزرگ ۱۰ اینچ و پرواز پایدار)",
+                    "موتور XXD 2212 - 1400KV (مناسب مدل‌های ورزشی و ملخ‌های ۹ اینچی)",
+                    "موتور XXD 2212 - 2200KV (پیشنهاد سرعت بالا برای مدل‌های مجهز به ملخ‌های کوچک)",
+                    "موتور پرقدرت Sunnysky 2216 - 1250KV (اورجینال راندمان بالا مخصوص پروازهای سه بعدی آکروباتیک)"
+                ],
+                specs: {
+                    "ولتاژ کاری پیشنهادی": "۲ الی ۴ سل باتری لیتیوم پلیمری",
+                    "جنس شفت خروجی": "فولاد آب‌دیده تیتانیومی ۳.۱۷ میلی‌متر",
+                    "سیستم سیم‌پیچی داخلی": "مس مرغوب مقاوم در برابر دماهای بسیار بالا"
+                }
+            },
+            {
+                id: "servo",
+                name: "سروو موتور (Servo Motor)",
+                title: "سروو موتور چابک جهت انتقال بی‌نقص فرامین بال‌ها",
+                image: "servo.jpg",
+                fallbackText: "سروو موتور",
+                description: "مینی سروو موتور سبک ۹ گرمی استاندارد برای تنظیم مداوم شهپرها (Ailerons)، رادر (Rudder) و بالابرها (Elevator). پلاستیک فشرده بکار رفته در چرخ‌دنده‌ها مانع از خلاصی و هرز رفتن زاویه فرامین می‌شود.",
+                options: [
+                    "مینی سروو موتور ۹ گرمی SG90 استاندارد"
+                ],
+                specs: {
+                    "وزن کلی قطعه": "۹ گرم فوق سبک",
+                    "سرعت پاسخ‌دهی فرامین": "۰.۱۲ ثانیه برای ۶۰ درجه تغییر در ولتاژ ۴.۸ ولت",
+                    "زاویه ماکسیمم چرخش": "۱۸۰ درجه کامل چرخشی"
+                }
+            },
+            {
+                id: "esc",
+                name: "اسپید کنترل (ESC)",
+                title: "کنترل‌کننده رگولاسیون دقیق دور موتور و منبع تغذیه فرامین",
+                image: "esc.jpg",
+                fallbackText: "اسپید کنترل",
+                description: "اسپید کنترل‌های فوق‌العاده پایدار Hobbywing سری Skywalker دارای پاسخ بسیار خطی به اهرم گاز رادیوکنترل شما. مجهز به مدار مجزای تغذیه سرووها (BEC با خروجی پایدار ۵ ولت) جهت حفظ فرامین در صورت کاهش ولتاژ کلی سیستم رانش.",
+                options: [
+                    "اسپید کنترل Hobbywing Skywalker 30A (مناسب هواپیماهای سبک)",
+                    "اسپید کنترل Hobbywing Skywalker 40A (کاربردی‌ترین گزینه استاندارد)",
+                    "اسپید کنترل Hobbywing Skywalker 50A (پایداری عالی برای موتورهای سایز متوسط)",
+                    "اسپید کنترل Hobbywing Skywalker 60A (پیشنهاد تراست بالا برای پیشرانه‌های سنگین)"
+                ],
+                specs: {
+                    "پشتیبانی باتری رانش": "باتری‌های ۲ تا ۴ سل لیتیوم پلیمر",
+                    "سیستم‌های حفاظتی داخلی": "قطع هوشمند در صورت بالا رفتن ناگهانی دما یا اختلال سیگنال رادیو",
+                    "مدار خروجی فرامین (BEC)": "۵ ولت پایدار با جریان مستقیم ۳ آمپر"
+                }
+            },
+            {
+                id: "propeller",
+                name: "ملخ پروازی (Propeller)",
+                title: "ملخ‌های باکیفیت و متعادل آیرودینامیک سری الکتریک APC",
+                image: "propeller.jpg",
+                fallbackText: "ملخ پروازی",
+                description: "ملخ‌های با کیفیت بالای پروازی سری APC Electric، به گونه‌ای بالانس شده‌اند که هیچ‌گونه لرزش ناخواسته‌ای را در دماغه هواپیما ایجاد نکنند. گام دقیق این ملخ‌ها بالاترین جریان تراست را در دور موتورهای مختلف فراهم می‌آورد.",
+                options: [
+                    "ملخ APC پروازی سایز 8x6",
+                    "ملخ APC پروازی سایز 9x6 (پرکاربردترین ملخ برای موتور ۲۲۱۲)",
+                    "ملخ APC پروازی سایز 10x4.7 (گام پایین و کشش بالا مخصوص پروازهای سه بعدی آکروباتیک)",
+                    "ملخ APC پروازی سایز 10x7 (گام پرسرعت برای مسابقات و عبور نزدیک)",
+                    "ملخ APC پروازی سایز 11x5.5 (بزرگترین هاب برای موتورهای با KV دور پایین)"
+                ],
+                specs: {
+                    "جنس بدنه قطعه": "پلاستیک تقویت‌شده با الیاف نانو کربن جهت انعطاف‌ناپذیری در سرعت‌های بالا",
+                    "نوع هاب ملخ": "طراحی اختصاصی برای شفت موتورهای الکتریک سری براشلس",
+                    "مکانیزم فیزیکی کارکرد": "مقاومت بسیار بالا در برابر لبه‌های بادی جهت کاهش آشفتگی هوا"
+                }
+            }
+        ];
+
+        // App state
+        let currentTab = "home";
+        let cart = [];
+        let selectedOptionPrice = 0; // Temp price holder for airplane detail page
+        let activePlaneDetailId = "";
+        let activeAccessoryDetailId = "";
+
+        // Number formatter helper
+        function formatPrice(number) {
+            return new Intl.NumberFormat('fa-IR').format(number);
+        }
+
+        // Navigation controller
+        function navigateTo(pageId) {
+            currentTab = pageId;
+            
+            // Hide all pages
+            document.getElementById('page-home').classList.add('hidden');
+            document.getElementById('page-airplanes').classList.add('hidden');
+            document.getElementById('page-product-detail').classList.add('hidden');
+            document.getElementById('page-recommended').classList.add('hidden');
+            document.getElementById('page-accessory-detail').classList.add('hidden');
+            document.getElementById('page-orderinfo').classList.add('hidden');
+
+            // Reset navigation links styling
+            const navLinks = ['home', 'airplanes', 'recommended', 'orderinfo'];
+            navLinks.forEach(lnk => {
+                const el = document.getElementById(`nav-${lnk}`);
+                if (el) {
+                    el.classList.remove('text-emerald-500', 'font-bold');
+                    el.classList.add('text-zinc-400');
+                }
+            });
+
+            // Show active page & style active link
+            const activePage = document.getElementById(`page-${pageId}`);
+            if (activePage) {
+                activePage.classList.remove('hidden');
+                activePage.classList.add('opacity-100');
+            }
+            
+            const actualActiveLink = document.getElementById(`nav-${pageId}`);
+            if (actualActiveLink) {
+                actualActiveLink.classList.remove('text-zinc-400');
+                actualActiveLink.classList.add('text-emerald-500', 'font-bold');
+            }
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Toggle mobile menu visibility
+        function toggleMobileMenu() {
+            const el = document.getElementById('mobile-menu');
+            el.classList.toggle('hidden');
+        }
+
+        // Render Airplanes Gallery Grid
+        function renderAirplanes() {
+            const grid = document.getElementById('planes-grid');
+            grid.innerHTML = airplanesData.map(plane => `
+                <div class="bg-zinc-900/40 rounded-3xl border border-zinc-800/80 overflow-hidden hover:border-emerald-500/30 transition-all flex flex-col justify-between group">
+                    <div class="p-6">
+                        <!-- Airplane thumbnail (Using first image as cover) -->
+                        <div class="relative overflow-hidden rounded-2xl mb-6 bg-zinc-950 aspect-video flex items-center justify-center border border-zinc-800">
+                            <img src="${plane.images[0]}" alt="${plane.name}" onerror="this.src='https://placehold.co/600x400/10b981/000000?text=${plane.name}'" class="absolute inset-0 w-full h-full object-cover opacity-85 group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                            <span class="absolute bottom-4 right-4 bg-emerald-500 text-black text-xs font-black px-2.5 py-1 rounded">بدنه کاملاً سبک و مقاوم</span>
+                        </div>
+
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-xl font-bold text-white group-hover:text-emerald-400 transition-colors">${plane.name}</h3>
+                                <span class="text-sm font-black text-emerald-400">شروع از ${formatPrice(plane.basePrice)} تومان</span>
+                            </div>
+                            <p class="text-xs text-zinc-500 line-clamp-1">${plane.title}</p>
+                            <p class="text-zinc-400 text-sm leading-relaxed line-clamp-3 mt-3">${plane.description}</p>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="p-6 border-t border-zinc-800 bg-zinc-900/10 flex items-center gap-3">
+                        <button onclick="viewProductDetail('${plane.id}')" class="flex-grow py-3 bg-zinc-800 hover:bg-zinc-700 text-white font-bold text-sm rounded-xl transition-all">
+                            مشاهده آپشن‌ها و گالری عکس
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Change Main Detail Image dynamically in Gallery
+        function changeDetailImage(imgUrl, buttonEl) {
+            document.getElementById('main-detail-img').src = imgUrl;
+            
+            // Reset border styling on all thumbs
+            const buttons = buttonEl.parentElement.querySelectorAll('button');
+            buttons.forEach(btn => {
+                btn.classList.remove('border-emerald-500');
+                btn.classList.add('border-zinc-800');
+            });
+            
+            // Set border of clicked thumb to emerald
+            buttonEl.classList.remove('border-zinc-800');
+            buttonEl.classList.add('border-emerald-500');
+        }
+
+        // Render & Switch to specific Product detail view
+        function viewProductDetail(productId) {
+            const plane = airplanesData.find(p => p.id === productId);
+            if (!plane) return;
+
+            activePlaneDetailId = productId;
+            selectedOptionPrice = plane.basePrice; // Default to airframe price
+
+            const content = document.getElementById('product-detail-content');
+            content.innerHTML = `
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    
+                    <!-- Right: Info Panel & Option Selector -->
+                    <div class="space-y-6">
+                        <div class="space-y-2">
+                            <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full inline-block">تست‌شده با تضمین کیفیت پرواز</span>
+                            <h1 class="text-3xl sm:text-5xl font-black text-white">${plane.name}</h1>
+                            <p class="text-zinc-400 text-lg leading-relaxed mt-2">${plane.title}</p>
+                        </div>
+
+                        <!-- Technical Spec Grid -->
+                        <div class="space-y-3">
+                            <h4 class="text-base font-bold text-white">مشخصات فیزیکی و ابعاد هواپیما:</h4>
+                            <div class="bg-zinc-950 p-5 rounded-2xl border border-zinc-800">
+                                <div class="grid grid-cols-3 gap-4 text-center text-sm">
+                                    <div>
+                                        <span class="text-zinc-500 block text-xs">طول بال (Wingspan):</span>
+                                        <span class="font-bold text-white mt-1 block">${plane.wingspan}</span>
+                                    </div>
+                                    <div class="border-x border-zinc-900">
+                                        <span class="text-zinc-500 block text-xs">وزن نهایی (RTF):</span>
+                                        <span class="font-bold text-white mt-1 block">${plane.weight}</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-zinc-500 block text-xs">بار روی سطح بال:</span>
+                                        <span class="font-bold text-white mt-1 block">${plane.wingload}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Option Selection Block -->
+                        <div class="space-y-4 border-t border-zinc-800 pt-6">
+                            <h4 class="text-base font-bold text-white">۱. انتخاب نوع پکیج ارسالی:</h4>
+                            
+                            <div class="grid grid-cols-1 gap-3">
+                                <!-- Option 1: Bare Airframe -->
+                                <label class="relative bg-zinc-900/60 p-5 rounded-2xl border border-emerald-500 cursor-pointer flex items-center justify-between transition-all" id="label-opt-airframe">
+                                    <div class="flex items-center gap-3">
+                                        <input type="radio" name="pkg-option" value="airframe" checked onchange="updateProductPrice('airframe', ${plane.basePrice})" class="w-4 h-4 text-emerald-500 focus:ring-emerald-500 bg-zinc-950 border-zinc-800">
+                                        <div>
+                                            <span class="block font-bold text-white text-sm">فقط بدنه خالی پروازی</span>
+                                            <span class="block text-zinc-500 text-xs mt-1">ساخته شده با تمام هورن‌ها و آماده سوار کردن وسایل</span>
+                                        </div>
+                                    </div>
+                                    <span class="text-emerald-400 font-bold text-sm">${formatPrice(plane.basePrice)} تومان</span>
+                                </label>
+
+                                <!-- Option 2: Complete Electronics Package -->
+                                <label class="relative bg-zinc-900/10 p-5 rounded-2xl border border-zinc-800 cursor-pointer flex items-center justify-between transition-all" id="label-opt-full">
+                                    <div class="flex items-center gap-3">
+                                        <input type="radio" name="pkg-option" value="full" onchange="updateProductPrice('full', ${plane.basePrice + plane.electronicsDelta})" class="w-4 h-4 text-emerald-500 focus:ring-emerald-500 bg-zinc-950 border-zinc-800">
+                                        <div>
+                                            <span class="block font-bold text-white text-sm">کیت کامل آماده به پرواز (RTF / PNP)</span>
+                                            <span class="block text-zinc-500 text-xs mt-1">شامل موتور، اسپید کنترل، ملخ و سرووها (نصب‌شده و تست‌شده)</span>
+                                        </div>
+                                    </div>
+                                    <span class="text-emerald-400 font-bold text-sm">${formatPrice(plane.basePrice + plane.electronicsDelta)} تومان</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Price & Add to Cart button -->
+                        <div class="flex items-center gap-6 py-5 border-t border-zinc-800">
+                            <div>
+                                <span class="block text-zinc-500 text-xs">مبلغ نهایی هواپیما:</span>
+                                <span id="dynamic-product-price" class="text-2xl sm:text-3xl font-black text-emerald-400">${formatPrice(plane.basePrice)} تومان</span>
+                            </div>
+                            <button onclick="addSelectedToCart()" class="flex-grow py-4 bg-emerald-500 hover:bg-emerald-400 text-black font-black text-lg rounded-xl shadow-lg shadow-emerald-500/20 transition-all flex items-center justify-center gap-2">
+                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                                افزودن به فاکتور خرید
+                            </button>
+                        </div>
+
+                        <div class="space-y-3">
+                            <h4 class="text-base font-bold text-white">معرفی و نقد پرواز هواپیما</h4>
+                            <p class="text-zinc-400 text-sm leading-relaxed">${plane.description}</p>
+                        </div>
+
+                    </div>
+
+                    <!-- Left: Interactive Gallery & Included Components -->
+                    <div class="space-y-8">
+                        
+                        <!-- Premium Multi-Image Gallery Display -->
+                        <div class="bg-zinc-900/30 p-4 rounded-3xl border border-zinc-800 space-y-4">
+                            <!-- Main active image -->
+                            <div class="aspect-video bg-zinc-950 rounded-2xl overflow-hidden relative border border-zinc-800">
+                                <img id="main-detail-img" src="${plane.images[0]}" alt="${plane.name}" onerror="this.src='https://placehold.co/600x400/10b981/000000?text=${plane.name}+1'" class="absolute inset-0 w-full h-full object-cover">
+                            </div>
+                            <!-- 5 Clickable thumbnails -->
+                            <div class="grid grid-cols-5 gap-2">
+                                ${plane.images.map((imgUrl, idx) => `
+                                    <button onclick="changeDetailImage('${imgUrl}', this)" class="aspect-video rounded-xl overflow-hidden border-2 ${idx === 0 ? 'border-emerald-500' : 'border-zinc-800'} bg-zinc-950 hover:border-emerald-500/50 transition-all">
+                                        <img src="${imgUrl}" onerror="this.src='https://placehold.co/120x80/10b981/000000?text=${idx + 1}'" class="w-full h-full object-cover">
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Included Components Shopping List (Shown as dynamic information) -->
+                        <div class="space-y-4">
+                            <h4 class="text-base font-bold text-white">پکیج تجهیزات نصب‌شده روی پکیج «کیت کامل»:</h4>
+                            <ul class="space-y-2.5 text-xs text-zinc-400 bg-zinc-900/10 p-6 rounded-2xl border border-zinc-850">
+                                ${plane.componentsNeeded.map(comp => `
+                                    <li class="flex items-center gap-2">
+                                        <span class="text-emerald-500 font-black text-sm">✔</span>
+                                        <span>${comp}</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+
+                    </div>
+
+                </div>
+            `;
+
+            navigateTo('product-detail');
+        }
+
+        // Update active selection styling & dynamic price in detail view
+        function updateProductPrice(optionType, price) {
+            selectedOptionPrice = price;
+            document.getElementById('dynamic-product-price').innerText = `${formatPrice(price)} تومان`;
+
+            const airframeLabel = document.getElementById('label-opt-airframe');
+            const fullLabel = document.getElementById('label-opt-full');
+
+            if (optionType === 'airframe') {
+                airframeLabel.classList.add('border-emerald-500');
+                airframeLabel.classList.remove('border-zinc-800');
+                fullLabel.classList.add('border-zinc-800');
+                fullLabel.classList.remove('border-emerald-500');
+            } else {
+                fullLabel.classList.add('border-emerald-500');
+                fullLabel.classList.remove('border-zinc-800');
+                airframeLabel.classList.add('border-zinc-800');
+                airframeLabel.classList.remove('border-emerald-500');
+            }
+        }
+
+        // Add airplane with its selected package configuration to cart
+        function addSelectedToCart() {
+            const plane = airplanesData.find(p => p.id === activePlaneDetailId);
+            if (!plane) return;
+
+            const selectedOptionVal = document.querySelector('input[name="pkg-option"]:checked').value;
+            const optionLabel = selectedOptionVal === 'airframe' ? "فقط بدنه خالی" : "کیت کامل با تجهیزات";
+
+            // Push item as custom configuration to cart list (Using first image as preview)
+            const cartItem = {
+                id: `${plane.id}-${selectedOptionVal}`,
+                name: plane.name,
+                option: optionLabel,
+                price: selectedOptionPrice,
+                image: plane.images[0],
+                isAccessory: false
+            };
+
+            // Check if exact config is already in cart
+            const exists = cart.find(i => i.id === cartItem.id);
+            if (exists) {
+                showToast("قبلاً اضافه شده است!", `پکیج ${plane.name} (${optionLabel}) در حال حاضر در فاکتور شماست.`);
+                return;
+            }
+
+            cart.push(cartItem);
+            updateCartUI();
+            showToast("به سبد خرید اضافه شد", `پکیج ${plane.name} (${optionLabel}) با موفقیت به فاکتور سفارش افزوده شد.`);
+        }
+
+        // Render Recommended Accessories Grid (All Clickable now)
+        function renderAccessories() {
+            const grid = document.getElementById('accessories-grid');
+            grid.innerHTML = accessoriesData.map(acc => `
+                <div class="bg-zinc-900/40 p-6 rounded-2xl border border-zinc-800 hover:border-emerald-500/30 flex flex-col justify-between group transition-all">
+                    <div>
+                        <div class="h-40 bg-zinc-800 rounded-xl mb-4 overflow-hidden relative flex items-center justify-center border border-zinc-850">
+                            <img src="${acc.image}" alt="${acc.name}" onerror="this.src='https://placehold.co/400x300/10b981/000000?text=${acc.fallbackText}'" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-emerald-400 transition-colors">${acc.name}</h3>
+                        <p class="text-xs text-emerald-400 font-bold mt-1">قیمت: استعلام تلفنی</p>
+                        <p class="text-zinc-400 text-xs mt-3 leading-relaxed line-clamp-2">${acc.title}</p>
+                    </div>
+                    <button onclick="viewAccessoryDetail('${acc.id}')" class="w-full mt-6 py-2.5 bg-zinc-800 hover:bg-emerald-500 hover:text-black font-bold text-sm rounded-lg transition-all">
+                        مشاهده آپشن‌ها و انتخاب
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Render Dynamic Accessory Detail Page with customized options (no prices)
+        function viewAccessoryDetail(accessoryId) {
+            const acc = accessoriesData.find(a => a.id === accessoryId);
+            if (!acc) return;
+
+            activeAccessoryDetailId = accessoryId;
+            const content = document.getElementById('accessory-detail-content');
+
+            // Build Options radio list
+            const optionsHTML = acc.options.map((opt, idx) => `
+                <label class="relative bg-zinc-900/60 p-4 rounded-xl border ${idx === 0 ? 'border-emerald-500' : 'border-zinc-800'} cursor-pointer flex items-center gap-3 transition-all" onclick="selectAccessoryOptionUI(this)">
+                    <input type="radio" name="acc-option" value="${opt}" ${idx === 0 ? 'checked' : ''} class="w-4 h-4 text-emerald-500 focus:ring-emerald-500 bg-zinc-950 border-zinc-800">
+                    <span class="font-semibold text-white text-xs sm:text-sm leading-relaxed">${opt}</span>
+                </label>
+            `).join('');
+
+            // Build Spec Table rows
+            const specsHTML = Object.entries(acc.specs).map(([key, val]) => `
+                <tr class="border-b border-zinc-900">
+                    <td class="py-3 px-4 text-zinc-500 font-bold text-xs sm:text-sm text-right">${key}</td>
+                    <td class="py-3 px-4 text-zinc-300 text-left font-semibold text-xs sm:text-sm">${val}</td>
+                </tr>
+            `).join('');
+
+            content.innerHTML = `
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    
+                    <!-- Right: Info Panel & Option Selector -->
+                    <div class="space-y-6">
+                        <div class="space-y-2">
+                            <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full inline-block">لوازم یدکی و جانبی اورجینال</span>
+                            <h1 class="text-3xl font-black text-white">${acc.name}</h1>
+                            <p class="text-zinc-400 text-sm leading-relaxed mt-2">${acc.title}</p>
+                        </div>
+
+                        <!-- Option Selection Block -->
+                        <div class="space-y-4 border-t border-zinc-800 pt-6">
+                            <h4 class="text-base font-bold text-white">۱. انتخاب نوع و مشخصات فنی مورد نیاز شما:</h4>
+                            <div id="acc-options-container" class="grid grid-cols-1 gap-3">
+                                ${optionsHTML}
+                            </div>
+                        </div>
+
+                        <!-- Action Button (No price displayed, only add button) -->
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6 py-5 border-t border-zinc-800">
+                            <div>
+                                <span class="block text-zinc-500 text-xs">تعیین قیمت نهایی قطعه:</span>
+                                <span class="text-xl font-black text-emerald-400">استعلام تماس / پیام</span>
+                            </div>
+                            <button onclick="addAccessorySelectedToCart()" class="w-full sm:flex-grow py-4 bg-emerald-500 hover:bg-emerald-400 text-black font-black text-base rounded-xl shadow-lg shadow-emerald-500/20 transition-all flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                                </svg>
+                                افزودن به فاکتور خرید قطعات
+                            </button>
+                        </div>
+
+                        <div class="space-y-3">
+                            <h4 class="text-base font-bold text-white">شرح و کاربرد تخصصی در سیستم رادیوکنترل</h4>
+                            <p class="text-zinc-400 text-sm leading-relaxed">${acc.description}</p>
+                        </div>
+
+                    </div>
+
+                    <!-- Left: Media & Tech Spec sheet -->
+                    <div class="space-y-8">
+                        <div class="bg-zinc-900/30 p-4 rounded-3xl border border-zinc-800">
+                            <div class="aspect-video bg-zinc-950 rounded-2xl overflow-hidden relative border border-zinc-850">
+                                <img src="${acc.image}" alt="${acc.name}" onerror="this.src='https://placehold.co/600x400/10b981/000000?text=${acc.fallbackText}'" class="absolute inset-0 w-full h-full object-cover">
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <h4 class="text-base font-bold text-white">مشخصات فنی و استانداردهای قطعه</h4>
+                            <div class="bg-zinc-950 rounded-2xl border border-zinc-800 overflow-hidden">
+                                <table class="w-full text-right border-collapse">
+                                    <tbody>
+                                        ${specsHTML}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            `;
+
+            navigateTo('accessory-detail');
+        }
+
+        // Toggle UI Border on Selected Accessory Option Radio
+        function selectAccessoryOptionUI(clickedLabel) {
+            const container = document.getElementById('acc-options-container');
+            const labels = container.querySelectorAll('label');
+            
+            labels.forEach(lbl => {
+                lbl.classList.remove('border-emerald-500');
+                lbl.classList.add('border-zinc-800');
+            });
+
+            clickedLabel.classList.remove('border-zinc-800');
+            clickedLabel.classList.add('border-emerald-500');
+
+            // Check the internal radio input
+            const radio = clickedLabel.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+        }
+
+        // Add custom accessory option (Price = 0 for custom inquiry) to cart
+        function addAccessorySelectedToCart() {
+            const acc = accessoriesData.find(a => a.id === activeAccessoryDetailId);
+            if (!acc) return;
+
+            const selectedOpt = document.querySelector('input[name="acc-option"]:checked').value;
+
+            const cartItem = {
+                id: `${acc.id}-${selectedOpt.replace(/\s+/g, '-').toLowerCase()}`,
+                name: acc.name,
+                option: selectedOpt,
+                price: 0, // 0 means Inquire price / استعلام تلفنی
+                image: acc.image,
+                isAccessory: true
+            };
+
+            // Check if identical config exists in cart
+            const exists = cart.find(i => i.id === cartItem.id);
+            if (exists) {
+                showToast("قبلاً اضافه شده است!", `آیتم ${acc.name} (${selectedOpt}) در حال حاضر در فاکتور شماست.`);
+                return;
+            }
+
+            cart.push(cartItem);
+            updateCartUI();
+            showToast("به فاکتور سفارش اضافه شد", `${acc.name} با مشخصات انتخابی افزوده شد.`);
+        }
+
+        // Cart Drawer actions (smooth overlay backdrop control)
+        function toggleCart() {
+            const cartPanel = document.getElementById('cart-panel');
+            const cartOverlay = document.getElementById('cart-overlay');
+            
+            cartPanel.classList.toggle('-translate-x-full');
+            
+            if (cartPanel.classList.contains('-translate-x-full')) {
+                // Close
+                cartOverlay.classList.add('opacity-0');
+                setTimeout(() => {
+                    cartOverlay.classList.add('hidden');
+                }, 300);
+            } else {
+                // Open
+                cartOverlay.classList.remove('hidden');
+                setTimeout(() => {
+                    cartOverlay.classList.remove('opacity-0');
+                }, 10);
+            }
+        }
+
+        function removeFromCart(cartItemId) {
+            cart = cart.filter(item => item.id !== cartItemId);
+            updateCartUI();
+            showToast("حذف از سبد خرید", "آیتم مورد نظر با موفقیت از فاکتور حذف شد.");
+        }
+
+        // Synchronize and render cart items and sum
+        function updateCartUI() {
+            const badge = document.getElementById('cart-badge');
+            badge.innerText = cart.length;
+
+            const list = document.getElementById('cart-items');
+            if (cart.length === 0) {
+                list.innerHTML = `<p class="text-zinc-500 text-center py-12">لیست سفارشات شما خالی است.</p>`;
+                document.getElementById('cart-total-price').innerText = "۰ تومان";
+                return;
+            }
+
+            list.innerHTML = cart.map(item => `
+                <div class="flex items-center justify-between bg-zinc-900/60 p-4 rounded-xl border border-zinc-800 gap-4">
+                    <div class="flex items-center gap-3">
+                        <img src="${item.image}" alt="${item.name}" onerror="this.src='https://placehold.co/100x100/10b981/000000?text=Model'" class="w-12 h-12 rounded-lg object-cover bg-zinc-950 border border-zinc-800">
+                        <div>
+                            <h4 class="text-sm font-bold text-white">${item.name}</h4>
+                            <span class="text-[10px] text-zinc-500 block">${item.option}</span>
+                            <span class="text-xs text-emerald-400 font-bold block mt-1">
+                                ${item.price > 0 ? formatPrice(item.price) + ' تومان' : 'استعلام تلفنی'}
+                            </span>
+                        </div>
+                    </div>
+                    <button onclick="removeFromCart('${item.id}')" class="text-zinc-500 hover:text-red-400 p-1.5 transition-colors">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                </div>
+            `).join('');
+
+            // Sum only plane configurations with known prices
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            document.getElementById('cart-total-price').innerText = `${formatPrice(total)} تومان`;
+        }
+
+        // Open custom Contact / Ordering Modal with formatted message (Only WhatsApp & Phone)
+        function openCheckoutModal() {
+            if (cart.length === 0) {
+                showToast("فاکتور خالی است!", "لطفاً ابتدا حداقل یک هواپیما یا قطعه را به لیست سفارش خود اضافه کنید.");
+                return;
+            }
+
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            
+            // Build beautifully formatted text for messaging
+            let msgText = `سلام آرتین عزیز، من مایل به ثبت سفارش هواپیما و قطعات با جزئیات زیر از فلای شاپ آر سی هستم:\n\n`;
+            
+            let hasAccessories = false;
+            cart.forEach((item, index) => {
+                const itemPriceText = item.price > 0 ? `${formatPrice(item.price)} تومان` : 'استعلام تلفنی';
+                msgText += `${index + 1}. ${item.name} (${item.option}) - قیمت: ${itemPriceText}\n`;
+                if (item.price === 0) hasAccessories = true;
+            });
+
+            msgText += `\n💵 مجموع فاکتور هواپیماها: ${formatPrice(total)} تومان\n`;
+            if (hasAccessories) {
+                msgText += `⚙️ (هزینه قطعات جانبی پس از استعلام تلفنی محاسبه خواهد شد)\n`;
+            }
+            msgText += `\nلطفاً برای هماهنگی پرداخت سفارش، ارسال آدرس و زمان تحویل مرا راهنمایی کنید. متشکرم!`;
+
+            document.getElementById('order-message-text').value = msgText;
+
+            // Generate links for messengers (Using Artin's actual provided phone numbers)
+            const whatsappNum = "989034499880"; // Artin's WhatsApp format with country code
+            const encodedText = encodeURIComponent(msgText);
+            
+            document.getElementById('whatsapp-order-btn').href = `https://wa.me/${whatsappNum}?text=${encodedText}`;
+            
+            // Show Checkout Modal
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+
+        // Beautiful notification toast instead of native alert()
+        function showToast(title, message) {
+            const toast = document.getElementById('custom-toast');
+            document.getElementById('toast-title').innerText = title;
+            document.getElementById('toast-msg').innerText = message;
+
+            // Animate In
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            // Animate Out after 4 seconds
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 4000);
+        }
+
+        // Initialize App on load
+        window.onload = function() {
+            renderAirplanes();
+            renderAccessories();
+            updateCartUI();
+        }
+    </script>
+</body>
+</html>

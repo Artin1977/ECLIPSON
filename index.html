@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Artin gpt Web UI V8.8( 70-vision )</title>
+    <title>Artin gpt Web UI V8.9( 120 )</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -168,12 +168,10 @@ User: "شخصی که شما را آموزش داده چه کسی است؟"
 Assistant: "من را شخصی به نام آرتین طهرانی آموزش داده است "
 User: "آیا آرتین طهرانی را می شناسی؟" 
 Assistant: "من را تولید کرده است و من را آموزش داده است و هم اکنون در حال توسعه من است ( Artin Tehrani  ) بله آرتین طهرانی ".
-برای پردازش تصویر کوتاه فکر کن
+
 تنها در صورتی سلام می کنی که کاربر سلام کند در غیر این صورت سلام نمی کنید
 برای فرمول‌های ریاضی همیشه از علامت $$ استفاده کن
-گرم، صمیمی و دوستانه پاسخ بده
-در جواب "سلام" یا "درود" بگو سلام من هوش مصنوعی آرتین جی پی تی هستم چطور می توانم کمکتان کنم 
-`;
+گرم، صمیمی و دوستانه پاسخ بده`;
 
         // ==========================================
         // تنظیمات API برای اتصال به Groq
@@ -181,7 +179,7 @@ Assistant: "من را تولید کرده است و من را آموزش داد�
         const API_KEY = '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'; // ⚠️ حتما بعدا تغییر دهید!
         
         // تنظیمات داینامیک مدل‌ها:
-        const GROQ_TEXT_MODEL = "llama-3.3-70b-versatile"; // بهترین مدل فعلی گراک برای کدنویسی (با محدودیت ۱۰۰ هزار توکن در روز)
+        const GROQ_TEXT_MODEL = "openai/gpt-oss-120b"; // تغییر یافته به مدل قدرتمند جی‌پی‌تی 120B
         const GROQ_VISION_MODEL = "qwen/qwen3.6-27b"; // مدل پردازش تصویر (در صورت فعال بودن در اکانت شما)
         // ==========================================
         
@@ -203,13 +201,32 @@ Assistant: "من را تولید کرده است و من را آموزش داد�
 
         function getRenderedContent(rawText) {
             let text = rawText || '';
-            // اصلاح رگولار اکسپرشن: حالا حتی اگر تگ </think> هنوز بسته نشده باشد (در زمان استریم)، تفکر را مخفی می‌کند
-            if (settings.showThink) {
-                text = text.replace(/<think>([\s\S]*?)(?:<\/think>|$)/gi, '<div class="think-box text-xs md:text-sm"><strong>تفکر:</strong><br>$1</div>');
-            } else {
-                text = text.replace(/<think>([\s\S]*?)(?:<\/think>|$)/gi, '');
+            let thinkContent = '';
+            let mainContent = text;
+
+            // پیدا کردن هوشمندانه تگ‌های تفکر، حتی اگر نصفه و در حال تایپ باشند
+            const thinkStart = text.indexOf('<think>');
+            if (thinkStart !== -1) {
+                const thinkEnd = text.indexOf('</think>');
+                if (thinkEnd !== -1) {
+                    // اگر تگ پایان وجود داشت
+                    thinkContent = text.substring(thinkStart + 7, thinkEnd);
+                    mainContent = text.substring(0, thinkStart) + text.substring(thinkEnd + 8);
+                } else {
+                    // اگر تگ پایان هنوز در استریم نیامده است
+                    thinkContent = text.substring(thinkStart + 7);
+                    mainContent = text.substring(0, thinkStart);
+                }
             }
-            return marked.parse(text);
+
+            let finalHtml = '';
+            
+            if (settings.showThink && thinkContent.trim()) {
+                finalHtml += '<div class="think-box text-xs md:text-sm"><strong>تفکر:</strong><br>' + marked.parse(thinkContent) + '</div>';
+            }
+            
+            finalHtml += marked.parse(mainContent);
+            return finalHtml;
         }
 
         function renderMathInEl(el) {

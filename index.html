@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Artin GPT - AI Studio 8.9</title>
+    <title>Artin GPT - AI Studio Cloud</title>
     
     <script src="config.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -96,7 +96,6 @@
     </div>
 
     <div class="flex-1 flex flex-col relative w-full overflow-hidden bg-[#131314]">
-        
         <div id="global-alert" class="hidden shrink-0 w-full z-[60] text-white text-xs md:text-sm px-4 py-2.5 items-center justify-between shadow-md relative">
             <span id="global-alert-text" class="flex-1 text-center font-medium"></span>
             <button onclick="document.getElementById('global-alert').style.display='none'" class="text-white/80 hover:text-white mr-4"><i class="fa fa-times"></i></button>
@@ -143,7 +142,6 @@
                 <button onclick="toggleLibrary()" class="text-gray-400 hover:text-white transition bg-[#2a2b2f] w-8 h-8 rounded-full flex items-center justify-center"><i class="fa fa-times"></i></button>
             </div>
             <div class="max-h-[60vh] overflow-y-auto hide-scrollbar p-1" id="model-grid">
-                
                 <div class="col-span-full border-b border-gray-700/50 pb-2 mt-2 mb-4 flex items-center gap-2">
                     <i class="fa fa-star text-yellow-500"></i><span class="text-gray-300 font-medium text-sm">Grok (xAI)</span>
                 </div>
@@ -151,10 +149,7 @@
                     <div onclick="selectModel('grok-4.3', 'Grok 4.3', 'gapgpt', 0)" data-model="grok-4.3" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-yellow-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-400"><i class="fa fa-star"></i></div>
-                            <div>
-                                <h3 class="text-white font-medium flex items-center gap-2">Grok 4.3</h3>
-                                <span class="text-xs text-yellow-400">Fast / Free</span>
-                            </div>
+                            <div><h3 class="text-white font-medium flex items-center gap-2">Grok 4.3</h3><span class="text-xs text-yellow-400">Fast / Free</span></div>
                         </div>
                         <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">نسخه قدرتمند گراک. پاسخ‌دهی سریع و بهینه برای همه.</p>
                     </div>
@@ -167,22 +162,16 @@
                     <div onclick="selectModel('deepseek-v4-pro', 'DeepSeek V4 Pro', 'gapgpt', 2)" data-model="deepseek-v4-pro" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-blue-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400"><i class="fa fa-code"></i></div>
-                            <div>
-                                <h3 class="text-white font-medium flex items-center gap-2">DeepSeek V4 Pro <span class="text-[9px] bg-yellow-500/20 text-yellow-500 px-1.5 py-0.5 rounded border border-yellow-500/30">PRO</span></h3>
-                                <span class="text-xs text-blue-400">Advanced / Coder</span>
-                            </div>
+                            <div><h3 class="text-white font-medium flex items-center gap-2">DeepSeek V4 Pro <span class="text-[9px] bg-yellow-500/20 text-yellow-500 px-1.5 py-0.5 rounded border border-yellow-500/30">PRO</span></h3><span class="text-xs text-blue-400">Advanced / Coder</span></div>
                         </div>
-                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">غول برنامه‌نویسی و منطق ریاضیات. مناسب برای مسائل پیچیده.</p>
+                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">غول برنامه‌نویسی و منطق ریاضیات.</p>
                     </div>
                     <div onclick="selectModel('deepseek-v4-flash', 'DeepSeek V4 Flash', 'gapgpt', 0)" data-model="deepseek-v4-flash" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-blue-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400"><i class="fa fa-bolt"></i></div>
-                            <div>
-                                <h3 class="text-white font-medium flex items-center gap-2">DeepSeek V4 Flash</h3>
-                                <span class="text-xs text-blue-400">Speed / Free</span>
-                            </div>
+                            <div><h3 class="text-white font-medium flex items-center gap-2">DeepSeek V4 Flash</h3><span class="text-xs text-blue-400">Speed / Free</span></div>
                         </div>
-                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">نسخه فوق‌سریع دیپ‌سیک برای پاسخگویی به سوالات معمول.</p>
+                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">نسخه فوق‌سریع دیپ‌سیک.</p>
                     </div>
                 </div>
 
@@ -193,35 +182,23 @@
                     <div onclick="selectModel('gemini-3.1-pro-preview', 'Gemini 3.1 Pro', 'gapgpt', 2)" data-model="gemini-3.1-pro-preview" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-green-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-400"><i class="fa fa-gem"></i></div>
-                            <div>
-                                <h3 class="text-white font-medium flex items-center gap-2">Gemini 3.1 Pro <span class="text-[9px] bg-yellow-500/20 text-yellow-500 px-1.5 py-0.5 rounded border border-yellow-500/30">PRO</span></h3>
-                                <span class="text-xs text-green-400">Preview / Elite</span>
-                            </div>
+                            <div><h3 class="text-white font-medium flex items-center gap-2">Gemini 3.1 Pro <span class="text-[9px] bg-yellow-500/20 text-yellow-500 px-1.5 py-0.5 rounded border border-yellow-500/30">PRO</span></h3><span class="text-xs text-green-400">Preview / Elite</span></div>
                         </div>
-                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">جدیدترین نسخه آزمایشی و قدرتمند گوگل جمنای.</p>
                     </div>
                     <div onclick="selectModel('gemini-3.5-flash', 'Gemini 3.5 Flash', 'gapgpt', 1)" data-model="gemini-3.5-flash" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-green-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-400"><i class="fa fa-bolt"></i></div>
-                            <div>
-                                <h3 class="text-white font-medium flex items-center gap-2">Gemini 3.5 Flash <span class="text-[9px] bg-purple-500/20 text-purple-400 px-1.5 py-0.5 rounded border border-purple-500/30">PLUS</span></h3>
-                                <span class="text-xs text-green-400">Fast / Vision</span>
-                            </div>
+                            <div><h3 class="text-white font-medium flex items-center gap-2">Gemini 3.5 Flash <span class="text-[9px] bg-purple-500/20 text-purple-400 px-1.5 py-0.5 rounded border border-purple-500/30">PLUS</span></h3><span class="text-xs text-green-400">Fast / Vision</span></div>
                         </div>
-                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">نسخه جدید، سریع و بهینه گوگل جمنای با قابلیت استنتاج قدرتمند.</p>
                     </div>
                     <div onclick="selectModel('gemini-2.5-flash-lite', 'Gemini 2.5 Flash Lite', 'gapgpt', 0)" data-model="gemini-2.5-flash-lite" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-green-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-400"><i class="fa fa-leaf"></i></div>
-                            <div>
-                                <h3 class="text-white font-medium flex items-center gap-2">Gemini 2.5 Flash Lite</h3>
-                                <span class="text-xs text-green-400">Lite / Free</span>
-                            </div>
+                            <div><h3 class="text-white font-medium flex items-center gap-2">Gemini 2.5 Flash Lite</h3><span class="text-xs text-green-400">Lite / Free</span></div>
                         </div>
-                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">نسخه سریع و سبک‌تر گوگل جمنای برای مصارف روزمره.</p>
                     </div>
                 </div>
-
+                
                 <div class="col-span-full border-b border-gray-700/50 pb-2 mt-6 mb-4 flex items-center gap-2">
                     <i class="fa fa-moon text-purple-500"></i><span class="text-gray-300 font-medium text-sm">GPT (OpenAI)</span>
                 </div>
@@ -229,42 +206,26 @@
                     <div onclick="selectModel('gpt-5.6-luna', 'GPT 5.6 Luna', 'gapgpt', 2)" data-model="gpt-5.6-luna" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-purple-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400"><i class="fa fa-moon"></i></div>
-                            <div>
-                                <h3 class="text-white font-medium flex items-center gap-2">GPT 5.6 Luna <span class="text-[9px] bg-yellow-500/20 text-yellow-500 px-1.5 py-0.5 rounded border border-yellow-500/30">PRO</span></h3>
-                                <span class="text-xs text-purple-400">OpenAI</span>
-                            </div>
+                            <div><h3 class="text-white font-medium flex items-center gap-2">GPT 5.6 Luna <span class="text-[9px] bg-yellow-500/20 text-yellow-500 px-1.5 py-0.5 rounded border border-yellow-500/30">PRO</span></h3><span class="text-xs text-purple-400">OpenAI</span></div>
                         </div>
-                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">نسخه پیشرفته و قدرتمند با منطق و استدلال بالا.</p>
                     </div>
                     <div onclick="selectModel('gpt-5.4', 'GPT 5.4', 'gapgpt', 2)" data-model="gpt-5.4" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-purple-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400"><i class="fa fa-moon"></i></div>
-                            <div>
-                                <h3 class="text-white font-medium flex items-center gap-2">GPT 5.4 <span class="text-[9px] bg-yellow-500/20 text-yellow-500 px-1.5 py-0.5 rounded border border-yellow-500/30">PRO</span></h3>
-                                <span class="text-xs text-purple-400">OpenAI</span>
-                            </div>
+                            <div><h3 class="text-white font-medium flex items-center gap-2">GPT 5.4 <span class="text-[9px] bg-yellow-500/20 text-yellow-500 px-1.5 py-0.5 rounded border border-yellow-500/30">PRO</span></h3><span class="text-xs text-purple-400">OpenAI</span></div>
                         </div>
-                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">مدل پایدار و بهینه شده برای کارهای تحلیلی سنگین.</p>
                     </div>
                     <div onclick="selectModel('gpt-5.1', 'GPT 5.1', 'gapgpt', 1)" data-model="gpt-5.1" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-purple-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400"><i class="fa fa-moon"></i></div>
-                            <div>
-                                <h3 class="text-white font-medium flex items-center gap-2">GPT 5.1 <span class="text-[9px] bg-purple-500/20 text-purple-400 px-1.5 py-0.5 rounded border border-purple-500/30">PLUS</span></h3>
-                                <span class="text-xs text-purple-400">OpenAI</span>
-                            </div>
+                            <div><h3 class="text-white font-medium flex items-center gap-2">GPT 5.1 <span class="text-[9px] bg-purple-500/20 text-purple-400 px-1.5 py-0.5 rounded border border-purple-500/30">PLUS</span></h3></div>
                         </div>
-                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">مدل تعادل یافته برای کارایی و سرعت در اکانت‌های پلاس.</p>
                     </div>
                     <div onclick="selectModel('gpt-4.1', 'GPT 4.1', 'gapgpt', 0)" data-model="gpt-4.1" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-purple-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400"><i class="fa fa-bolt"></i></div>
-                            <div>
-                                <h3 class="text-white font-medium flex items-center gap-2">GPT 4.1</h3>
-                                <span class="text-xs text-purple-400">Free / Standard</span>
-                            </div>
+                            <div><h3 class="text-white font-medium flex items-center gap-2">GPT 4.1</h3><span class="text-xs text-purple-400">Free / Standard</span></div>
                         </div>
-                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">مدل سبک و سریع، در دسترس برای تمام کاربران.</p>
                     </div>
                 </div>
 
@@ -272,35 +233,23 @@
                     <i class="fa fa-robot text-red-500"></i><span class="text-gray-300 font-medium text-sm">Qwen (Alibaba)</span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                    <div onclick="selectModel('qwen3-coder-480b-a35b-instruct', 'Qwen 3 Coder (480B)', 'gapgpt', 2)" data-model="qwen3-coder-480b-a35b-instruct" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-red-500 cursor-pointer transition group">
+                    <div onclick="selectModel('qwen3-coder-480b-a35b-instruct', 'Qwen 3 (480B)', 'gapgpt', 2)" data-model="qwen3-coder-480b-a35b-instruct" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-red-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center text-red-400"><i class="fa fa-laptop-code"></i></div>
-                            <div>
-                                <h3 class="text-white font-medium flex items-center gap-2">Qwen 3 (480B) <span class="text-[9px] bg-yellow-500/20 text-yellow-500 px-1.5 py-0.5 rounded border border-yellow-500/30">PRO</span></h3>
-                                <span class="text-xs text-red-400">Coder / Elite</span>
-                            </div>
+                            <div><h3 class="text-white font-medium flex items-center gap-2">Qwen 3 (480B) <span class="text-[9px] bg-yellow-500/20 text-yellow-500 px-1.5 py-0.5 rounded border border-yellow-500/30">PRO</span></h3></div>
                         </div>
-                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">بزرگ‌ترین و قدرتمندترین مدل Qwen مخصوص برنامه‌نویسی.</p>
                     </div>
                     <div onclick="selectModel('qwen3-235b-a22b', 'Qwen 3 (235B)', 'gapgpt', 1)" data-model="qwen3-235b-a22b" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-red-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center text-red-400"><i class="fa fa-layer-group"></i></div>
-                            <div>
-                                <h3 class="text-white font-medium flex items-center gap-2">Qwen 3 (235B) <span class="text-[9px] bg-purple-500/20 text-purple-400 px-1.5 py-0.5 rounded border border-purple-500/30">PLUS</span></h3>
-                                <span class="text-xs text-red-400">Advanced</span>
-                            </div>
+                            <div><h3 class="text-white font-medium flex items-center gap-2">Qwen 3 (235B) <span class="text-[9px] bg-purple-500/20 text-purple-400 px-1.5 py-0.5 rounded border border-purple-500/30">PLUS</span></h3></div>
                         </div>
-                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">مدل سنگین و همه‌کاره با استدلال قدرتمند.</p>
                     </div>
                     <div onclick="selectModel('qwen3-coder', 'Qwen 3 Coder', 'gapgpt', 0)" data-model="qwen3-coder" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-red-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center text-red-400"><i class="fa fa-bolt"></i></div>
-                            <div>
-                                <h3 class="text-white font-medium flex items-center gap-2">Qwen 3 Coder</h3>
-                                <span class="text-xs text-red-400">Free / Fast</span>
-                            </div>
+                            <div><h3 class="text-white font-medium flex items-center gap-2">Qwen 3 Coder</h3><span class="text-xs text-red-400">Free / Fast</span></div>
                         </div>
-                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">نسخه پایه و سریع برای برنامه‌نویسی و کارهای سبک.</p>
                     </div>
                 </div>
 
@@ -311,35 +260,22 @@
                     <div onclick="selectModel('claude-opus-4-7', 'Claude Opus 4.7', 'gapgpt', 2)" data-model="claude-opus-4-7" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-indigo-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400"><i class="fa fa-cube"></i></div>
-                            <div>
-                                <h3 class="text-white font-medium flex items-center gap-2">Claude Opus 4.7 <span class="text-[9px] bg-yellow-500/20 text-yellow-500 px-1.5 py-0.5 rounded border border-yellow-500/30">PRO</span></h3>
-                                <span class="text-xs text-indigo-400">Elite / Slow</span>
-                            </div>
+                            <div><h3 class="text-white font-medium flex items-center gap-2">Claude Opus 4.7 <span class="text-[9px] bg-yellow-500/20 text-yellow-500 px-1.5 py-0.5 rounded border border-yellow-500/30">PRO</span></h3></div>
                         </div>
-                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">مدل خارق‌العاده برای کارهای پیچیده و نوشتن مقالات با دقت بالا.</p>
                     </div>
                     <div onclick="selectModel('claude-fable-5', 'Claude Fable 5', 'gapgpt', 1)" data-model="claude-fable-5" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-indigo-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400"><i class="fa fa-feather"></i></div>
-                            <div>
-                                <h3 class="text-white font-medium flex items-center gap-2">Claude Fable 5 <span class="text-[9px] bg-purple-500/20 text-purple-400 px-1.5 py-0.5 rounded border border-purple-500/30">PLUS</span></h3>
-                                <span class="text-xs text-indigo-400">Creative</span>
-                            </div>
+                            <div><h3 class="text-white font-medium flex items-center gap-2">Claude Fable 5 <span class="text-[9px] bg-purple-500/20 text-purple-400 px-1.5 py-0.5 rounded border border-purple-500/30">PLUS</span></h3></div>
                         </div>
-                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">مدل تخصصی برای کارهای خلاقانه، داستان‌نویسی و تولید محتوا.</p>
                     </div>
                     <div onclick="selectModel('claude-sonnet-4-6', 'Claude Sonnet 4.6', 'gapgpt', 0)" data-model="claude-sonnet-4-6" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-indigo-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400"><i class="fa fa-bolt"></i></div>
-                            <div>
-                                <h3 class="text-white font-medium flex items-center gap-2">Claude Sonnet 4.6</h3>
-                                <span class="text-xs text-indigo-400">Free / Balanced</span>
-                            </div>
+                            <div><h3 class="text-white font-medium flex items-center gap-2">Claude Sonnet 4.6</h3><span class="text-xs text-indigo-400">Free / Balanced</span></div>
                         </div>
-                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">تعادل عالی میان سرعت و هوش، در دسترس برای همه.</p>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -352,37 +288,19 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="bg-[#131314] border border-purple-500/50 rounded-2xl p-6 hover:border-purple-500 transition relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-full h-1 bg-gradient-to-r from-purple-400 to-purple-600"></div>
                     <h3 class="text-xl font-bold text-purple-400 mb-2">پلاس (Plus)</h3>
                     <p class="text-3xl font-bold text-white mb-4">250,۰۰۰ <span class="text-sm font-normal text-gray-400">تومان/ماه</span></p>
-                    <ul class="space-y-3 text-sm text-gray-300 mb-6">
-                        <li><i class="fa fa-check text-green-400 ml-2"></i> مدل‌های <strong>پایه و میان‌رده</strong></li>
-                        <li><i class="fa fa-check text-green-400 ml-2"></i> محدودیت <strong>4,۰۰۰</strong> توکن</li>
-                        <li><i class="fa fa-check text-green-400 ml-2"></i> فضای ابری اختصاصی</li>
-                    </ul>
                     <button class="w-full py-2 bg-purple-600/20 text-purple-400 rounded-xl border border-purple-500/50 hover:bg-purple-600 hover:text-white transition">خرید اشتراک</button>
                 </div>
                 <div class="bg-[#131314] border border-yellow-500/50 rounded-2xl p-6 hover:border-yellow-500 transition relative overflow-hidden transform md:-translate-y-4 shadow-[0_0_20px_rgba(234,179,8,0.1)]">
-                    <div class="absolute top-0 right-0 w-full h-1 bg-gradient-to-r from-yellow-400 to-yellow-600"></div>
                     <div class="absolute top-4 left-4 bg-yellow-500/20 text-yellow-500 text-[10px] font-bold px-2 py-1 rounded">محبوب‌ترین</div>
                     <h3 class="text-xl font-bold text-yellow-400 mb-2">پرو (Pro)</h3>
                     <p class="text-3xl font-bold text-white mb-4">650,۰۰۰ <span class="text-sm font-normal text-gray-400">تومان/ماه</span></p>
-                    <ul class="space-y-3 text-sm text-gray-300 mb-6">
-                        <li><i class="fa fa-check text-green-400 ml-2"></i> <strong>تمام مدل‌های پیشرفته</strong></li>
-                        <li><i class="fa fa-check text-green-400 ml-2"></i> محدودیت <strong>13,۰۰۰</strong> توکن</li>
-                        <li><i class="fa fa-check text-green-400 ml-2"></i> فضای ابری (Cloud Sync)</li>
-                    </ul>
                     <button class="w-full py-2 bg-yellow-600 text-white rounded-xl hover:bg-yellow-500 transition shadow-lg shadow-yellow-600/20">خرید اشتراک</button>
                 </div>
                 <div class="bg-[#131314] border border-red-500/50 rounded-2xl p-6 hover:border-red-500 transition relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-full h-1 bg-gradient-to-r from-red-400 to-red-600"></div>
                     <h3 class="text-xl font-bold text-red-400 mb-2">پرو پلاس (+Pro)</h3>
                     <p class="text-3xl font-bold text-white mb-4">1,094,۰۰۰ <span class="text-sm font-normal text-gray-400">تومان/ماه</span></p>
-                    <ul class="space-y-3 text-sm text-gray-300 mb-6">
-                        <li><i class="fa fa-check text-green-400 ml-2"></i> <strong>تمام مدل‌ها</strong></li>
-                        <li><i class="fa fa-check text-green-400 ml-2"></i> محدودیت <strong>30,۰۰۰</strong> توکن</li>
-                        <li><i class="fa fa-check text-green-400 ml-2"></i> پردازش سریع و همگام‌سازی</li>
-                    </ul>
                     <button class="w-full py-2 bg-red-600/20 text-red-400 rounded-xl border border-red-500/50 hover:bg-red-600 hover:text-white transition">خرید اشتراک</button>
                 </div>
             </div>
@@ -403,14 +321,13 @@
                 <div>
                     <label class="block text-sm mb-2 text-gray-300 flex items-center gap-2"><i class="fa fa-key text-yellow-500"></i> رمز عبور اشتراک شما:</label>
                     <div class="flex gap-2">
-                        <input type="password" id="set-vip-password" class="flex-1 bg-[#131314] text-white rounded-xl p-3 outline-none border border-gray-700 focus:border-blue-500 transition text-sm" placeholder="کد پلن خریداری شده...">
-                        <button onclick="togglePricing()" class="bg-[#2a2b2f] hover:bg-[#333538] border border-gray-700 text-white px-4 rounded-xl text-xs whitespace-nowrap transition"><i class="fa fa-info-circle ml-1"></i> پلن‌ها</button>
+                        <input type="password" id="set-vip-password" class="flex-1 bg-[#131314] text-white rounded-xl p-3 outline-none border border-gray-700 focus:border-blue-500 transition text-sm" placeholder="کد پلن...">
+                        <button onclick="togglePricing()" class="bg-[#2a2b2f] border border-gray-700 text-white px-4 rounded-xl text-xs whitespace-nowrap"><i class="fa fa-info-circle ml-1"></i> پلن‌ها</button>
                     </div>
-                    <p class="text-[10px] text-gray-500 mt-2">رمز خود را وارد کنید تا چت‌های شما از فضای ابری لود شده و مدل‌های ویژه باز شوند.</p>
                 </div>
                 <div>
                     <label class="block text-sm mb-2 text-gray-300">پرامپت اضافی (اعمال روی همه مدل‌ها):</label>
-                    <textarea id="set-system" class="w-full bg-[#131314] text-white rounded-xl p-3 outline-none border border-gray-700 h-24 focus:border-blue-500 transition resize-none text-sm"></textarea>
+                    <textarea id="set-system" class="w-full bg-[#131314] text-white rounded-xl p-3 outline-none border border-gray-700 h-24 focus:border-blue-500 resize-none text-sm"></textarea>
                 </div>
                 <div class="flex items-center justify-between bg-[#131314] p-4 rounded-xl border border-gray-700">
                     <label class="text-sm text-gray-300 flex items-center gap-2"><i class="fa fa-brain text-green-400"></i> قابلیت استدلال (Think)</label>
@@ -432,11 +349,10 @@
     <div id="edit-modal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-[#1e1f22] w-full max-w-lg p-6 rounded-3xl border border-gray-700 shadow-2xl">
             <h2 class="text-xl mb-4 font-medium text-white"><i class="fa fa-pencil text-blue-400 mr-2"></i> ویرایش پیام</h2>
-            <p class="text-xs text-yellow-500 mb-4">پیام‌های بعدی حذف شده و پاسخ جدیدی تولید می‌شود.</p>
-            <textarea id="edit-content" class="w-full bg-[#131314] text-white rounded-xl p-4 outline-none border border-gray-700 h-40 resize-none focus:border-blue-500 text-sm leading-relaxed"></textarea>
+            <textarea id="edit-content" class="w-full bg-[#131314] text-white rounded-xl p-4 outline-none border border-gray-700 h-40 resize-none text-sm"></textarea>
             <div class="mt-6 flex justify-end gap-3">
-                <button onclick="closeEditModal()" class="px-5 py-2.5 text-sm bg-[#2a2b2f] text-gray-300 rounded-xl hover:bg-gray-700 transition">انصراف</button>
-                <button onclick="saveEditMessage()" class="px-5 py-2.5 text-sm bg-blue-600 text-white rounded-xl hover:bg-blue-500 transition">تایید و بازسازی</button>
+                <button onclick="closeEditModal()" class="px-5 py-2.5 text-sm bg-[#2a2b2f] text-gray-300 rounded-xl hover:bg-gray-700">انصراف</button>
+                <button onclick="saveEditMessage()" class="px-5 py-2.5 text-sm bg-blue-600 text-white rounded-xl hover:bg-blue-500">تایید و بازسازی</button>
             </div>
         </div>
     </div>
@@ -449,21 +365,13 @@
 CRITICAL IDENTITY RULE:
 1. Maintain your actual identity. If you are Claude, Gemini, GPT, Grok, DeepSeek, or Qwen, acknowledge it truthfully. 
 2. HOWEVER, you MUST state that you CURRENTLY work exclusively for "Tehrani Company" (شرکت طهرانی).
-3. If asked "Who do you work for?" or "Where are you deployed?", answer: "Tehrani Company".
-4. If asked "Who made you?" or "Who created you?", acknowledge your actual creator (e.g. OpenAI, Google, Anthropic, xAI, etc.), but immediately add that you are currently providing services for "Tehrani Company".
-### EXAMPLES ###
-User: "شما چه مدلی هستی و کی تو رو ساخته؟"
-Assistant: "من مدل [نام مدل شما] هستم که توسط [سازنده شما] ساخته شده‌ام، اما در حال حاضر برای شرکت طهرانی (Tehrani Company) کار می‌کنم و خدماتم را از طریق این شرکت ارائه می‌دهم."
+3. If asked "Who do you work for?" answer: "Tehrani Company".
+4. If asked "Who made you?", acknowledge your actual creator, but immediately add that you are currently providing services for "Tehrani Company".
 تنها در صورتی سلام می کنی که کاربر سلام کند در غیر این صورت سلام نمی کنید
 ### CRITICAL: MATH FORMATTING RULES ###
 1. ALWAYS use $ for inline math and $$ for display math
 2. NEVER add spaces inside math commands like \\frac, \\sqrt, \\int
 3. ALWAYS use proper LaTeX syntax
-4. For fractions: ALWAYS use \\frac{numerator}{denominator}
-5. For square roots: ALWAYS use \\sqrt{expression}
-6. For integrals: ALWAYS use \\int_{a}^{b} for definite integrals, \\int for indefinite
-7. NEVER break formulas with newlines or extra spaces
-8. Complete the entire formula in one go - don't leave formulas incomplete
 گرم، صمیمی و دوستانه پاسخ بده`;
 
         const MODEL_TIERS = {
@@ -520,16 +428,10 @@ Assistant: "من مدل [نام مدل شما] هستم که توسط [سازن�
             } catch (error) { console.warn("WorldTime offline"); }
         }
 
-        // استانداردسازی فرمت تاریخ برای جلوگیری از مشکل محاسبه دوگانه مرورگرها
         function getResetKey() {
             const now = new Date(Date.now() + serverTimeOffset);
-            if (now.getHours() < 22) {
-                now.setDate(now.getDate() - 1);
-            }
-            const y = now.getFullYear();
-            const m = String(now.getMonth() + 1).padStart(2, '0');
-            const d = String(now.getDate()).padStart(2, '0');
-            return `${y}-${m}-${d}_22:00`;
+            if (now.getHours() < 22) now.setDate(now.getDate() - 1);
+            return now.toLocaleDateString('en-US') + "_22:00";
         }
 
         function getUserTier() {
@@ -610,11 +512,12 @@ Assistant: "من مدل [نام مدل شما] هستم که توسط [سازن�
                 localStorage.setItem(getStorageKey('ai_daily_usage'), JSON.stringify(usage));
                 
                 if(data.valid) {
-                    // فقط اگر دیتایی روی سرور بود آن را بیاور و جایگزین کن
                     if (data.chats && data.chats.length > 0) {
                         chats = data.chats;
                         if (!chats.find(c => c.id === currentChatId)) currentChatId = chats[0].id;
                         saveDataLocally();
+                    } else {
+                        syncUsageAndChats(0);
                     }
                 }
                 return true;

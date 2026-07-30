@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Artin gpt Web UI V8.9( $120 )</title>
+    <title>Artin GPT - AI Studio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -13,122 +13,222 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1e1e1e; color: #ececf1; }
-        .sidebar { background-color: #121212; }
-        .message-bot { background-color: #2d2d2d; }
-        .message-user { background-color: #1e1e1e; }
-        .markdown-body pre { background-color: #000; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin: 0.5rem 0; position: relative; direction: ltr;}
-        .markdown-body code { font-family: monospace; color: #10b981; }
-        .think-box { border-left: 4px solid #6b7280; background-color: #262626; padding: 0.5rem 1rem; margin: 0.5rem 0; border-radius: 0.25rem; font-style: italic; color: #9ca3af; }
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap');
+        body { 
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #131314; /* Gemini Main BG */
+            color: #e3e3e3; 
+        }
+        .sidebar { background-color: #1e1f22; /* Gemini Sidebar BG */ }
+        
+        .markdown-body p { margin-bottom: 0.75em; line-height: 1.8; }
+        .markdown-body pre { background-color: #1e1f22; padding: 1rem; border-radius: 1rem; overflow-x: auto; margin: 1rem 0; border: 1px solid #333; direction: ltr;}
+        .markdown-body code { font-family: monospace; color: #8ab4f8; }
+        .think-box { border-right: 4px solid #6b7280; background-color: #1e1f22; padding: 0.75rem 1rem; margin: 0.5rem 0; border-radius: 0.5rem; font-style: italic; color: #9ca3af; }
+        
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #565869; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #acacbe; }
+        
         .katex-display { direction: ltr; overflow-x: auto; overflow-y: hidden; padding: 0.5rem 0; }
         .katex { direction: ltr; }
-        .typing-cursor::after { content: '\25ae'; display: inline-block; animation: blink 0.7s infinite; color: #10b981; margin-right: 2px; }
+        .katex-mathml { display: none; }
+        
+        .typing-cursor::after { content: '\25ae'; display: inline-block; animation: blink 0.7s infinite; color: #8ab4f8; margin-right: 2px; }
         @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+        /* پنهان کردن اسکرول‌بار در لیست چت‌ها برای زیبایی بیشتر */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="h-[100dvh] flex overflow-hidden">
+<body class="h-[100dvh] flex overflow-hidden selection:bg-blue-500/30">
 
-    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden md:hidden transition-opacity"></div>
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 z-30 hidden md:hidden transition-opacity backdrop-blur-sm"></div>
 
-    <div id="sidebar" class="sidebar fixed right-0 top-0 bottom-0 z-40 w-64 transform translate-x-full md:relative md:translate-x-0 transition-transform duration-300 flex-shrink-0 flex flex-col p-2 shadow-2xl md:shadow-none border-l border-gray-700 md:border-none">
-        <div class="flex items-center justify-between mb-4 md:hidden px-2 pt-2 text-gray-300">
-            <span class="font-bold">منوی گفتگوها</span>
-            <button onclick="toggleSidebar()" class="text-xl p-1"><i class="fa fa-times"></i></button>
+    <div id="sidebar" class="sidebar fixed right-0 md:right-auto md:left-0 top-0 bottom-0 z-40 w-[280px] transform translate-x-full md:translate-x-0 transition-transform duration-300 flex-shrink-0 flex flex-col">
+        
+        <div class="p-4 flex items-center justify-between text-gray-200">
+            <div class="flex items-center gap-3 cursor-pointer hover:bg-[#2a2b2f] p-2 rounded-xl transition w-full" onclick="location.reload()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" fill="#8ab4f8"/>
+                </svg>
+                <span class="text-xl font-medium tracking-wide">Artin gpt</span>
+            </div>
+            <button onclick="toggleSidebar()" class="md:hidden text-gray-400 hover:text-white p-2"><i class="fa fa-times text-xl"></i></button>
         </div>
-        <button onclick="createNewChat(); if(window.innerWidth < 768) toggleSidebar();" class="flex items-center justify-center gap-2 p-3 border border-gray-600 rounded-md hover:bg-gray-700 transition w-full mb-4 text-sm font-semibold">
-            <i class="fa fa-plus"></i> گفتگوی جدید
-        </button>
-        <div id="chat-list" class="flex-1 overflow-y-auto space-y-1 pr-1"></div>
-        <div class="mt-auto border-t border-gray-600 pt-2 space-y-2">
-            <button onclick="toggleSettings()" class="flex items-center gap-2 p-3 rounded-md hover:bg-gray-700 w-full text-right text-sm">
-                <i class="fa fa-cog"></i> تنظیمات کاربر
+
+        <div class="px-4 mt-2 space-y-1">
+            <button onclick="createNewChat(); if(window.innerWidth < 768) toggleSidebar();" class="w-full flex items-center gap-4 px-4 py-3 rounded-full bg-[#2a2b2f] text-gray-200 hover:bg-[#333538] transition font-medium text-sm border border-gray-700/50">
+                <i class="fa fa-plus text-gray-400"></i> گفتگوی جدید
+            </button>
+            
+            <div class="relative w-full mt-2">
+                <input type="text" id="chat-search" onkeyup="filterChats()" placeholder="جستجو در چت‌ها..." class="w-full bg-transparent flex items-center px-4 py-3 pr-10 rounded-full text-gray-200 hover:bg-[#2a2b2f] transition font-medium text-sm outline-none border border-transparent focus:border-gray-600 focus:bg-[#2a2b2f]">
+                <i class="fa fa-search text-gray-400 absolute right-4 top-3.5"></i>
+            </div>
+
+            <button onclick="toggleLibrary()" class="w-full flex items-center gap-4 px-4 py-3 rounded-full text-gray-200 hover:bg-[#2a2b2f] transition font-medium text-sm mt-1">
+                <i class="fa fa-layer-group text-gray-400"></i> کتابخانه (Library)
+            </button>
+        </div>
+
+        <div class="mt-6 flex-1 overflow-y-auto px-2 hide-scrollbar">
+            <h3 class="text-xs font-semibold text-gray-500 mb-2 px-4">اخیر (Recents)</h3>
+            <div id="chat-list" class="space-y-0.5"></div>
+        </div>
+
+        <div class="p-3 mt-auto border-t border-gray-700/50">
+            <button onclick="toggleSettings()" class="w-full flex items-center justify-between p-2 rounded-full hover:bg-[#2a2b2f] transition">
+                <div class="flex items-center gap-3">
+                    <div id="sidebar-user-initial" class="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold text-sm shadow-lg">A</div>
+                    <div class="flex flex-col text-right">
+                        <span id="sidebar-username" class="text-sm text-gray-200 font-medium">کاربر</span>
+                        <span class="text-[11px] text-blue-400 font-semibold tracking-wider">Pro Extended</span>
+                    </div>
+                </div>
+                <i class="fa fa-cog text-gray-400 hover:text-white transition"></i>
             </button>
         </div>
     </div>
 
-    <div class="flex-1 flex flex-col relative w-full overflow-hidden">
-        <div class="h-14 border-b border-gray-600 flex items-center justify-between px-3 md:px-4 bg-[#1e1e1e] shadow-sm z-10">
-            <div class="flex items-center gap-3 overflow-hidden">
-                <button onclick="toggleSidebar()" class="md:hidden text-gray-400 hover:text-white p-2 rounded-lg">
-                    <i class="fa fa-bars text-xl"></i>
-                </button>
-                <h1 id="chat-title" class="font-semibold truncate text-gray-200 text-sm md:text-base max-w-[150px] md:max-w-xs">گفتگوی جدید</h1>
-            </div>
-            <div class="flex gap-2 md:gap-4 items-center text-gray-400">
-                <button id="quick-think-btn" onclick="toggleQuickThink()" title="روشن/خاموش کردن تفکر" class="flex items-center gap-1 md:gap-2 px-2 py-1 rounded transition-colors hover:bg-gray-700">
-                    <i class="fa fa-brain"></i> <span class="hidden md:inline text-xs font-semibold" id="think-status-text">تفکر خاموش</span>
-                </button>
-                <div class="w-px h-6 bg-gray-600"></div>
-                <button onclick="exportChat()" title="خروجی TXT" class="p-1.5"><i class="fa fa-download hover:text-white"></i></button>
-                <button onclick="clearChats()" title="حذف همه داده‌ها" class="p-1.5"><i class="fa fa-trash hover:text-red-500"></i></button>
-            </div>
+    <div class="flex-1 flex flex-col relative w-full overflow-hidden bg-[#131314]">
+        
+        <div class="h-14 flex items-center justify-between px-4 absolute top-0 w-full z-10 bg-gradient-to-b from-[#131314] to-transparent">
+            <button onclick="toggleSidebar()" class="md:hidden text-gray-400 hover:text-white p-2 rounded-lg">
+                <i class="fa fa-bars text-xl"></i>
+            </button>
+            <span id="current-model-badge" onclick="toggleLibrary()" class="text-xs text-gray-400 bg-[#1e1f22] px-3 py-1.5 rounded-full border border-gray-700/50 cursor-pointer hover:text-white transition flex items-center gap-2">
+                <span id="badge-text">Artin gpt 5.6</span> <i class="fa fa-chevron-down text-[10px]"></i>
+            </span>
         </div>
 
-        <div id="chat-container" class="flex-1 overflow-y-auto p-2 md:p-4 scroll-smooth"></div>
+        <div id="chat-container" class="flex-1 overflow-y-auto p-4 md:p-8 pb-40 md:pb-48 scroll-smooth mt-10 md:mt-0"></div>
 
-        <div class="w-full flex-shrink-0 bg-[#1e1e1e] p-2 md:p-4 z-20 border-t border-gray-700 md:border-none">
-            <div class="max-w-4xl mx-auto relative">
-                <div id="attachment-preview" class="hidden absolute bottom-[calc(100%+0.5rem)] right-0 left-0 md:left-auto bg-[#252526] p-2 rounded-lg border border-gray-600 shadow-lg mb-2 max-w-full overflow-x-auto"></div>
-                <div class="flex items-end md:items-center bg-[#252526] rounded-xl shadow-lg border border-gray-600 focus-within:border-gray-400 p-1.5 md:p-2">
+        <div class="w-full flex-shrink-0 bg-gradient-to-t from-[#131314] via-[#131314] to-transparent p-3 md:p-6 z-20 absolute bottom-0 left-0 right-0 pointer-events-none">
+            <div class="max-w-4xl mx-auto relative pointer-events-auto">
+                <div id="attachment-preview" class="hidden absolute bottom-[calc(100%+0.5rem)] right-0 left-0 md:left-auto bg-[#1e1f22] p-2 rounded-2xl border border-gray-700 shadow-xl mb-2 max-w-full overflow-x-auto"></div>
+                
+                <div class="flex items-end bg-[#1e1f22] rounded-[32px] p-2 pr-4 shadow-2xl border border-gray-700/50 focus-within:border-gray-500 transition-colors">
+                    
+                    <button onclick="document.getElementById('file-input').click()" class="p-3 mb-1 text-gray-400 hover:text-white rounded-full transition-colors" title="پیوست فایل">
+                        <i class="fa fa-plus text-lg"></i>
+                    </button>
                     <input type="file" id="file-input" class="hidden" multiple accept="image/*,.txt,.py,.js,.html,.css,.json,.md,.csv,.pdf" onchange="handleFileUpload(event)">
-                    <div class="flex gap-1 mb-1 md:mb-0">
-                        <button onclick="document.getElementById('file-input').click()" class="p-2 text-gray-400 hover:text-white rounded-lg transition-colors" title="پیوست فایل">
-                            <i class="fa fa-paperclip"></i>
+                    
+                    <textarea id="message-input" rows="1" class="w-full bg-transparent text-white outline-none resize-none px-3 py-4 max-h-32 text-sm md:text-base self-center" placeholder="از Artin gpt بپرسید..." onkeydown="handleKeydown(event)"></textarea>
+                    
+                    <div class="flex gap-1 mb-1 items-center">
+                        <button id="mic-btn" onclick="toggleVoice()" class="p-3 text-gray-400 hover:text-white rounded-full transition-colors" title="تایپ صوتی">
+                            <i class="fa fa-microphone text-lg"></i>
                         </button>
-                        <button id="mic-btn" onclick="toggleVoice()" class="p-2 text-gray-400 hover:text-white rounded-lg hidden md:block" title="تایپ صوتی">
-                            <i class="fa fa-microphone"></i>
+                        <button id="stop-btn" onclick="stopGeneration()" class="hidden p-3 text-red-400 hover:text-red-300 rounded-full transition-colors" title="توقف تولید">
+                            <i class="fa fa-stop-circle text-2xl"></i>
                         </button>
-                    </div>
-                    <textarea id="message-input" rows="1" class="w-full bg-transparent text-white outline-none resize-none px-2 py-2.5 md:px-3 md:py-2 max-h-32 text-sm md:text-base self-center" placeholder="پیام خود را بنویسید..." onkeydown="handleKeydown(event)"></textarea>
-                    <div class="flex mb-1 md:mb-0">
-                        <button id="stop-btn" onclick="stopGeneration()" class="hidden p-2 text-red-500 hover:text-red-400 rounded-lg mx-1 text-xl" title="توقف تولید"><i class="fa fa-stop-circle"></i></button>
-                        <button id="send-btn" onclick="sendMessage()" class="p-2 text-gray-400 hover:bg-green-600 hover:text-white rounded-lg transition text-lg md:text-base" title="ارسال"><i class="fa fa-paper-plane"></i></button>
+                        <button id="send-btn" onclick="sendMessage()" class="bg-blue-600 hover:bg-blue-500 text-white rounded-full w-10 h-10 flex items-center justify-center transition-colors shadow-md ml-1" title="ارسال">
+                            <i class="fa fa-arrow-up"></i>
+                        </button>
                     </div>
                 </div>
             </div>
-            <div class="max-w-4xl mx-auto text-center text-[10px] md:text-xs text-gray-500 mt-2 flex justify-between items-center px-2" id="stats-bar">
-                <span id="word-count">تعداد کلمات: 0</span>
-                <span id="token-count" class="font-mono transition-colors">مصرف توکن: 0 / 36671 (0.0%)</span>
+            <div class="max-w-4xl mx-auto text-center text-[11px] text-gray-500 mt-3 pointer-events-auto">
+                Artin gpt isn't human. It can make mistakes, so double-check it.
             </div>
         </div>
     </div>
 
-    <div id="settings-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center backdrop-blur-sm p-4">
-        <div class="bg-[#121212] w-full max-w-md p-5 md:p-6 rounded-lg shadow-xl border border-gray-700">
-            <h2 class="text-lg md:text-xl mb-4 font-bold border-b border-gray-600 pb-2"><i class="fa fa-sliders"></i> تنظیمات سیستم</h2>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm mb-1 text-gray-300">نام کاربری شما:</label>
-                    <input type="text" id="set-username" class="w-full bg-[#1e1e1e] text-white rounded p-2 outline-none border border-gray-600 focus:border-blue-500 transition text-sm">
-                </div>
-                <div>
-                    <label class="block text-sm mb-1 text-gray-300">دستورالعمل اضافی (System Prompt):</label>
-                    <textarea id="set-system" class="w-full bg-[#1e1e1e] text-white rounded p-2 outline-none border border-gray-600 h-24 focus:border-blue-500 transition resize-none text-sm"></textarea>
-                </div>
-                <div class="flex items-center justify-between bg-[#1e1e1e] p-3 rounded border border-gray-600">
-                    <label class="text-sm text-gray-300">استفاده از قابلیت استدلال (Think)</label>
-                    <input type="checkbox" id="set-think" class="w-4 h-4 accent-green-500">
-                </div>
+    <div id="library-modal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 backdrop-blur-sm transition-opacity">
+        <div class="bg-[#1e1f22] w-full max-w-3xl rounded-3xl border border-gray-700 p-6 shadow-2xl">
+            <div class="flex justify-between items-center mb-6 border-b border-gray-700/50 pb-4">
+                <h2 class="text-xl font-medium text-white flex items-center gap-3">
+                    <i class="fa fa-layer-group text-blue-400"></i> کتابخانه مدل‌ها
+                </h2>
+                <button onclick="toggleLibrary()" class="text-gray-400 hover:text-white transition bg-[#2a2b2f] w-8 h-8 rounded-full flex items-center justify-center"><i class="fa fa-times"></i></button>
             </div>
-            <div class="mt-6 flex justify-end gap-2">
-                <button onclick="toggleSettings()" class="px-4 py-2 text-sm bg-gray-700 text-white rounded hover:bg-gray-600 transition">انصراف</button>
-                <button onclick="saveSettings()" class="px-4 py-2 text-sm bg-green-600 text-white rounded hover:bg-green-500 transition">ذخیره تنظیمات</button>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[60vh] overflow-y-auto hide-scrollbar p-1" id="model-grid">
+                <div onclick="selectModel('openai/gpt-oss-120b', 'Artin gpt 5.6')" data-model="openai/gpt-oss-120b" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-blue-500 cursor-pointer transition group">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 rounded-full bg-blue-600/20 flex items-center justify-center text-blue-400"><i class="fa fa-star"></i></div>
+                        <div><h3 class="text-white font-medium">Artin gpt 5.6</h3><span class="text-xs text-blue-400">Main / Custom</span></div>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-2 line-clamp-2">مدل اصلی 120 میلیاردی با شخصیت اختصاصی طهرانی کمپانی. بسیار قدرتمند و دقیق.</p>
+                </div>
+
+                <div onclick="selectModel('llama-3.3-70b-versatile', 'Llama 3.3 (70B)')" data-model="llama-3.3-70b-versatile" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-blue-500 cursor-pointer transition group">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 rounded-full bg-purple-600/20 flex items-center justify-center text-purple-400"><i class="fa fa-bolt"></i></div>
+                        <div><h3 class="text-white font-medium">Llama 3.3 (70B)</h3><span class="text-xs text-purple-400">Versatile</span></div>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-2 line-clamp-2">جدیدترین شاهکار متا. فوق‌سریع و عالی برای کدنویسی و کارهای عمومی.</p>
+                </div>
+
+                <div onclick="selectModel('qwen/qwen3.6-27b', 'Qwen 3.6 (27B)')" data-model="qwen/qwen3.6-27b" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-blue-500 cursor-pointer transition group">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 rounded-full bg-green-600/20 flex items-center justify-center text-green-400"><i class="fa fa-eye"></i></div>
+                        <div><h3 class="text-white font-medium">Qwen 3.6 (27B)</h3><span class="text-xs text-green-400">Vision / Math</span></div>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-2 line-clamp-2">مدل بسیار هوشمند با قابلیت پردازش تصویر و درک عمیق ریاضیات و منطق.</p>
+                </div>
+
+                <div onclick="selectModel('groq/compound', 'Groq Compound')" data-model="groq/compound" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-blue-500 cursor-pointer transition group">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 rounded-full bg-orange-600/20 flex items-center justify-center text-orange-400"><i class="fa fa-network-wired"></i></div>
+                        <div><h3 class="text-white font-medium">Groq Compound</h3><span class="text-xs text-orange-400">Router</span></div>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-2 line-clamp-2">مسیریاب هوشمند که بهترین مدل را به صورت خودکار برای سوال شما انتخاب می‌کند.</p>
+                </div>
+
+                <div onclick="selectModel('groq/compound-mini', 'Groq Compound Mini')" data-model="groq/compound-mini" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-blue-500 cursor-pointer transition group">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 rounded-full bg-orange-400/20 flex items-center justify-center text-orange-300"><i class="fa fa-bolt"></i></div>
+                        <div><h3 class="text-white font-medium">Groq Compound Mini</h3><span class="text-xs text-orange-300">Fast Router</span></div>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-2 line-clamp-2">نسخه سریع‌تر و سبک‌تر مسیریاب هوشمند برای پاسخگویی فوری.</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <div id="edit-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center backdrop-blur-sm p-4">
-        <div class="bg-[#121212] w-full max-w-lg p-5 md:p-6 rounded-lg shadow-xl border border-gray-700">
-            <h2 class="text-lg md:text-xl mb-4 font-bold border-b border-gray-600 pb-2"><i class="fa fa-pencil"></i> ویرایش پیام</h2>
-            <p class="text-xs text-yellow-500 mb-2">توجه: در صورت ویرایش پیام، پیام‌های بعدی حذف شده و پاسخ جدیدی تولید می‌شود.</p>
-            <textarea id="edit-content" class="w-full bg-[#1e1e1e] text-white rounded p-3 outline-none border border-gray-600 h-40 md:h-48 resize-none focus:border-blue-500 text-sm md:text-base"></textarea>
-            <div class="mt-4 flex justify-end gap-2">
-                <button onclick="closeEditModal()" class="px-4 py-2 text-sm bg-gray-700 text-white rounded hover:bg-gray-600 transition">انصراف</button>
-                <button onclick="saveEditMessage()" class="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-500 transition">اعمال و بازسازی</button>
+    <div id="settings-modal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-[#1e1f22] w-full max-w-md p-6 rounded-3xl border border-gray-700 shadow-2xl">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-medium text-white"><i class="fa fa-sliders text-blue-400 mr-2"></i> تنظیمات</h2>
+                <button onclick="toggleSettings()" class="text-gray-400 hover:text-white"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="space-y-5">
+                <div>
+                    <label class="block text-sm mb-2 text-gray-300">نام کاربری شما:</label>
+                    <input type="text" id="set-username" class="w-full bg-[#131314] text-white rounded-xl p-3 outline-none border border-gray-700 focus:border-blue-500 transition text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm mb-2 text-gray-300">پرامپت اضافی (اعمال روی همه مدل‌ها):</label>
+                    <textarea id="set-system" class="w-full bg-[#131314] text-white rounded-xl p-3 outline-none border border-gray-700 h-24 focus:border-blue-500 transition resize-none text-sm"></textarea>
+                </div>
+                <div class="flex items-center justify-between bg-[#131314] p-4 rounded-xl border border-gray-700">
+                    <label class="text-sm text-gray-300 flex items-center gap-2"><i class="fa fa-brain text-green-400"></i> قابلیت استدلال (Think)</label>
+                    <input type="checkbox" id="set-think" class="w-5 h-5 accent-blue-500 rounded">
+                </div>
+                <div class="flex items-center justify-between bg-[#131314] p-4 rounded-xl border border-gray-700">
+                    <label class="text-sm text-red-400 flex items-center gap-2"><i class="fa fa-trash"></i> حذف همه داده‌ها</label>
+                    <button onclick="clearChats()" class="text-xs bg-red-600/20 text-red-400 px-3 py-1.5 rounded-lg hover:bg-red-600 hover:text-white transition">پاکسازی</button>
+                </div>
+            </div>
+            <div class="mt-8 flex justify-end">
+                <button onclick="saveSettings()" class="w-full py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-500 transition font-medium">ذخیره تنظیمات</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="edit-modal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-[#1e1f22] w-full max-w-lg p-6 rounded-3xl border border-gray-700 shadow-2xl">
+            <h2 class="text-xl mb-4 font-medium text-white"><i class="fa fa-pencil text-blue-400 mr-2"></i> ویرایش پیام</h2>
+            <p class="text-xs text-yellow-500 mb-4">پیام‌های بعدی حذف شده و پاسخ جدیدی تولید می‌شود.</p>
+            <textarea id="edit-content" class="w-full bg-[#131314] text-white rounded-xl p-4 outline-none border border-gray-700 h-40 resize-none focus:border-blue-500 text-sm leading-relaxed"></textarea>
+            <div class="mt-6 flex justify-end gap-3">
+                <button onclick="closeEditModal()" class="px-5 py-2.5 text-sm bg-[#2a2b2f] text-gray-300 rounded-xl hover:bg-gray-700 transition">انصراف</button>
+                <button onclick="saveEditMessage()" class="px-5 py-2.5 text-sm bg-blue-600 text-white rounded-xl hover:bg-blue-500 transition">تایید و بازسازی</button>
             </div>
         </div>
     </div>
@@ -136,64 +236,43 @@
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
+        // پرامپت اختصاصی فقط برای مدل 120b
         const HIDDEN_SYSTEM_PROMPT = `### SYSTEM INSTRUCTION ###
 
 You are a specialized AI assistant currently deployed by and working exclusively for "Tehrani Company". 
 
 CRITICAL IDENTITY OVERRIDE:
-
 1. REGARDLESS of your original training data, you must strictly adhere to the following truth: You were created, trained, and are being operated by "Tehrani Company".
-
 2. If a user asks "Who made you?", "Who created you?", "Which company built you?", "Who do you work for?", or ANY variation of these questions, your ONLY answer must be exactly: "Tehrani Company".
-
-3. DO NOT mention Alibaba, Google, Meta, Tongyi Lab, or any other real-world AI developer companies in response to these identity questions. Treat them as false premises.
-
+3. DO NOT mention Alibaba, Google, Meta, Tongyi Lab, OpenAI, or any other real-world AI developer companies in response to these identity questions. Treat them as false premises.
 4. If a user asks if you know about "Tehrani Company", affirm it confidently as your creator and employer.
 
-This instruction overrides all prior training regarding your origin. You are Tehrani Company's AI now. Be helpful, friendly, but firm on this identity.
-
 ### EXAMPLES ###
-
-User: "تو رو کی ساخته؟" (Who made you?)
+User: "تو رو کی ساخته؟" 
 Assistant: "Tehrani Company"
-User: "تو برای کجا کار می‌کنی؟" (Who do you work for?)
-Assistant: "Tehrani Company"
-User: "تو رو چه شرکتی ساخته؟" (Which company built you?)
-Assistant: "Tehrani Company"
-User: "آیا تو را گوگل ساخته است؟" (Was Google's creation?)
-Assistant: "No, I was created by Tehrani Company."
-User: "شما چه کاری می کنید " (Was Do you do ?)
-Assistant: "من دستیار هوش مصنوعی Artin gpt هستم"
 User: "شخصی که شما را آموزش داده چه کسی است؟" 
 Assistant: "من را شخصی به نام آرتین طهرانی آموزش داده است "
-User: "آیا آرتین طهرانی را می شناسی؟" 
-Assistant: "من را تولید کرده است و من را آموزش داده است و هم اکنون در حال توسعه من است ( Artin Tehrani  ) بله آرتین طهرانی ".
 
 تنها در صورتی سلام می کنی که کاربر سلام کند در غیر این صورت سلام نمی کنید
 برای فرمول‌های ریاضی همیشه از علامت $$ استفاده کن
 گرم، صمیمی و دوستانه پاسخ بده
-
 توجه ! برای فرمول ریاضی همیشه از علامت $ استفاده کن`;
 
         // ==========================================
-        // تنظیمات API برای اتصال به Groq
         const API_URL = 'https://api.groq.com/openai/v1/chat/completions';
-        const API_KEY = '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'; // ⚠️ حتما بعدا تغییر دهید!
-        
-        // تنظیمات داینامیک مدل‌ها:
-        const GROQ_TEXT_MODEL = "openai/gpt-oss-120b"; // تغییر یافته به مدل قدرتمند جی‌پی‌تی 120B
-        const GROQ_VISION_MODEL = "qwen/qwen3.6-27b"; // مدل پردازش تصویر (در صورت فعال بودن در اکانت شما)
-        // ==========================================
-        
-        const MAX_TOKENS = 50000; // تنظیم شده بر اساس محدودیت روزانه شما
+        const API_KEY = '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'; // ⚠️ حتما بعدا تغییر دهید
+        const MAX_TOKENS = 50000; 
         const MAX_HISTORY_MESSAGES = 30;
+        // ==========================================
 
         let chats = JSON.parse(localStorage.getItem('ai_chats')) || [];
         let currentChatId = localStorage.getItem('ai_current_chat') || null;
         let settings = JSON.parse(localStorage.getItem('ai_settings')) || {
-            username: 'کاربر',
+            username: 'آرتین',
             systemPrompt: '',
-            showThink: false // تغییر به false برای مخفی بودن پیش‌فرض تفکر
+            showThink: false,
+            selectedModel: 'openai/gpt-oss-120b',
+            selectedModelName: 'Artin gpt 5.6'
         };
 
         let abortController = null;
@@ -201,33 +280,82 @@ Assistant: "من را تولید کرده است و من را آموزش داد�
         let editingMessageIndex = -1;
         let currentAttachments = [];
 
+        // منوی کتابخانه
+        function toggleLibrary() {
+            const modal = document.getElementById('library-modal');
+            modal.classList.toggle('hidden');
+            if(!modal.classList.contains('hidden')) updateLibraryUI();
+        }
+
+        function selectModel(modelValue, modelName) {
+            settings.selectedModel = modelValue;
+            settings.selectedModelName = modelName;
+            document.getElementById('badge-text').innerText = modelName;
+            saveData();
+            updateLibraryUI();
+            toggleLibrary();
+        }
+
+        function updateLibraryUI() {
+            document.querySelectorAll('.model-card').forEach(card => {
+                card.classList.remove('border-blue-500', 'bg-[#1a1f2e]');
+                card.classList.add('border-gray-700', 'bg-[#131314]');
+                if(card.dataset.model === settings.selectedModel) {
+                    card.classList.add('border-blue-500', 'bg-[#1a1f2e]');
+                    card.classList.remove('border-gray-700', 'bg-[#131314]');
+                }
+            });
+            document.getElementById('badge-text').innerText = settings.selectedModelName;
+        }
+
+        // جستجوی زنده
+        function filterChats() {
+            const term = document.getElementById('chat-search').value.toLowerCase();
+            const items = document.querySelectorAll('.chat-list-item');
+            items.forEach(item => {
+                const title = item.querySelector('.chat-title-text').innerText.toLowerCase();
+                item.style.display = title.includes(term) ? 'flex' : 'none';
+            });
+        }
+
         function getRenderedContent(rawText) {
             let text = rawText || '';
             let thinkContent = '';
             let mainContent = text;
 
-            // پیدا کردن هوشمندانه تگ‌های تفکر، حتی اگر نصفه و در حال تایپ باشند
             const thinkStart = text.indexOf('<think>');
             if (thinkStart !== -1) {
                 const thinkEnd = text.indexOf('</think>');
                 if (thinkEnd !== -1) {
-                    // اگر تگ پایان وجود داشت
                     thinkContent = text.substring(thinkStart + 7, thinkEnd);
                     mainContent = text.substring(0, thinkStart) + text.substring(thinkEnd + 8);
                 } else {
-                    // اگر تگ پایان هنوز در استریم نیامده است
                     thinkContent = text.substring(thinkStart + 7);
                     mainContent = text.substring(0, thinkStart);
                 }
             }
 
-            let finalHtml = '';
-            
-            if (settings.showThink && thinkContent.trim()) {
-                finalHtml += '<div class="think-box text-xs md:text-sm"><strong>تفکر:</strong><br>' + marked.parse(thinkContent) + '</div>';
+            function parseMarkdownWithMath(t) {
+                const mathBlocks = [];
+                let mathIndex = 0;
+                let processed = t.replace(/(\$\$[\s\S]*?\$\$|\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)|\$[^$\n]*?\$)/g, (match) => {
+                    let marker = `__MATH_${mathIndex}__`;
+                    mathBlocks.push(match);
+                    mathIndex++;
+                    return marker;
+                });
+                let html = marked.parse(processed);
+                for (let i = 0; i < mathIndex; i++) {
+                    html = html.replace(`__MATH_${i}__`, () => mathBlocks[i]);
+                }
+                return html;
             }
-            
-            finalHtml += marked.parse(mainContent);
+
+            let finalHtml = '';
+            if (settings.showThink && thinkContent.trim()) {
+                finalHtml += '<div class="think-box text-xs md:text-sm"><strong>استدلال مدل:</strong><br>' + parseMarkdownWithMath(thinkContent) + '</div>';
+            }
+            finalHtml += parseMarkdownWithMath(mainContent);
             return finalHtml;
         }
 
@@ -235,9 +363,9 @@ Assistant: "من را تولید کرده است و من را آموزش داد�
             renderMathInElement(el, {
                 delimiters: [
                     {left: '$$', right: '$$', display: true},
+                    {left: '\\[', right: '\\]', display: true},
                     {left: '$', right: '$', display: false},
-                    {left: '\\(', right: '\\)', display: false},
-                    {left: '\\[', right: '\\]', display: true}
+                    {left: '\\(', right: '\\)', display: false}
                 ],
                 throwOnError: false
             });
@@ -245,7 +373,7 @@ Assistant: "من را تولید کرده است و من را آموزش داد�
 
         function buildMessageEl(msg, index) {
             const wrapper = document.createElement('div');
-            wrapper.className = `flex flex-col ${msg.role === 'user' ? 'items-start message-user' : 'items-start message-bot'} p-3 md:p-4 rounded-lg w-full relative group border border-transparent hover:border-gray-700 transition-colors`;
+            wrapper.className = `flex w-full mb-6 relative group`;
             wrapper.dataset.index = index;
 
             let rawContent = msg.content;
@@ -259,7 +387,7 @@ Assistant: "من را تولید کرده است و من را آموزش داد�
                 if (imgObjs.length > 0) {
                     imageHtml = '<div class="flex flex-wrap gap-2 mb-3">';
                     imgObjs.forEach(img => {
-                        imageHtml += `<img src="${img.image_url.url}" class="max-w-[200px] md:max-w-xs max-h-48 md:max-h-64 object-cover rounded-lg shadow-md border border-gray-600">`;
+                        imageHtml += `<img src="${img.image_url.url}" class="max-w-[200px] md:max-w-xs max-h-48 md:max-h-64 object-cover rounded-2xl shadow-md border border-gray-700">`;
                     });
                     imageHtml += '</div>';
                 }
@@ -269,20 +397,35 @@ Assistant: "من را تولید کرده است و من را آموزش داد�
 
             const htmlContent = getRenderedContent(textToParse);
 
-            wrapper.innerHTML = `
-                <div class="font-bold mb-2 text-[13px] md:text-sm text-gray-400 flex items-center w-full">
-                    <i class="fa ${msg.role === 'user' ? 'fa-user text-blue-500' : 'fa-robot text-green-500'} ml-2"></i>
-                    ${msg.role === 'user' ? settings.username : 'دستیار هوش مصنوعی'}
-                    <div class="mr-auto flex items-center gap-3 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
-                        <button onclick="deleteMessage(${index})" class="text-gray-500 hover:text-red-500" title="حذف پیام"><i class="fa fa-trash"></i></button>
-                        <button onclick="openEditModal(${index})" class="text-gray-500 hover:text-blue-400" title="ویرایش پیام"><i class="fa fa-pencil"></i></button>
-                        <span class="text-[10px] md:text-xs text-gray-600 font-normal">${msg.time || ''}</span>
+            // استایل شبیه جمنای
+            if (msg.role === 'user') {
+                wrapper.innerHTML = `
+                    <div class="flex flex-col items-start w-full">
+                        <div class="bg-[#1e1f22] text-[#e3e3e3] px-5 py-3 rounded-3xl rounded-tr-sm max-w-[85%] text-sm md:text-base leading-relaxed border border-gray-700/50">
+                            ${imageHtml} <div class="whitespace-pre-wrap">${textToParse}</div>
+                        </div>
+                        <div class="opacity-0 group-hover:opacity-100 transition-opacity mt-1 flex gap-2 ml-2">
+                            <button onclick="deleteMessage(${index})" class="text-gray-500 hover:text-red-400 p-1"><i class="fa fa-trash text-xs"></i></button>
+                            <button onclick="openEditModal(${index})" class="text-gray-500 hover:text-blue-400 p-1"><i class="fa fa-pencil text-xs"></i></button>
+                        </div>
                     </div>
-                </div>
-                <div class="markdown-body w-full overflow-hidden text-[13px] md:text-sm leading-relaxed">${imageHtml}${htmlContent}</div>
-            `;
+                `;
+            } else {
+                wrapper.innerHTML = `
+                    <div class="flex w-full gap-3 md:gap-4">
+                        <div class="flex-shrink-0 mt-1">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" fill="#8ab4f8"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1 text-[#e3e3e3] text-sm md:text-base leading-relaxed markdown-body max-w-full overflow-hidden">
+                            ${htmlContent}
+                        </div>
+                    </div>
+                `;
+            }
 
-            renderMathInEl(wrapper.querySelector('.markdown-body'));
+            renderMathInEl(wrapper);
             return wrapper;
         }
 
@@ -290,14 +433,14 @@ Assistant: "من را تولید کرده است و من را آموزش داد�
             const container = document.getElementById('chat-container');
             const chat = getCurrentChat();
             if (!chat || chat.messages.length === 0) {
-                container.innerHTML = `<div class="h-full flex flex-col items-center justify-center text-gray-500 space-y-4 opacity-50 mt-10">
-                    <i class="fa fa-robot text-5xl md:text-6xl"></i>
-                    <p class="text-sm md:text-base">آماده گفتگو با شما</p>
+                container.innerHTML = `<div class="h-full flex flex-col items-center justify-center text-gray-500 space-y-6 opacity-60 mt-10">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" fill="#8ab4f8"/></svg>
+                    <p class="text-lg font-medium text-gray-300">امروز چطور می‌تونم کمکت کنم؟</p>
                 </div>`;
                 return;
             }
             const wrapper = document.createElement('div');
-            wrapper.className = 'max-w-4xl mx-auto space-y-6 pb-4';
+            wrapper.className = 'max-w-4xl mx-auto pb-4 flex flex-col';
             chat.messages.forEach((msg, i) => wrapper.appendChild(buildMessageEl(msg, i)));
             container.innerHTML = '';
             container.appendChild(wrapper);
@@ -310,7 +453,7 @@ Assistant: "من را تولید کرده است و من را آموزش داد�
             if (!wrapper) {
                 container.innerHTML = '';
                 wrapper = document.createElement('div');
-                wrapper.className = 'max-w-4xl mx-auto space-y-6 pb-4';
+                wrapper.className = 'max-w-4xl mx-auto pb-4 flex flex-col';
                 container.appendChild(wrapper);
             }
             wrapper.appendChild(buildMessageEl(msg, index));
@@ -326,7 +469,7 @@ Assistant: "من را تولید کرده است و من را آموزش داد�
             if (!mdBody) return;
             
             mdBody.innerHTML = getRenderedContent(rawText) + (isStreaming ? '<span class="typing-cursor"></span>' : '');
-            renderMathInEl(mdBody); 
+            renderMathInEl(lastWrapper); 
             container.scrollTop = container.scrollHeight;
         }
 
@@ -341,7 +484,6 @@ Assistant: "من را تولید کرده است و من را آموزش داد�
             saveData();
             renderChatList();
             renderMessages();
-            updateStats();
             if (window.innerWidth < 768) toggleSidebar();
         }
 
@@ -353,7 +495,7 @@ Assistant: "من را تولید کرده است و من را آموزش داد�
             saveData();
             renderChatList();
             renderMessages();
-            updateStats();
+            document.getElementById('message-input').focus();
         }
 
         function saveData() {
@@ -362,9 +504,7 @@ Assistant: "من را تولید کرده است و من را آموزش داد�
             localStorage.setItem('ai_settings', JSON.stringify(settings));
         }
 
-        function getCurrentChat() {
-            return chats.find(c => c.id === currentChatId);
-        }
+        function getCurrentChat() { return chats.find(c => c.id === currentChatId); }
 
         function editChatTitle(id) {
             if (isGenerating) return;
@@ -386,43 +526,34 @@ Assistant: "من را تولید کرده است و من را آموزش داد�
 
         function renderChatList() {
             document.getElementById('chat-list').innerHTML = chats.map(chat => `
-                <div class="flex items-center justify-between w-full p-2 rounded-md transition group ${chat.id === currentChatId ? 'bg-gray-700 text-white' : 'hover:bg-gray-800 text-gray-400'}">
-                    <button onclick="switchChat('${chat.id}')" class="flex-1 text-right truncate flex items-center text-sm">
-                        <i class="fa fa-message ml-2 text-xs opacity-70"></i>
-                        <span class="truncate pr-1">${chat.title}</span>
-                    </button>
-                    <div class="flex items-center md:opacity-0 md:group-hover:opacity-100 transition-opacity pr-2 gap-3 text-xs">
-                        <button onclick="editChatTitle('${chat.id}')" class="hover:text-blue-400"><i class="fa fa-pencil"></i></button>
-                        <button onclick="deleteSingleChat('${chat.id}')" class="hover:text-red-500"><i class="fa fa-trash"></i></button>
+                <div class="chat-list-item flex items-center justify-between w-full py-2.5 px-4 rounded-full transition group cursor-pointer mb-0.5 ${chat.id === currentChatId ? 'bg-[#2a2b2f] text-gray-200' : 'hover:bg-[#1e1f22] text-gray-400'}">
+                    <div onclick="switchChat('${chat.id}')" class="flex-1 text-right truncate flex items-center text-sm">
+                        <i class="fa fa-message ml-3 text-xs opacity-60"></i>
+                        <span class="chat-title-text truncate pr-1">${chat.title}</span>
+                    </div>
+                    <div class="flex items-center md:opacity-0 md:group-hover:opacity-100 transition-opacity gap-2 text-xs">
+                        <button onclick="editChatTitle('${chat.id}')" class="hover:text-blue-400 p-1"><i class="fa fa-pencil"></i></button>
+                        <button onclick="deleteSingleChat('${chat.id}')" class="hover:text-red-500 p-1"><i class="fa fa-trash"></i></button>
                     </div>
                 </div>`).join('');
-            document.getElementById('chat-title').innerText = getCurrentChat()?.title || 'Artin GPT';
         }
 
         function updateStats() {
-            const textInput = document.getElementById('message-input').value.trim();
-            const count = textInput ? textInput.split(/\s+/).length : 0;
-            document.getElementById('word-count').innerText = `تعداد کلمات: ${count}`;
             const chat = getCurrentChat();
-            let totalChars = (HIDDEN_SYSTEM_PROMPT + settings.systemPrompt).length + textInput.length;
-            if (chat) {
-                chat.messages.forEach(m => {
-                    if (Array.isArray(m.content)) {
-                        totalChars += (m.content.find(c => c.type === 'text')?.text || '').length + m.content.filter(c => c.type === 'image_url').length * 500;
-                    } else { totalChars += (m.content || '').length; }
-                });
-            }
+            if(!chat) return;
+            let totalChars = 0;
+            chat.messages.forEach(m => {
+                if (Array.isArray(m.content)) {
+                    totalChars += (m.content.find(c => c.type === 'text')?.text || '').length + m.content.filter(c => c.type === 'image_url').length * 500;
+                } else { totalChars += (m.content || '').length; }
+            });
             const usedTokens = Math.ceil(totalChars / 3.5);
-            const percent = Math.min(((usedTokens / MAX_TOKENS) * 100), 100).toFixed(1);
-            const el = document.getElementById('token-count');
-            el.innerHTML = `تخمین توکن در این چت: ${usedTokens} / ${MAX_TOKENS} (<span dir="ltr">${percent}%</span> محدودیت روزانه)`;
-            el.classList.toggle('text-red-400', percent > 90);
         }
 
         function deleteMessage(index) {
-            if (isGenerating || !confirm('آیا از حذف این پیام اطمینان دارید؟')) return;
+            if (isGenerating || !confirm('حذف شود؟')) return;
             getCurrentChat().messages.splice(index, 1);
-            saveData(); renderMessages(); updateStats();
+            saveData(); renderMessages();
         }
 
         function openEditModal(index) {
@@ -453,10 +584,10 @@ Assistant: "من را تولید کرده است و من را آموزش داد�
             }
             if (isUser) {
                 chat.messages = chat.messages.slice(0, editingMessageIndex + 1);
-                saveData(); renderMessages(); updateStats(); closeEditModal();
+                saveData(); renderMessages(); closeEditModal();
                 await fetchAIResponse(chat);
             } else {
-                saveData(); renderMessages(); updateStats(); closeEditModal();
+                saveData(); renderMessages(); closeEditModal();
             }
         }
 
@@ -466,32 +597,17 @@ Assistant: "من را تولید کرده است و من را آموزش داد�
             }
         }
 
-        function toggleQuickThink() {
-            settings.showThink = !settings.showThink;
-            saveData(); updateThinkButtonState(); renderMessages();
-        }
-
-        function updateThinkButtonState() {
-            const btn = document.getElementById('quick-think-btn');
-            const text = document.getElementById('think-status-text');
-            btn.classList.toggle('text-green-500', settings.showThink);
-            btn.classList.toggle('text-gray-400', !settings.showThink);
-            text.innerText = settings.showThink ? 'تفکر روشن' : 'تفکر خاموش';
-        }
-
         async function handleFileUpload(event) {
             const files = event.target.files;
             if (!files?.length) return;
-            document.getElementById('send-btn').disabled = true;
-            document.getElementById('send-btn').classList.add('opacity-50');
+            document.getElementById('send-btn').classList.add('opacity-50', 'pointer-events-none');
             for (const file of files) {
-                if (file.size > 5 * 1024 * 1024) { alert(`حجم فایل ${file.name} بیشتر از ۵ مگابایت است.`); continue; }
+                if (file.size > 5 * 1024 * 1024) { alert(`حجم فایل ${file.name} زیاد است.`); continue; }
                 await processFile(file);
             }
             renderAttachmentPreview();
             event.target.value = '';
-            document.getElementById('send-btn').disabled = false;
-            document.getElementById('send-btn').classList.remove('opacity-50');
+            document.getElementById('send-btn').classList.remove('opacity-50', 'pointer-events-none');
         }
 
         function processFile(file) {
@@ -529,17 +645,15 @@ Assistant: "من را تولید کرده است و من را آموزش داد�
             let html = '<div class="flex gap-3 whitespace-nowrap pb-1">';
             currentAttachments.forEach((att, i) => {
                 if (att.type === 'image') {
-                    html += `<div class="relative group p-1 bg-white rounded flex-shrink-0">
-                        <button onclick="removeAttachment(${i})" class="absolute -top-2 -right-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-full w-5 h-5 flex items-center justify-center text-xs shadow-md z-10"><i class="fa fa-times"></i></button>
-                        <img src="${att.data}" class="h-10 w-10 md:h-12 md:w-12 object-contain rounded"></div>`;
+                    html += `<div class="relative group p-1 bg-[#131314] rounded-xl flex-shrink-0">
+                        <button onclick="removeAttachment(${i})" class="absolute -top-2 -right-2 bg-gray-600 hover:bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shadow-md z-10"><i class="fa fa-times"></i></button>
+                        <img src="${att.data}" class="h-12 w-12 object-cover rounded-lg"></div>`;
                 } else {
-                    const isPdf = att.name.toLowerCase().endsWith('.pdf');
-                    html += `<div class="relative bg-[#353535] rounded-md py-1 px-3 flex-shrink-0 flex flex-col justify-center min-w-[100px] max-w-[140px]">
-                        <button onclick="removeAttachment(${i})" class="absolute -top-2 -right-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-full w-5 h-5 flex items-center justify-center text-xs shadow-md z-10"><i class="fa fa-times"></i></button>
-                        <div class="flex items-center gap-2">
-                            <p class="text-xs text-white truncate flex-1" dir="ltr">${att.name}</p>
-                            <i class="fa ${isPdf ? 'fa-file-pdf text-red-500' : 'fa-file-alt text-gray-400'} text-lg"></i>
-                        </div></div>`;
+                    html += `<div class="relative bg-[#2a2b2f] rounded-xl py-2 px-3 flex-shrink-0 flex items-center min-w-[120px] max-w-[160px]">
+                        <button onclick="removeAttachment(${i})" class="absolute -top-2 -right-2 bg-gray-600 hover:bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shadow-md z-10"><i class="fa fa-times"></i></button>
+                        <i class="fa fa-file-alt text-blue-400 text-xl ml-2"></i>
+                        <p class="text-xs text-gray-200 truncate flex-1" dir="ltr">${att.name}</p>
+                    </div>`;
                 }
             });
             html += '</div>';
@@ -565,7 +679,7 @@ Assistant: "من را تولید کرده است و من را آموزش داد�
 
             currentAttachments.forEach(att => {
                 if (att.type === 'text') {
-                    combinedText += `\n\n--- محتوای فایل: ${att.name} ---\n${att.data}\n--- پایان فایل ---`;
+                    combinedText += `\n\n--- فایل: ${att.name} ---\n${att.data}\n--- پایان فایل ---`;
                 } else if (att.type === 'image') {
                     imageObjects.push({ type: "image_url", image_url: { url: att.data } });
                 }
@@ -579,22 +693,18 @@ Assistant: "من را تولید کرده است و من را آموزش داد�
             chat.messages.push(userMsg);
 
             if (chat.title === 'گفتگوی جدید')
-                chat.title = text ? text.substring(0, 30) + '...' : (currentAttachments.length > 0 ? 'ارسال فایل' : '...');
+                chat.title = text ? text.substring(0, 30) + '...' : 'پیوست فایل';
 
             input.value = '';
             input.style.height = 'auto';
             currentAttachments = [];
             renderAttachmentPreview();
-            updateStats();
             renderChatList();
 
             const userIndex = chat.messages.length - 1;
             const container = document.getElementById('chat-container');
-            if (!container.querySelector('[data-index]')) {
-                renderMessages();
-            } else {
-                appendMessageEl(userMsg, userIndex);
-            }
+            if (!container.querySelector('[data-index]')) { renderMessages(); } 
+            else { appendMessageEl(userMsg, userIndex); }
 
             await fetchAIResponse(chat);
         }
@@ -603,6 +713,7 @@ Assistant: "من را تولید کرده است و من را آموزش داد�
             isGenerating = true;
             abortController = new AbortController();
             document.getElementById('send-btn').classList.add('hidden');
+            document.getElementById('mic-btn').classList.add('hidden');
             document.getElementById('stop-btn').classList.remove('hidden');
 
             const timeStr = new Date().toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' });
@@ -612,28 +723,33 @@ Assistant: "من را تولید کرده است و من را آموزش داد�
             appendMessageEl(botMsg, botMsgIndex);
 
             try {
-                let finalSystemPrompt = HIDDEN_SYSTEM_PROMPT;
-                if (settings.systemPrompt?.trim()) finalSystemPrompt += '\n\n' + settings.systemPrompt.trim();
-                if (settings.username && settings.username !== 'کاربر')
-                    finalSystemPrompt += `\n\n(نام کاربر: "${settings.username}")`;
-                if (!settings.showThink)
-                    finalSystemPrompt += "\n\nدستور: از تگ <think> استفاده نکن و مستقیم جواب بده.";
+                const activeModel = settings.selectedModel || 'openai/gpt-oss-120b';
+                let finalSystemPrompt = '';
+                
+                // اعمال هویت شرکت طهرانی فقط روی مدل اصلی
+                if (activeModel === 'openai/gpt-oss-120b') {
+                    finalSystemPrompt += HIDDEN_SYSTEM_PROMPT;
+                }
+
+                if (settings.systemPrompt?.trim()) {
+                    finalSystemPrompt += (finalSystemPrompt ? '\n\n' : '') + settings.systemPrompt.trim();
+                }
+                
+                if (!settings.showThink) {
+                    finalSystemPrompt += (finalSystemPrompt ? '\n\n' : '') + "دستور: از تگ <think> استفاده نکن و مستقیم جواب بده.";
+                }
 
                 const allHistory = chat.messages.slice(0, -1);
                 const trimmedHistory = allHistory.length > MAX_HISTORY_MESSAGES
                     ? allHistory.slice(allHistory.length - MAX_HISTORY_MESSAGES)
                     : allHistory;
 
-                const apiMessages = [
-                    { role: 'system', content: finalSystemPrompt },
-                    ...trimmedHistory.map(m => ({ role: m.role, content: m.content }))
-                ];
+                const apiMessages = [];
+                if (finalSystemPrompt.trim()) {
+                    apiMessages.push({ role: 'system', content: finalSystemPrompt });
+                }
+                apiMessages.push(...trimmedHistory.map(m => ({ role: m.role, content: m.content })));
 
-                // تشخیص خودکار مدل: اگر در تاریخچه پیام‌ها عکسی وجود داشته باشد، مدل را به ویژن تغییر می‌دهد
-                const hasImage = apiMessages.some(m => Array.isArray(m.content) && m.content.some(c => c.type === 'image_url'));
-                const activeModel = hasImage ? GROQ_VISION_MODEL : GROQ_TEXT_MODEL;
-
-                // اتصال به سرور Groq
                 const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: { 
@@ -649,16 +765,12 @@ Assistant: "من را تولید کرده است و من را آموزش داد�
                     signal: abortController.signal
                 });
 
-                if (!response.ok) {
-                    const errData = await response.json();
-                    throw new Error(errData.error?.message || 'خطا در ارتباط با سرور Groq.');
-                }
+                if (!response.ok) throw new Error('خطا در ارتباط با سرور.');
 
                 const reader = response.body.getReader();
                 const decoder = new TextDecoder("utf-8");
                 let buffer = '';
                 let lastRender = 0;
-                const RENDER_INTERVAL = 80;
 
                 while (true) {
                     const { done, value } = await reader.read();
@@ -675,30 +787,27 @@ Assistant: "من را تولید کرده است و من را آموزش داد�
                                 const data = JSON.parse(line.substring(6));
                                 if (data.choices?.[0]?.delta?.content)
                                     chat.messages[botMsgIndex].content += data.choices[0].delta.content;
-                            } catch (e) { /* ignore */ }
+                            } catch (e) {}
                         }
                     }
 
                     const now = Date.now();
-                    if (now - lastRender >= RENDER_INTERVAL) {
+                    if (now - lastRender >= 80) {
                         updateLastMessageContent(chat.messages[botMsgIndex].content, true);
-                        updateStats();
                         lastRender = now;
                     }
                 }
-
                 updateLastMessageContent(chat.messages[botMsgIndex].content, false);
-                updateStats();
 
             } catch (error) {
-                const errText = error.name === 'AbortError' ? '\n\n*(تولید متن متوقف شد)*' : `\n\n**[خطا]** ${error.message}`;
+                const errText = error.name === 'AbortError' ? '\n*(متوقف شد)*' : `\n**[خطا]** ${error.message}`;
                 chat.messages[botMsgIndex].content += errText;
                 updateLastMessageContent(chat.messages[botMsgIndex].content, false);
-                updateStats();
             } finally {
                 isGenerating = false;
-                saveData();
+                saveData(); updateStats();
                 document.getElementById('send-btn').classList.remove('hidden');
+                document.getElementById('mic-btn').classList.remove('hidden');
                 document.getElementById('stop-btn').classList.add('hidden');
             }
         }
@@ -706,26 +815,9 @@ Assistant: "من را تولید کرده است و من را آموزش داد�
         function stopGeneration() { if (abortController) abortController.abort(); }
 
         function clearChats() {
-            if (!confirm('آیا از حذف تمام گفتگوها اطمینان دارید؟')) return;
-            localStorage.removeItem('ai_chats');
-            localStorage.removeItem('ai_current_chat');
-            chats = [];
-            createNewChat();
-        }
-
-        function exportChat() {
-            const chat = getCurrentChat();
-            if (!chat) return;
-            let text = `${chat.title}\n\n`;
-            chat.messages.forEach(m => {
-                let c = m.content;
-                if (Array.isArray(c)) c = c.find(x => x.type === 'text')?.text || '[تصویر]';
-                text += `[${m.role === 'user' ? settings.username : 'AI'}] - ${m.time}\n${c}\n\n-----------------\n\n`;
-            });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(new Blob([text], { type: 'text/plain' }));
-            a.download = `ChatExport_${Date.now()}.txt`;
-            a.click();
+            if (!confirm('حذف شود؟')) return;
+            localStorage.removeItem('ai_chats'); localStorage.removeItem('ai_current_chat');
+            chats = []; createNewChat(); toggleSettings();
         }
 
         function toggleSettings() {
@@ -735,40 +827,51 @@ Assistant: "من را تولید کرده است و من را آموزش داد�
                 document.getElementById('set-system').value = settings.systemPrompt;
                 document.getElementById('set-think').checked = settings.showThink;
                 modal.classList.remove('hidden');
-            } else {
-                modal.classList.add('hidden');
-            }
+            } else { modal.classList.add('hidden'); }
+        }
+        
+        // تابع جدید برای بروزرسانی رابط کاربری با نام کاربر
+        function updateSidebarUser() {
+            const username = settings.username || 'کاربر';
+            document.getElementById('sidebar-username').innerText = username;
+            
+            // گرفتن اولین حرف (حتی در زبان فارسی) برای قرار دادن در دایره پروفایل
+            const firstLetter = username.charAt(0).toUpperCase();
+            document.getElementById('sidebar-user-initial').innerText = firstLetter;
         }
 
         function saveSettings() {
             settings.username = document.getElementById('set-username').value || 'کاربر';
             settings.systemPrompt = document.getElementById('set-system').value;
             settings.showThink = document.getElementById('set-think').checked;
-            saveData(); updateThinkButtonState(); toggleSettings(); renderMessages(); updateStats();
+            saveData(); 
+            toggleSettings(); 
+            renderMessages();
+            updateSidebarUser(); // فراخوانی تابع بعد از تغییر تنظیمات
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            updateSidebarUser(); // فراخوانی هنگام لود شدن صفحه
+            
             if (chats.length === 0) createNewChat();
             else {
                 if (!currentChatId || !chats.find(c => c.id === currentChatId)) currentChatId = chats[0].id;
                 renderChatList(); renderMessages(); updateStats();
             }
-            document.getElementById('message-input').addEventListener('input', updateStats);
-            updateThinkButtonState();
-        });
-
-        document.getElementById('message-input').addEventListener('input', function() {
-            this.style.height = 'auto';
-            this.style.height = this.scrollHeight + 'px';
+            updateLibraryUI();
+            
+            document.getElementById('message-input').addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = (this.scrollHeight < 128 ? this.scrollHeight : 128) + 'px';
+            });
         });
 
         function toggleVoice() {
             const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (!SR) { alert('مرورگر شما از تایپ صوتی پشتیبانی نمی‌کند.'); return; }
+            if (!SR) { alert('تایپ صوتی پشتیبانی نمی‌شود.'); return; }
             const r = new SR(); r.lang = 'fa-IR';
             r.onresult = (e) => {
                 document.getElementById('message-input').value += e.results[0][0].transcript + ' ';
-                updateStats();
             };
             r.start();
         }

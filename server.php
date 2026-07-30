@@ -1,4 +1,7 @@
 <?php
+// افزایش حافظه برای چت‌های طولانی
+ini_set('memory_limit', '256M');
+
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
@@ -10,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 header('Content-Type: application/json; charset=utf-8');
 
-// لیست اکانت‌ها و محدودیت‌ها (مطابق کانفیگ شما)
+// لیست اکانت‌ها (دقیقاً مطابق کانفیگ)
 $VALID_CODES = [
     'plus123'    => 'PLUS',
     'plus999'    => 'PLUS',
@@ -27,7 +30,9 @@ if (!is_dir($dataDir)) {
     mkdir($dataDir, 0777, true);
 }
 
-$input = json_decode(file_get_contents('php://input'), true);
+$rawInput = file_get_contents('php://input');
+$input = json_decode($rawInput, true);
+
 if (!$input) {
     echo json_encode(['error' => 'No input provided']);
     exit;
@@ -35,66 +40,87 @@ if (!$input) {
 
 $action = $input['action'] ?? '';
 $code = trim($input['code'] ?? '');
-$date = $input['date'] ?? date('Y-m-d'); // تاریخ روز به فرمت YYYY-MM-DD
+$date = $input['date'] ?? date('Y-m-d');
 
 $tier = 'FREE';
 if ($code !== '' && array_key_exists($code, $VALID_CODES)) {
     $tier = $VALID_CODES[$code];
 }
+$limit = $LIMITS[$tier];
 
-// ساخت فایل فقط برای ذخیره توکن‌ها
-$fileName = ($code === '' || $tier === 'FREE') ? 'free_' . md5($_SERVER['REMOTE_ADDR'] ?? 'ip') : md5($code);
-$userFile = $dataDir . '/tokens_' . $fileName . '.json';
+// تعیین نام فایل دیتابیس
+if ($code === '' || $tier === 'FREE') {
+    $userIp = $_SERVER['REMOTE_ADDR'] ?? 'unknown_ip';
+    $fileName = 'free_' . md5($userIp);
+} else {
+    $fileName = md5($code);
+}
 
+$userFile = $dataDir . '/' . $fileName . '.json';
+
+// سیستم امن خواندن و نوشتن فایل (تضمین جلوگیری از پاک شدن ناگهانی چت‌ها)
 $fp = fopen($userFile, 'c+');
 if (!$fp) {
     echo json_encode(['error' => 'Server filesystem error']);
     exit;
 }
 
-// قفل کردن فایل برای جلوگیری از دور زدن محدودیت توسط دو سیستم همزمان
+// قفل کردن فایل برای جلوگیری از تداخل
 flock($fp, LOCK_EX);
 
+// خواندن اطلاعات فعلی
 $raw = stream_get_contents($fp);
-$db = empty($raw) ? [] : json_decode($raw, true);
-
-if (!isset($db['usage'][$date])) {
-    $db['usage'][$date] = 0;
+$db = ['usage' => [], 'chats' => []];
+if (!empty($raw)) {
+    $decoded = json_decode($raw, true);
+    if (is_array($decoded)) {
+        $db = $decoded;
+    }
 }
 
-$current_usage = $db['usage'][$date];
-
-// فقط بررسی وضعیت توکن
+// پردازش تاییدیه ورود و دریافت چت‌ها
 if ($action === 'verify') {
     flock($fp, LOCK_UN);
     fclose($fp);
     echo json_encode([
         'valid' => ($tier !== 'FREE'),
         'tier'  => $tier,
-        'limit' => $LIMITS[$tier],
-        'usage' => $current_usage
+        'limit' => $limit,
+        'usage' => $db['usage'][$date] ?? 0,
+        'chats' => $db['chats'] ?? []
     ]);
     exit;
 }
 
-// اضافه کردن توکن مصرفی جدید به کل توکن‌های امروز
+// پردازش سینک کردن اطلاعات و توکن‌ها
 if ($action === 'sync') {
-    $add = (int)($input['usage_add'] ?? 0);
-    if ($add > 0) {
-        $current_usage += $add;
-        $db['usage'][$date] = $current_usage;
+    if (isset($input['usage_add']) && is_numeric($input['usage_add']) && $input['usage_add'] > 0) {
+        if (!isset($db['usage'][$date])) {
+            $db['usage'][$date] = 0;
+        }
+        $db['usage'][$date] += (int)$input['usage_add'];
+    }
 
+    if ($tier !== 'FREE' && isset($input['chats']) && is_array($input['chats'])) {
+        $db['chats'] = $input['chats'];
+    }
+
+    // تولید جیسون با پشتیبانی کامل از ایموجی و حروف فارسی
+    $jsonOutput = json_encode($db, JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE);
+    
+    // فقط در صورتی روی فایل مینویسیم که مشکلی در کدهای بالا رخ نداده باشه
+    if ($jsonOutput !== false) {
         ftruncate($fp, 0);
         rewind($fp);
-        fwrite($fp, json_encode($db));
+        fwrite($fp, $jsonOutput);
     }
     
     flock($fp, LOCK_UN);
     fclose($fp);
-    
+
     echo json_encode([
         'status' => 'success',
-        'usage'  => $current_usage
+        'usage'  => $db['usage'][$date] ?? 0
     ]);
     exit;
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Artin GPT - AI Studio new 8.9</title>
+    <title>Artin GPT - AI Studio new 4.9</title>
     
     <script src="config.js"></script>
     
@@ -184,49 +184,57 @@
             
             <div class="max-h-[60vh] overflow-y-auto hide-scrollbar p-1" id="model-grid">
                 
-                <!-- بخش خانواده Grok -->
                 <div class="col-span-full border-b border-gray-700/50 pb-2 mt-2 mb-4 flex items-center gap-2">
                     <i class="fa fa-star text-yellow-500"></i>
                     <span class="text-gray-300 font-medium text-sm">Grok (xAI)</span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                    <div onclick="selectModel('grok-4.3', 'Grok 4.3', 'gapgpt', false)" data-model="grok-4.3" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-yellow-500 cursor-pointer transition group">
+                    <div onclick="selectModel('grok-4.3', 'Grok 4.3', 'gapgpt', 0)" data-model="grok-4.3" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-yellow-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-400"><i class="fa fa-star"></i></div>
                             <div>
                                 <h3 class="text-white font-medium flex items-center gap-2">Grok 4.3</h3>
-                                <span class="text-xs text-yellow-400">Fast / Standard</span>
+                                <span class="text-xs text-yellow-400">Fast / Free</span>
                             </div>
                         </div>
-                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">نسخه قدرتمند گراک. پاسخ‌دهی سریع و بهینه.</p>
+                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">نسخه قدرتمند گراک. پاسخ‌دهی سریع و بهینه برای همه.</p>
                     </div>
                 </div>
 
-                <!-- بخش خانواده DeepSeek -->
                 <div class="col-span-full border-b border-gray-700/50 pb-2 mt-6 mb-4 flex items-center gap-2">
                     <i class="fa fa-brain text-blue-500"></i>
                     <span class="text-gray-300 font-medium text-sm">DeepSeek</span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                    <div onclick="selectModel('deepseek-v4-flash', 'DeepSeek V4 Flash', 'gapgpt', false)" data-model="deepseek-v4-flash" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-blue-500 cursor-pointer transition group">
+                    <div onclick="selectModel('deepseek-v4-pro', 'DeepSeek V4 Pro', 'gapgpt', 2)" data-model="deepseek-v4-pro" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-blue-500 cursor-pointer transition group">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400"><i class="fa fa-code"></i></div>
+                            <div>
+                                <h3 class="text-white font-medium flex items-center gap-2">DeepSeek V4 Pro <span class="text-[9px] bg-yellow-500/20 text-yellow-500 px-1.5 py-0.5 rounded border border-yellow-500/30">PRO</span></h3>
+                                <span class="text-xs text-blue-400">Advanced / Coder</span>
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">غول برنامه‌نویسی و منطق ریاضیات. مناسب برای مسائل پیچیده.</p>
+                    </div>
+
+                    <div onclick="selectModel('deepseek-v4-flash', 'DeepSeek V4 Flash', 'gapgpt', 0)" data-model="deepseek-v4-flash" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-blue-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400"><i class="fa fa-bolt"></i></div>
                             <div>
                                 <h3 class="text-white font-medium flex items-center gap-2">DeepSeek V4 Flash</h3>
-                                <span class="text-xs text-blue-400">Speed / Daily</span>
+                                <span class="text-xs text-blue-400">Speed / Free</span>
                             </div>
                         </div>
                         <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">نسخه فوق‌سریع دیپ‌سیک برای پاسخگویی به سوالات معمول.</p>
                     </div>
                 </div>
 
-                <!-- بخش خانواده Gemini -->
                 <div class="col-span-full border-b border-gray-700/50 pb-2 mt-6 mb-4 flex items-center gap-2">
                     <i class="fa fa-sparkles text-green-500"></i>
                     <span class="text-gray-300 font-medium text-sm">Gemini (Google)</span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                    <div onclick="selectModel('gemini-3.1-pro-preview', 'Gemini 3.1 Pro', 'gapgpt', true)" data-model="gemini-3.1-pro-preview" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-green-500 cursor-pointer transition group">
+                    <div onclick="selectModel('gemini-3.1-pro-preview', 'Gemini 3.1 Pro', 'gapgpt', 2)" data-model="gemini-3.1-pro-preview" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-green-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-400"><i class="fa fa-gem"></i></div>
                             <div>
@@ -237,18 +245,18 @@
                         <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">جدیدترین نسخه آزمایشی و قدرتمند گوگل جمنای.</p>
                     </div>
 
-                    <div onclick="selectModel('gemini-3.5-flash', 'Gemini 3.5 Flash', 'gapgpt', true)" data-model="gemini-3.5-flash" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-green-500 cursor-pointer transition group">
+                    <div onclick="selectModel('gemini-3.5-flash', 'Gemini 3.5 Flash', 'gapgpt', 1)" data-model="gemini-3.5-flash" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-green-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-400"><i class="fa fa-bolt"></i></div>
                             <div>
-                                <h3 class="text-white font-medium flex items-center gap-2">Gemini 3.5 Flash <span class="text-[9px] bg-yellow-500/20 text-yellow-500 px-1.5 py-0.5 rounded border border-yellow-500/30">PRO</span></h3>
+                                <h3 class="text-white font-medium flex items-center gap-2">Gemini 3.5 Flash <span class="text-[9px] bg-purple-500/20 text-purple-400 px-1.5 py-0.5 rounded border border-purple-500/30">PLUS</span></h3>
                                 <span class="text-xs text-green-400">Fast / Vision</span>
                             </div>
                         </div>
                         <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">نسخه جدید، سریع و بهینه گوگل جمنای با قابلیت استنتاج قدرتمند.</p>
                     </div>
 
-                    <div onclick="selectModel('gemini-2.5-flash-lite', 'Gemini 2.5 Flash Lite', 'gapgpt', false)" data-model="gemini-2.5-flash-lite" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-green-500 cursor-pointer transition group">
+                    <div onclick="selectModel('gemini-2.5-flash-lite', 'Gemini 2.5 Flash Lite', 'gapgpt', 0)" data-model="gemini-2.5-flash-lite" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-green-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-400"><i class="fa fa-leaf"></i></div>
                             <div>
@@ -260,13 +268,12 @@
                     </div>
                 </div>
 
-                <!-- بخش خانواده OpenAI GPT -->
                 <div class="col-span-full border-b border-gray-700/50 pb-2 mt-6 mb-4 flex items-center gap-2">
                     <i class="fa fa-moon text-purple-500"></i>
                     <span class="text-gray-300 font-medium text-sm">GPT (OpenAI)</span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                    <div onclick="selectModel('gpt-5.6-luna', 'GPT 5.6 Luna', 'gapgpt', true)" data-model="gpt-5.6-luna" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-purple-500 cursor-pointer transition group">
+                    <div onclick="selectModel('gpt-5.6-luna', 'GPT 5.6 Luna', 'gapgpt', 2)" data-model="gpt-5.6-luna" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-purple-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400"><i class="fa fa-moon"></i></div>
                             <div>
@@ -277,7 +284,7 @@
                         <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">نسخه پیشرفته و قدرتمند با منطق و استدلال بالا.</p>
                     </div>
 
-                    <div onclick="selectModel('gpt-5.4', 'GPT 5.4', 'gapgpt', true)" data-model="gpt-5.4" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-purple-500 cursor-pointer transition group">
+                    <div onclick="selectModel('gpt-5.4', 'GPT 5.4', 'gapgpt', 2)" data-model="gpt-5.4" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-purple-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400"><i class="fa fa-moon"></i></div>
                             <div>
@@ -285,21 +292,21 @@
                                 <span class="text-xs text-purple-400">OpenAI</span>
                             </div>
                         </div>
-                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">مدل پایدار و بهینه شده برای کدنویسی و سوالات عمومی.</p>
+                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">مدل پایدار و بهینه شده برای کارهای تحلیلی سنگین.</p>
                     </div>
 
-                    <div onclick="selectModel('gpt-5.1', 'GPT 5.1', 'gapgpt', true)" data-model="gpt-5.1" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-purple-500 cursor-pointer transition group">
+                    <div onclick="selectModel('gpt-5.1', 'GPT 5.1', 'gapgpt', 1)" data-model="gpt-5.1" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-purple-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400"><i class="fa fa-moon"></i></div>
                             <div>
-                                <h3 class="text-white font-medium flex items-center gap-2">GPT 5.1 <span class="text-[9px] bg-yellow-500/20 text-yellow-500 px-1.5 py-0.5 rounded border border-yellow-500/30">PRO</span></h3>
+                                <h3 class="text-white font-medium flex items-center gap-2">GPT 5.1 <span class="text-[9px] bg-purple-500/20 text-purple-400 px-1.5 py-0.5 rounded border border-purple-500/30">PLUS</span></h3>
                                 <span class="text-xs text-purple-400">OpenAI</span>
                             </div>
                         </div>
-                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">مدل تعادل یافته برای کارایی و سرعت.</p>
+                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">مدل تعادل یافته برای کارایی و سرعت در اکانت‌های پلاس.</p>
                     </div>
 
-                    <div onclick="selectModel('gpt-4.1', 'GPT 4.1', 'gapgpt', false)" data-model="gpt-4.1" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-purple-500 cursor-pointer transition group">
+                    <div onclick="selectModel('gpt-4.1', 'GPT 4.1', 'gapgpt', 0)" data-model="gpt-4.1" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-purple-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400"><i class="fa fa-bolt"></i></div>
                             <div>
@@ -311,13 +318,12 @@
                     </div>
                 </div>
 
-                <!-- بخش خانواده Qwen -->
                 <div class="col-span-full border-b border-gray-700/50 pb-2 mt-6 mb-4 flex items-center gap-2">
                     <i class="fa fa-robot text-red-500"></i>
                     <span class="text-gray-300 font-medium text-sm">Qwen (Alibaba)</span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                    <div onclick="selectModel('qwen3-coder-480b-a35b-instruct', 'Qwen 3 Coder (480B)', 'gapgpt', true)" data-model="qwen3-coder-480b-a35b-instruct" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-red-500 cursor-pointer transition group">
+                    <div onclick="selectModel('qwen3-coder-480b-a35b-instruct', 'Qwen 3 Coder (480B)', 'gapgpt', 2)" data-model="qwen3-coder-480b-a35b-instruct" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-red-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center text-red-400"><i class="fa fa-laptop-code"></i></div>
                             <div>
@@ -328,18 +334,18 @@
                         <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">بزرگ‌ترین و قدرتمندترین مدل Qwen مخصوص برنامه‌نویسی.</p>
                     </div>
 
-                    <div onclick="selectModel('qwen3-235b-a22b', 'Qwen 3 (235B)', 'gapgpt', true)" data-model="qwen3-235b-a22b" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-red-500 cursor-pointer transition group">
+                    <div onclick="selectModel('qwen3-235b-a22b', 'Qwen 3 (235B)', 'gapgpt', 1)" data-model="qwen3-235b-a22b" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-red-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center text-red-400"><i class="fa fa-layer-group"></i></div>
                             <div>
-                                <h3 class="text-white font-medium flex items-center gap-2">Qwen 3 (235B) <span class="text-[9px] bg-yellow-500/20 text-yellow-500 px-1.5 py-0.5 rounded border border-yellow-500/30">PRO</span></h3>
+                                <h3 class="text-white font-medium flex items-center gap-2">Qwen 3 (235B) <span class="text-[9px] bg-purple-500/20 text-purple-400 px-1.5 py-0.5 rounded border border-purple-500/30">PLUS</span></h3>
                                 <span class="text-xs text-red-400">Advanced</span>
                             </div>
                         </div>
                         <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">مدل سنگین و همه‌کاره با استدلال قدرتمند.</p>
                     </div>
 
-                    <div onclick="selectModel('qwen3-coder', 'Qwen 3 Coder', 'gapgpt', false)" data-model="qwen3-coder" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-red-500 cursor-pointer transition group">
+                    <div onclick="selectModel('qwen3-coder', 'Qwen 3 Coder', 'gapgpt', 0)" data-model="qwen3-coder" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-red-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center text-red-400"><i class="fa fa-bolt"></i></div>
                             <div>
@@ -351,13 +357,12 @@
                     </div>
                 </div>
 
-                <!-- بخش خانواده Claude -->
                 <div class="col-span-full border-b border-gray-700/50 pb-2 mt-6 mb-4 flex items-center gap-2">
                     <i class="fa fa-cube text-indigo-500"></i>
                     <span class="text-gray-300 font-medium text-sm">Claude (Anthropic)</span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                    <div onclick="selectModel('claude-opus-4-7', 'Claude Opus 4.7', 'gapgpt', true)" data-model="claude-opus-4-7" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-indigo-500 cursor-pointer transition group">
+                    <div onclick="selectModel('claude-opus-4-7', 'Claude Opus 4.7', 'gapgpt', 2)" data-model="claude-opus-4-7" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-indigo-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400"><i class="fa fa-cube"></i></div>
                             <div>
@@ -368,18 +373,18 @@
                         <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">مدل خارق‌العاده برای کارهای پیچیده و نوشتن مقالات با دقت بالا.</p>
                     </div>
 
-                    <div onclick="selectModel('claude-fable-5', 'Claude Fable 5', 'gapgpt', true)" data-model="claude-fable-5" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-indigo-500 cursor-pointer transition group">
+                    <div onclick="selectModel('claude-fable-5', 'Claude Fable 5', 'gapgpt', 1)" data-model="claude-fable-5" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-indigo-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400"><i class="fa fa-feather"></i></div>
                             <div>
-                                <h3 class="text-white font-medium flex items-center gap-2">Claude Fable 5 <span class="text-[9px] bg-yellow-500/20 text-yellow-500 px-1.5 py-0.5 rounded border border-yellow-500/30">PRO</span></h3>
+                                <h3 class="text-white font-medium flex items-center gap-2">Claude Fable 5 <span class="text-[9px] bg-purple-500/20 text-purple-400 px-1.5 py-0.5 rounded border border-purple-500/30">PLUS</span></h3>
                                 <span class="text-xs text-indigo-400">Creative</span>
                             </div>
                         </div>
                         <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">مدل تخصصی برای کارهای خلاقانه، داستان‌نویسی و تولید محتوا.</p>
                     </div>
 
-                    <div onclick="selectModel('claude-sonnet-4-6', 'Claude Sonnet 4.6', 'gapgpt', false)" data-model="claude-sonnet-4-6" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-indigo-500 cursor-pointer transition group">
+                    <div onclick="selectModel('claude-sonnet-4-6', 'Claude Sonnet 4.6', 'gapgpt', 0)" data-model="claude-sonnet-4-6" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-indigo-500 cursor-pointer transition group">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400"><i class="fa fa-bolt"></i></div>
                             <div>
@@ -391,6 +396,56 @@
                     </div>
                 </div>
 
+            </div>
+        </div>
+    </div>
+
+    <div id="pricing-modal" class="hidden fixed inset-0 bg-black/80 z-[60] flex items-center justify-center p-4 backdrop-blur-sm transition-opacity">
+        <div class="bg-[#1e1f22] w-full max-w-4xl rounded-3xl border border-gray-700 p-6 shadow-2xl">
+            <div class="flex justify-between items-center mb-6 border-b border-gray-700/50 pb-4">
+                <h2 class="text-xl font-medium text-white flex items-center gap-3">
+                    <i class="fa fa-store text-blue-400"></i> پلن‌های اشتراک
+                </h2>
+                <button onclick="togglePricing()" class="text-gray-400 hover:text-white transition bg-[#2a2b2f] w-8 h-8 rounded-full flex items-center justify-center"><i class="fa fa-times"></i></button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-[#131314] border border-purple-500/50 rounded-2xl p-6 hover:border-purple-500 transition relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-full h-1 bg-gradient-to-r from-purple-400 to-purple-600"></div>
+                    <h3 class="text-xl font-bold text-purple-400 mb-2">پلاس (Plus)</h3>
+                    <p class="text-3xl font-bold text-white mb-4">۹۹,۰۰۰ <span class="text-sm font-normal text-gray-400">تومان / ماه</span></p>
+                    <ul class="space-y-3 text-sm text-gray-300 mb-6">
+                        <li><i class="fa fa-check text-green-400 ml-2"></i> دسترسی به مدل‌های <strong>پایه و میان‌رده</strong></li>
+                        <li><i class="fa fa-check text-green-400 ml-2"></i> محدودیت روزانه <strong>۲۵,۰۰۰</strong> توکن</li>
+                        <li><i class="fa fa-check text-green-400 ml-2"></i> سرعت پاسخگویی استاندارد</li>
+                    </ul>
+                    <button class="w-full py-2 bg-purple-600/20 text-purple-400 rounded-xl border border-purple-500/50 hover:bg-purple-600 hover:text-white transition">خرید اشتراک</button>
+                </div>
+
+                <div class="bg-[#131314] border border-yellow-500/50 rounded-2xl p-6 hover:border-yellow-500 transition relative overflow-hidden transform md:-translate-y-4 shadow-[0_0_20px_rgba(234,179,8,0.1)]">
+                    <div class="absolute top-0 right-0 w-full h-1 bg-gradient-to-r from-yellow-400 to-yellow-600"></div>
+                    <div class="absolute top-4 left-4 bg-yellow-500/20 text-yellow-500 text-[10px] font-bold px-2 py-1 rounded">محبوب‌ترین</div>
+                    <h3 class="text-xl font-bold text-yellow-400 mb-2">پرو (Pro)</h3>
+                    <p class="text-3xl font-bold text-white mb-4">۱۹۹,۰۰۰ <span class="text-sm font-normal text-gray-400">تومان / ماه</span></p>
+                    <ul class="space-y-3 text-sm text-gray-300 mb-6">
+                        <li><i class="fa fa-check text-green-400 ml-2"></i> دسترسی به <strong>تمام مدل‌های پیشرفته</strong></li>
+                        <li><i class="fa fa-check text-green-400 ml-2"></i> محدودیت روزانه <strong>۵۰,۰۰۰</strong> توکن</li>
+                        <li><i class="fa fa-check text-green-400 ml-2"></i> اولویت در پردازش (سریع)</li>
+                    </ul>
+                    <button class="w-full py-2 bg-yellow-600 text-white rounded-xl hover:bg-yellow-500 transition shadow-lg shadow-yellow-600/20">خرید اشتراک</button>
+                </div>
+
+                <div class="bg-[#131314] border border-red-500/50 rounded-2xl p-6 hover:border-red-500 transition relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-full h-1 bg-gradient-to-r from-red-400 to-red-600"></div>
+                    <h3 class="text-xl font-bold text-red-400 mb-2">پرو پلاس (+Pro)</h3>
+                    <p class="text-3xl font-bold text-white mb-4">۳۴۹,۰۰۰ <span class="text-sm font-normal text-gray-400">تومان / ماه</span></p>
+                    <ul class="space-y-3 text-sm text-gray-300 mb-6">
+                        <li><i class="fa fa-check text-green-400 ml-2"></i> دسترسی به <strong>تمام مدل‌ها</strong></li>
+                        <li><i class="fa fa-check text-green-400 ml-2"></i> محدودیت روزانه <strong>۱۵۰,۰۰۰</strong> توکن</li>
+                        <li><i class="fa fa-check text-green-400 ml-2"></i> حداکثر سرعت و استدلال نامحدود</li>
+                    </ul>
+                    <button class="w-full py-2 bg-red-600/20 text-red-400 rounded-xl border border-red-500/50 hover:bg-red-600 hover:text-white transition">خرید اشتراک</button>
+                </div>
             </div>
         </div>
     </div>
@@ -408,9 +463,12 @@
                 </div>
                 
                 <div>
-                    <label class="block text-sm mb-2 text-gray-300 flex items-center gap-2"><i class="fa fa-crown text-yellow-500"></i> آیا اکانت VIP دارید؟</label>
-                    <input type="password" id="set-vip-password" class="w-full bg-[#131314] text-white rounded-xl p-3 outline-none border border-gray-700 focus:border-blue-500 transition text-sm" placeholder="رمز VIP خود را اینجا وارد کنید">
-                    <p class="text-[10px] text-gray-500 mt-1">در صورت داشتن کد ویژه (VIP) آن را وارد کنید تا محدودیت شما ۳ برابر شده و مدل‌های PRO فعال شوند.</p>
+                    <label class="block text-sm mb-2 text-gray-300 flex items-center gap-2"><i class="fa fa-key text-yellow-500"></i> رمز عبور اشتراک شما:</label>
+                    <div class="flex gap-2">
+                        <input type="password" id="set-vip-password" class="flex-1 bg-[#131314] text-white rounded-xl p-3 outline-none border border-gray-700 focus:border-blue-500 transition text-sm" placeholder="کد پلن خریداری شده...">
+                        <button onclick="togglePricing()" class="bg-[#2a2b2f] hover:bg-[#333538] border border-gray-700 text-white px-4 rounded-xl text-xs whitespace-nowrap transition"><i class="fa fa-info-circle ml-1"></i> پلن‌ها</button>
+                    </div>
+                    <p class="text-[10px] text-gray-500 mt-2">با وارد کردن رمز Plus, Pro یا Pro Plus محدودیت‌ها و مدل‌های شما باز می‌شوند.</p>
                 </div>
 
                 <div>
@@ -495,14 +553,14 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
 گرم، صمیمی و دوستانه پاسخ بده`;
 
         // ==========================================
-        const PRO_MODELS = [
-            'gemini-3.1-pro-preview', 'gemini-3.5-flash', 
-            'gpt-5.6-luna', 'gpt-5.4', 'gpt-5.1', 
-            'qwen3-coder-480b-a35b-instruct', 'qwen3-235b-a22b', 
-            'claude-opus-4-7', 'claude-fable-5'
-        ];
+        // نقشه‌برداری سطح دسترسی مدل‌ها
+        const MODEL_TIERS = {
+            'grok-4.3': 0, 'deepseek-v4-flash': 0, 'gemini-2.5-flash-lite': 0, 'gpt-4.1': 0, 'qwen3-coder': 0, 'claude-sonnet-4-6': 0,
+            'gemini-3.5-flash': 1, 'gpt-5.1': 1, 'qwen3-235b-a22b': 1, 'claude-fable-5': 1,
+            'deepseek-v4-pro': 2, 'gemini-3.1-pro-preview': 2, 'gpt-5.4': 2, 'gpt-5.6-luna': 2, 'qwen3-coder-480b-a35b-instruct': 2, 'claude-opus-4-7': 2
+        };
         const MAX_HISTORY_MESSAGES = 30;
-        let timeOffset = 0; 
+        let serverTimeOffset = 0; 
         // ==========================================
 
         let chats = JSON.parse(localStorage.getItem('ai_chats')) || [];
@@ -521,7 +579,6 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
         let isGenerating = false;
         let editingMessageIndex = -1;
         let currentAttachments = [];
-        let serverTimeOffset = 0;
 
         async function syncServerTime() {
             try {
@@ -540,11 +597,15 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
             return new Date(Date.now() + serverTimeOffset);
         }
 
-        function getDailyLimit() {
-            const vipPass = typeof VIP_PASSWORD !== 'undefined' ? VIP_PASSWORD : '197777';
-            const normalLim = typeof NORMAL_DAILY_LIMIT !== 'undefined' ? NORMAL_DAILY_LIMIT : 10000;
-            const vipLim = typeof VIP_DAILY_LIMIT !== 'undefined' ? VIP_DAILY_LIMIT : 30000;
-            return (settings.vipPassword === vipPass) ? vipLim : normalLim;
+        // --- سیستم جدید شناسایی سطح (Tier) کاربر ---
+        function getUserTier() {
+            const pass = settings.vipPassword;
+            if (typeof PASSWORDS !== 'undefined') {
+                if (pass === PASSWORDS.PRO_PLUS) return { level: 3, name: 'Pro Plus', limit: LIMITS.PRO_PLUS };
+                if (pass === PASSWORDS.PRO) return { level: 2, name: 'Pro', limit: LIMITS.PRO };
+                if (pass === PASSWORDS.PLUS) return { level: 1, name: 'Plus', limit: LIMITS.PLUS };
+            }
+            return { level: 0, name: 'عادی', limit: typeof LIMITS !== 'undefined' ? LIMITS.FREE : 10000 };
         }
 
         function getDailyUsage() {
@@ -584,17 +645,18 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
             const draftChars = textInput.length;
             
             let usage = getDailyUsage();
-            let limit = getDailyLimit();
+            let tier = getUserTier();
             let totalTokens = usage.count + liveResponseTokens + Math.ceil(draftChars / 3.5);
             
-            const percent = Math.min(((totalTokens / limit) * 100), 100).toFixed(1);
+            const percent = Math.min(((totalTokens / tier.limit) * 100), 100).toFixed(1);
             const el = document.getElementById('token-count');
             
-            const vipPass = typeof VIP_PASSWORD !== 'undefined' ? VIP_PASSWORD : '197777';
-            const isVip = settings.vipPassword === vipPass;
-            const vipBadge = isVip ? ' <span class="text-yellow-400 font-bold ml-1"><i class="fa fa-crown"></i> VIP</span>' : '';
+            let badgeHtml = '';
+            if (tier.level === 3) badgeHtml = ' <span class="text-red-400 font-bold ml-1"><i class="fa fa-fire"></i> +Pro</span>';
+            else if (tier.level === 2) badgeHtml = ' <span class="text-yellow-400 font-bold ml-1"><i class="fa fa-crown"></i> Pro</span>';
+            else if (tier.level === 1) badgeHtml = ' <span class="text-purple-400 font-bold ml-1"><i class="fa fa-star"></i> Plus</span>';
             
-            el.innerHTML = `مصرف روزانه: ${totalTokens.toLocaleString('fa-IR')} / ${limit.toLocaleString('fa-IR')} (<span dir="ltr">${percent}%</span>)${vipBadge}`;
+            el.innerHTML = `مصرف روزانه: ${totalTokens.toLocaleString('fa-IR')} / ${tier.limit.toLocaleString('fa-IR')} (<span dir="ltr">${percent}%</span>)${badgeHtml}`;
             el.classList.toggle('text-red-400', percent > 90);
         }
 
@@ -797,10 +859,20 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
             if(!modal.classList.contains('hidden')) updateLibraryUI();
         }
 
-        function selectModel(modelValue, modelName, provider, isPro) {
-            const vipPass = typeof VIP_PASSWORD !== 'undefined' ? VIP_PASSWORD : '197777';
-            if (isPro && settings.vipPassword !== vipPass) {
-                alert('این یک مدل پیشرفته (PRO) است!\nبرای استفاده از آن باید رمز اکانت VIP را در تنظیمات وارد کنید.');
+        function togglePricing() {
+            const pModal = document.getElementById('pricing-modal');
+            pModal.classList.toggle('hidden');
+        }
+
+        function selectModel(modelValue, modelName, provider, reqLevel) {
+            const userTier = getUserTier();
+            
+            if (reqLevel > userTier.level) {
+                let reqName = reqLevel === 1 ? 'پلاس (Plus)' : 'پرو (Pro)';
+                alert(`مدل انتخابی در سطح ${reqName} است!\nشما باید اشتراک بالاتری تهیه کنید.`);
+                if(document.getElementById('library-modal').classList.contains('hidden') === false) {
+                    toggleLibrary();
+                }
                 toggleSettings();
                 return;
             }
@@ -1022,16 +1094,19 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
         async function sendMessage() {
             if (isGenerating) return;
             
-            const vipPass = typeof VIP_PASSWORD !== 'undefined' ? VIP_PASSWORD : '197777';
-            if (PRO_MODELS.includes(settings.selectedModel) && settings.vipPassword !== vipPass) {
-                alert('شما در حال استفاده از یک مدل پیشرفته (PRO) هستید اما رمز VIP نامعتبر است.\nلطفاً در تنظیمات رمز را وارد کنید.');
+            let userTier = getUserTier();
+            let reqLvl = MODEL_TIERS[settings.selectedModel] || 0;
+            
+            // بررسی دسترسی مدل قبل از ارسال
+            if (reqLvl > userTier.level) {
+                alert('این مدل در سطح اشتراک شما فعال نیست.\nلطفاً رمز پلن بالاتری وارد کنید.');
                 toggleSettings();
                 return;
             }
             
-            let dailyLimit = getDailyLimit();
+            let dailyLimit = userTier.limit;
             if (getDailyUsage().count >= dailyLimit) {
-                alert(`محدودیت روزانه ${dailyLimit.toLocaleString('fa-IR')} توکن شما به پایان رسیده است. سیستم ساعت ۱۰ شب به صورت خودکار شارژ خواهد شد.`);
+                alert(`محدودیت روزانه ${dailyLimit.toLocaleString('fa-IR')} توکن شما به پایان رسیده است. سیستم ساعت ۱۰ شب شارژ می‌شود.`);
                 return;
             }
 
@@ -1136,8 +1211,6 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
                     messages: apiMessages,
                     stream: true
                 };
-                
-                // پارامتر temperature به طور کامل حذف شد تا مدل‌هایی مثل کلاد ۴.۷ خطای deprecated ندهند
 
                 const response = await fetch(fetchUrl, {
                     method: 'POST',
@@ -1248,14 +1321,11 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
             if (initialEl) initialEl.innerText = username.charAt(0).toUpperCase();
             
             if (roleEl) {
-                const vipPass = typeof VIP_PASSWORD !== 'undefined' ? VIP_PASSWORD : '197777';
-                if (settings.vipPassword === vipPass) {
-                    roleEl.innerText = 'کاربر ویژه (VIP)';
-                    roleEl.className = 'text-[11px] text-yellow-400 font-bold tracking-wider';
-                } else {
-                    roleEl.innerText = 'کاربر عادی';
-                    roleEl.className = 'text-[11px] text-blue-400 font-semibold tracking-wider';
-                }
+                const tier = getUserTier();
+                if (tier.level === 3) { roleEl.innerText = 'کاربر Pro Plus'; roleEl.className = 'text-[11px] text-red-400 font-bold tracking-wider'; }
+                else if (tier.level === 2) { roleEl.innerText = 'کاربر Pro'; roleEl.className = 'text-[11px] text-yellow-400 font-bold tracking-wider'; }
+                else if (tier.level === 1) { roleEl.innerText = 'کاربر Plus'; roleEl.className = 'text-[11px] text-purple-400 font-bold tracking-wider'; }
+                else { roleEl.innerText = 'کاربر عادی'; roleEl.className = 'text-[11px] text-blue-400 font-semibold tracking-wider'; }
             }
         }
 
@@ -1280,10 +1350,12 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
             toggleSettings(); 
             renderMessages(); 
             
-            const vipPass = typeof VIP_PASSWORD !== 'undefined' ? VIP_PASSWORD : '197777';
-            if (PRO_MODELS.includes(settings.selectedModel) && settings.vipPassword !== vipPass) {
-                alert('شما در حال استفاده از یک مدل ویژه (PRO) بودید. به دلیل تغییر یا حذف رمز VIP، مدل شما به حالت پیش‌فرض (رایگان) تغییر یافت.');
-                selectModel('grok-4.3', 'Grok 4.3', 'gapgpt', false);
+            // بررسی داون‌گرید شدن مدل
+            let userTier = getUserTier();
+            let reqLvl = MODEL_TIERS[settings.selectedModel] || 0;
+            if (reqLvl > userTier.level) {
+                alert('سطح اشتراک شما تغییر کرد و مدل فعلی دیگر در دسترس نیست.\nمدل به حالت رایگان (Grok 4.3) تغییر یافت.');
+                selectModel('grok-4.3', 'Grok 4.3', 'gapgpt', 0);
             }
             
             updateSidebarUser();
@@ -1293,8 +1365,9 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
         document.addEventListener('DOMContentLoaded', async () => {
             await syncServerTime(); 
             
-            const vipPass = typeof VIP_PASSWORD !== 'undefined' ? VIP_PASSWORD : '197777';
-            if (PRO_MODELS.includes(settings.selectedModel) && settings.vipPassword !== vipPass) {
+            let userTier = getUserTier();
+            let reqLvl = MODEL_TIERS[settings.selectedModel] || 0;
+            if (reqLvl > userTier.level) {
                 settings.selectedModel = 'grok-4.3';
                 settings.selectedModelName = 'Grok 4.3';
                 settings.selectedProvider = 'gapgpt';

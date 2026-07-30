@@ -1,5 +1,7 @@
 <?php
-// رفع مشکل CORS برای ارتباط فرانت‌اند و بک‌اند
+// افزایش حافظه برای چت‌های طولانی
+ini_set('memory_limit', '256M');
+
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
@@ -11,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 header('Content-Type: application/json; charset=utf-8');
 
-// لیست اکانت‌ها (باید دقیقاً با config.js برابر باشد)
+// لیست اکانت‌ها (دقیقاً مطابق کانفیگ)
 $VALID_CODES = [
     'plus123'    => 'PLUS',
     'plus999'    => 'PLUS',
@@ -21,12 +23,7 @@ $VALID_CODES = [
     'vip999'     => 'PRO_PLUS'
 ];
 
-$LIMITS = [
-    'FREE'     => 500,
-    'PLUS'     => 4000,
-    'PRO'      => 13000,
-    'PRO_PLUS' => 30000
-];
+$LIMITS = [ 'FREE' => 500, 'PLUS' => 4000, 'PRO' => 13000, 'PRO_PLUS' => 30000 ];
 
 $dataDir = __DIR__ . '/data';
 if (!is_dir($dataDir)) {
@@ -41,52 +38,85 @@ if (!$input) {
     exit;
 }
 
-$action =$input['action'] ?? '';
+$action = $input['action'] ?? '';
 $code = trim($input['code'] ?? '');
-$date =$input['date'] ?? date('Y-m-d');
+$date = $input['date'] ?? date('Y-m-d');
 
 $tier = 'FREE';
-if ($code !== '' && array_key_exists($code, $VALID_CODES)) {$tier = $VALID_CODES[$code];
+if ($code !== '' && array_key_exists($code, $VALID_CODES)) {
+    $tier = $VALID_CODES[$code];
 }
 $limit = $LIMITS[$tier];
 
-if ($code === '' \vert{}\vert{}$tier === 'FREE') {
-    $userIp =$_SERVER['REMOTE_ADDR'] ?? 'unknown_ip';
+// تعیین نام فایل دیتابیس
+if ($code === '' || $tier === 'FREE') {
+    $userIp = $_SERVER['REMOTE_ADDR'] ?? 'unknown_ip';
     $fileName = 'free_' . md5($userIp);
 } else {
     $fileName = md5($code);
 }
 
-$userFile = $dataDir . '/' .$fileName . '.json';
+$userFile = $dataDir . '/' . $fileName . '.json';
 
+// سیستم امن خواندن و نوشتن فایل (تضمین جلوگیری از پاک شدن ناگهانی چت‌ها)
+$fp = fopen($userFile, 'c+');
+if (!$fp) {
+    echo json_encode(['error' => 'Server filesystem error']);
+    exit;
+}
+
+// قفل کردن فایل برای جلوگیری از تداخل
+flock($fp, LOCK_EX);
+
+// خواندن اطلاعات فعلی
+$raw = stream_get_contents($fp);
 $db = ['usage' => [], 'chats' => []];
-if (file_exists($userFile)) {
-    $fileData = json_decode(file_get_contents($userFile), true);
-    if (is_array($fileData)) {
-        $db =$fileData;
+if (!empty($raw)) {
+    $decoded = json_decode($raw, true);
+    if (is_array($decoded)) {
+        $db = $decoded;
     }
 }
 
+// پردازش تاییدیه ورود و دریافت چت‌ها
 if ($action === 'verify') {
+    flock($fp, LOCK_UN);
+    fclose($fp);
     echo json_encode([
         'valid' => ($tier !== 'FREE'),
         'tier'  => $tier,
         'limit' => $limit,
-        'usage' => $db['usage'][$date] ?? 0,         'chats' =>$db['chats'] ?? []
+        'usage' => $db['usage'][$date] ?? 0,
+        'chats' => $db['chats'] ?? []
     ]);
     exit;
 }
 
+// پردازش سینک کردن اطلاعات و توکن‌ها
 if ($action === 'sync') {
-    if (isset($input['usage_add']) && is_numeric($input['usage_add']) &&$input['usage_add'] > 0) {
-        if (!isset($db['usage'][$date])) {$db['usage'][$date] = 0;         }$db['usage'][$date] += (int)$input['usage_add'];
+    if (isset($input['usage_add']) && is_numeric($input['usage_add']) && $input['usage_add'] > 0) {
+        if (!isset($db['usage'][$date])) {
+            $db['usage'][$date] = 0;
+        }
+        $db['usage'][$date] += (int)$input['usage_add'];
     }
 
     if ($tier !== 'FREE' && isset($input['chats']) && is_array($input['chats'])) {
-        $db['chats'] =$input['chats'];
+        $db['chats'] = $input['chats'];
     }
 
-    file_put_contents($userFile, json_encode($db), LOCK_EX);
+    // تولید جیسون با پشتیبانی کامل از ایموجی و حروف فارسی
+    $jsonOutput = json_encode($db, JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE);
+    
+    // فقط در صورتی روی فایل مینویسیم که مشکلی در کدهای بالا رخ نداده باشه
+    if ($jsonOutput !== false) {
+        ftruncate($fp, 0);
+        rewind($fp);
+        fwrite($fp, $jsonOutput);
+    }
+    
+    flock($fp, LOCK_UN);
+    fclose($fp);
 
     echo json_encode([
         'status' => 'success',
@@ -95,5 +125,7 @@ if ($action === 'sync') {
     exit;
 }
 
+flock($fp, LOCK_UN);
+fclose($fp);
 echo json_encode(['error' => 'Invalid action']);
 exit;

@@ -10,10 +10,10 @@ window.CLOUD_SERVER_URL = 'server.php';
 window.PASSWORDS = {
     'plus123': 'PLUS',       
     'plus999': 'PLUS',       
-    'pro456': 'PRO',  // آقای جعفر خوانی       
-    'pro777': 'PRO',  // مامان غزال       
-    'artin_boss': 'PRO_PLUS', // آرتین
-    'vip999': 'PRO_PLUS'  // بابا محمد
+    'pro456': 'PRO',         
+    'pro777': 'PRO',         
+    'artin_boss': 'PRO_PLUS',
+    'vip999': 'PRO_PLUS'     
 };
 
 // محدودیت‌های توکن روزانه برای هر سطح
@@ -27,6 +27,6 @@ window.LIMITS = {
 // تنظیمات نوتیفیکیشن (اعلان بالای سایت)
 window.APP_NOTIFICATION = {
     enabled: true, 
-    message: 'ممکن است بعضی وقت ها به دلیل ناپایداری اینترنت برای هوش مصنوعی قعطی بوجود بیاید',
+    message: '☁️ آپدیت مهم: مشکل تداخل چت‌ها برطرف شد. هر اکانت فضای ابری کاملاً مجزای خود را دارد!',
     color: 'bg-indigo-600' 
 };

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Artin GPT - AI Studio new 4.3</title>
+    <title>Artin GPT - AI Studio new 4.4</title>
     
     <script src="config.js"></script>
     
@@ -183,6 +183,14 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[60vh] overflow-y-auto hide-scrollbar p-1" id="model-grid">
+                <div onclick="selectModel('claude-sonnet-5', 'Claude Sonnet 5', 'gapgpt')" data-model="claude-sonnet-5" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-blue-500 cursor-pointer transition group">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400"><i class="fa fa-microchip"></i></div>
+                        <div><h3 class="text-white font-medium">Claude Sonnet 5</h3><span class="text-xs text-teal-400">Anthropic</span></div>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-2 line-clamp-2">جدیدترین مدل Sonnet برای کدنویسی، عامل‌ها و کارهای حرفه‌ای (۱M Context).</p>
+                </div>
+
                 <div onclick="selectModel('grok-4.3', 'Artin gpt 5.6', 'gapgpt')" data-model="grok-4.3" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-blue-500 cursor-pointer transition group">
                     <div class="flex items-center gap-3 mb-2">
                         <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-400"><i class="fa fa-star"></i></div>
@@ -372,7 +380,7 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
 
         function getDailyLimit() {
             // چک کردن پسورد VIP
-            return (settings.vipPassword === CONFIG.VIP_PASSWORD) ? 30000 : 5000;
+            return (settings.vipPassword === CONFIG.VIP_PASSWORD) ? 30000 : 10000;
         }
 
         function getDailyUsage() {

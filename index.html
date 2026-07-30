@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Artin GPT - AI Studio 3.3</title>
+    <title>Artin GPT - AI Studio Cloud</title>
     
     <!-- اتصال به فایل امنیتی تنظیمات -->
     <script src="config.js"></script>
@@ -637,24 +637,20 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
             return now.toLocaleDateString('en-US') + "_22:00";
         }
 
-        // --- توابع هیبرید (محلی + سرور) ---
+        // --- توابع هیبرید (محلی + سرور) ضد خطا ---
         function getUserTier() {
             const pass = settings.vipPassword;
+            if (!pass) return { level: 0, name: 'عادی', limit: typeof LIMITS !== 'undefined' ? LIMITS.FREE : 500 };
             
-            // بررسی سریع و محلی از روی فایل کانفیگ
-            if (typeof PASSWORDS !== 'undefined' && pass) {
+            // 1. پشتیبانی از فرمت جدید (آرایه رمزها) در صورت دسترسی به config.js
+            if (typeof PASSWORDS !== 'undefined' && PASSWORDS[pass]) {
                 const tierName = PASSWORDS[pass];
-                if (tierName === 'PRO_PLUS') return { level: 3, name: 'Pro Plus', limit: LIMITS.PRO_PLUS };
-                if (tierName === 'PRO') return { level: 2, name: 'Pro', limit: LIMITS.PRO };
-                if (tierName === 'PLUS') return { level: 1, name: 'Plus', limit: LIMITS.PLUS };
-                
-                // در صورتی که از فرمت قبلی کانفیگ استفاده شود
-                if (pass === PASSWORDS.PRO_PLUS) return { level: 3, name: 'Pro Plus', limit: LIMITS.PRO_PLUS };
-                if (pass === PASSWORDS.PRO) return { level: 2, name: 'Pro', limit: LIMITS.PRO };
-                if (pass === PASSWORDS.PLUS) return { level: 1, name: 'Plus', limit: LIMITS.PLUS };
+                if (tierName === 'PRO_PLUS') return { level: 3, name: '+Pro', limit: typeof LIMITS !== 'undefined' ? LIMITS.PRO_PLUS : 30000 };
+                if (tierName === 'PRO') return { level: 2, name: 'Pro', limit: typeof LIMITS !== 'undefined' ? LIMITS.PRO : 13000 };
+                if (tierName === 'PLUS') return { level: 1, name: 'Plus', limit: typeof LIMITS !== 'undefined' ? LIMITS.PLUS : 4000 };
             }
             
-            // استفاده از اطلاعات تایید شده سرور
+            // 2. استفاده از اطلاعات تایید شده سرور (در صورت استفاده از PHP)
             if (window.serverTierInfo && window.serverTierInfo.level > 0) {
                 return window.serverTierInfo;
             }

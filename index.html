@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Artin GPT - AI Studio new 5</title>
+    <title>Artin GPT - AI Studio Cloud</title>
     
+    <!-- اتصال به فایل امنیتی تنظیمات -->
     <script src="config.js"></script>
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -109,7 +110,10 @@
         </div>
 
         <div class="mt-6 flex-1 overflow-y-auto px-2 hide-scrollbar">
-            <h3 class="text-xs font-semibold text-gray-500 mb-2 px-4">اخیر (Recents)</h3>
+            <h3 class="text-xs font-semibold text-gray-500 mb-2 px-4 flex justify-between items-center">
+                <span>اخیر (Recents)</span>
+                <i id="sync-icon" class="fa fa-cloud-sync text-[10px] text-blue-400 opacity-0 transition-opacity" title="Cloud Syncing..."></i>
+            </h3>
             <div id="chat-list" class="space-y-0.5"></div>
         </div>
 
@@ -119,7 +123,7 @@
                     <div id="sidebar-user-initial" class="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold text-sm shadow-lg">A</div>
                     <div class="flex flex-col text-right">
                         <span id="sidebar-username" class="text-sm text-gray-200 font-medium">کاربر</span>
-                        <span id="sidebar-user-role" class="text-[11px] text-blue-400 font-semibold tracking-wider">کاربر عادی</span>
+                        <span id="sidebar-user-role" class="text-[11px] text-blue-400 font-semibold tracking-wider">بارگذاری...</span>
                     </div>
                 </div>
                 <i class="fa fa-cog text-gray-400 hover:text-white transition"></i>
@@ -127,52 +131,63 @@
         </div>
     </div>
 
+    <!-- محفظه داخلی اپلیکیشن -->
     <div class="flex-1 flex flex-col relative w-full overflow-hidden bg-[#131314]">
         
-        <div class="h-14 flex items-center justify-between px-4 absolute top-0 w-full z-10 bg-gradient-to-b from-[#131314] to-transparent">
-            <button onclick="toggleSidebar()" class="md:hidden text-gray-400 hover:text-white p-2 rounded-lg">
-                <i class="fa fa-bars text-xl"></i>
-            </button>
-            <span id="current-model-badge" onclick="toggleLibrary()" class="text-xs text-gray-400 bg-[#1e1f22] px-3 py-1.5 rounded-full border border-gray-700/50 cursor-pointer hover:text-white transition flex items-center gap-2">
-                <span id="badge-text">Grok 4.3</span> <i class="fa fa-chevron-down text-[10px]"></i>
-            </span>
+        <!-- سیستم نوتیفیکیشن سراسری -->
+        <div id="global-alert" class="hidden shrink-0 w-full z-[60] text-white text-xs md:text-sm px-4 py-2.5 items-center justify-between shadow-md relative">
+            <span id="global-alert-text" class="flex-1 text-center font-medium"></span>
+            <button onclick="document.getElementById('global-alert').style.display='none'" class="text-white/80 hover:text-white mr-4"><i class="fa fa-times"></i></button>
         </div>
 
-        <div id="chat-container" class="flex-1 overflow-y-auto p-4 md:p-8 pb-40 md:pb-48 scroll-smooth mt-10 md:mt-0"></div>
+        <div class="flex-1 flex flex-col relative w-full overflow-hidden">
+            
+            <div class="h-14 flex items-center justify-between px-4 absolute top-0 w-full z-10 bg-gradient-to-b from-[#131314] to-transparent">
+                <button onclick="toggleSidebar()" class="md:hidden text-gray-400 hover:text-white p-2 rounded-lg">
+                    <i class="fa fa-bars text-xl"></i>
+                </button>
+                <span id="current-model-badge" onclick="toggleLibrary()" class="text-xs text-gray-400 bg-[#1e1f22] px-3 py-1.5 rounded-full border border-gray-700/50 cursor-pointer hover:text-white transition flex items-center gap-2">
+                    <span id="badge-text">Grok 4.3</span> <i class="fa fa-chevron-down text-[10px]"></i>
+                </span>
+            </div>
 
-        <div class="w-full flex-shrink-0 bg-gradient-to-t from-[#131314] via-[#131314] to-transparent p-3 md:p-6 z-20 absolute bottom-0 left-0 right-0 pointer-events-none">
-            <div class="max-w-4xl mx-auto relative pointer-events-auto">
-                <div id="attachment-preview" class="hidden absolute bottom-[calc(100%+0.5rem)] right-0 left-0 md:left-auto bg-[#1e1f22] p-2 rounded-2xl border border-gray-700 shadow-xl mb-2 max-w-full overflow-x-auto"></div>
-                
-                <div class="flex items-end bg-[#1e1f22] rounded-[32px] p-2 pr-4 shadow-2xl border border-gray-700/50 focus-within:border-gray-500 transition-colors">
+            <div id="chat-container" class="flex-1 overflow-y-auto p-4 md:p-8 pb-40 md:pb-48 scroll-smooth mt-10 md:mt-0"></div>
+
+            <div class="w-full flex-shrink-0 bg-gradient-to-t from-[#131314] via-[#131314] to-transparent p-3 md:p-6 z-20 absolute bottom-0 left-0 right-0 pointer-events-none">
+                <div class="max-w-4xl mx-auto relative pointer-events-auto">
+                    <div id="attachment-preview" class="hidden absolute bottom-[calc(100%+0.5rem)] right-0 left-0 md:left-auto bg-[#1e1f22] p-2 rounded-2xl border border-gray-700 shadow-xl mb-2 max-w-full overflow-x-auto"></div>
                     
-                    <button onclick="document.getElementById('file-input').click()" class="p-3 mb-1 text-gray-400 hover:text-white rounded-full transition-colors" title="پیوست فایل">
-                        <i class="fa fa-plus text-lg"></i>
-                    </button>
-                    <input type="file" id="file-input" class="hidden" multiple accept="image/*,.txt,.py,.js,.html,.css,.json,.md,.csv,.pdf" onchange="handleFileUpload(event)">
-                    
-                    <textarea id="message-input" rows="1" class="w-full bg-transparent text-white outline-none resize-none px-3 py-4 max-h-32 text-sm md:text-base self-center" placeholder="از هوش مصنوعی بپرسید..." onkeydown="handleKeydown(event)"></textarea>
-                    
-                    <div class="flex gap-1 mb-1 items-center">
-                        <button id="mic-btn" onclick="toggleVoice()" class="p-3 text-gray-400 hover:text-white rounded-full transition-colors" title="تایپ صوتی">
-                            <i class="fa fa-microphone text-lg"></i>
+                    <div class="flex items-end bg-[#1e1f22] rounded-[32px] p-2 pr-4 shadow-2xl border border-gray-700/50 focus-within:border-gray-500 transition-colors">
+                        
+                        <button onclick="document.getElementById('file-input').click()" class="p-3 mb-1 text-gray-400 hover:text-white rounded-full transition-colors" title="پیوست فایل">
+                            <i class="fa fa-plus text-lg"></i>
                         </button>
-                        <button id="stop-btn" onclick="stopGeneration()" class="hidden p-3 text-red-400 hover:text-red-300 rounded-full transition-colors" title="توقف تولید">
-                            <i class="fa fa-stop-circle text-2xl"></i>
-                        </button>
-                        <button id="send-btn" onclick="sendMessage()" class="bg-blue-600 hover:bg-blue-500 text-white rounded-full w-10 h-10 flex items-center justify-center transition-colors shadow-md ml-1" title="ارسال">
-                            <i class="fa fa-arrow-up"></i>
-                        </button>
+                        <input type="file" id="file-input" class="hidden" multiple accept="image/*,.txt,.py,.js,.html,.css,.json,.md,.csv,.pdf" onchange="handleFileUpload(event)">
+                        
+                        <textarea id="message-input" rows="1" class="w-full bg-transparent text-white outline-none resize-none px-3 py-4 max-h-32 text-sm md:text-base self-center" placeholder="از هوش مصنوعی بپرسید..." onkeydown="handleKeydown(event)"></textarea>
+                        
+                        <div class="flex gap-1 mb-1 items-center">
+                            <button id="mic-btn" onclick="toggleVoice()" class="p-3 text-gray-400 hover:text-white rounded-full transition-colors" title="تایپ صوتی">
+                                <i class="fa fa-microphone text-lg"></i>
+                            </button>
+                            <button id="stop-btn" onclick="stopGeneration()" class="hidden p-3 text-red-400 hover:text-red-300 rounded-full transition-colors" title="توقف تولید">
+                                <i class="fa fa-stop-circle text-2xl"></i>
+                            </button>
+                            <button id="send-btn" onclick="sendMessage()" class="bg-blue-600 hover:bg-blue-500 text-white rounded-full w-10 h-10 flex items-center justify-center transition-colors shadow-md ml-1" title="ارسال">
+                                <i class="fa fa-arrow-up"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="max-w-4xl mx-auto text-center flex flex-col items-center gap-1 mt-3 pointer-events-auto">
-                <span class="text-[11px] text-gray-500">AI isn't human. It can make mistakes, so double-check it.</span>
-                <span id="token-count" class="text-[10px] text-gray-400 font-mono transition-colors">بارگذاری وضعیت توکن...</span>
+                <div class="max-w-4xl mx-auto text-center flex flex-col items-center gap-1 mt-3 pointer-events-auto">
+                    <span class="text-[11px] text-gray-500">AI isn't human. It can make mistakes, so double-check it.</span>
+                    <span id="token-count" class="text-[10px] text-gray-400 font-mono transition-colors">بارگذاری وضعیت توکن...</span>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- کتابخانه مدل‌ها -->
     <div id="library-modal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 backdrop-blur-sm transition-opacity">
         <div class="bg-[#1e1f22] w-full max-w-4xl rounded-3xl border border-gray-700 p-6 shadow-2xl">
             <div class="flex justify-between items-center mb-6 border-b border-gray-700/50 pb-4">
@@ -184,6 +199,7 @@
             
             <div class="max-h-[60vh] overflow-y-auto hide-scrollbar p-1" id="model-grid">
                 
+                <!-- بخش خانواده Grok -->
                 <div class="col-span-full border-b border-gray-700/50 pb-2 mt-2 mb-4 flex items-center gap-2">
                     <i class="fa fa-star text-yellow-500"></i>
                     <span class="text-gray-300 font-medium text-sm">Grok (xAI)</span>
@@ -201,6 +217,7 @@
                     </div>
                 </div>
 
+                <!-- بخش خانواده DeepSeek -->
                 <div class="col-span-full border-b border-gray-700/50 pb-2 mt-6 mb-4 flex items-center gap-2">
                     <i class="fa fa-brain text-blue-500"></i>
                     <span class="text-gray-300 font-medium text-sm">DeepSeek</span>
@@ -229,6 +246,7 @@
                     </div>
                 </div>
 
+                <!-- بخش خانواده Gemini -->
                 <div class="col-span-full border-b border-gray-700/50 pb-2 mt-6 mb-4 flex items-center gap-2">
                     <i class="fa fa-sparkles text-green-500"></i>
                     <span class="text-gray-300 font-medium text-sm">Gemini (Google)</span>
@@ -268,6 +286,7 @@
                     </div>
                 </div>
 
+                <!-- بخش خانواده OpenAI GPT -->
                 <div class="col-span-full border-b border-gray-700/50 pb-2 mt-6 mb-4 flex items-center gap-2">
                     <i class="fa fa-moon text-purple-500"></i>
                     <span class="text-gray-300 font-medium text-sm">GPT (OpenAI)</span>
@@ -318,6 +337,7 @@
                     </div>
                 </div>
 
+                <!-- بخش خانواده Qwen -->
                 <div class="col-span-full border-b border-gray-700/50 pb-2 mt-6 mb-4 flex items-center gap-2">
                     <i class="fa fa-robot text-red-500"></i>
                     <span class="text-gray-300 font-medium text-sm">Qwen (Alibaba)</span>
@@ -357,6 +377,7 @@
                     </div>
                 </div>
 
+                <!-- بخش خانواده Claude -->
                 <div class="col-span-full border-b border-gray-700/50 pb-2 mt-6 mb-4 flex items-center gap-2">
                     <i class="fa fa-cube text-indigo-500"></i>
                     <span class="text-gray-300 font-medium text-sm">Claude (Anthropic)</span>
@@ -400,6 +421,7 @@
         </div>
     </div>
 
+    <!-- منوی قیمت‌ها -->
     <div id="pricing-modal" class="hidden fixed inset-0 bg-black/80 z-[60] flex items-center justify-center p-4 backdrop-blur-sm transition-opacity">
         <div class="bg-[#1e1f22] w-full max-w-4xl rounded-3xl border border-gray-700 p-6 shadow-2xl">
             <div class="flex justify-between items-center mb-6 border-b border-gray-700/50 pb-4">
@@ -410,6 +432,7 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Plus Plan -->
                 <div class="bg-[#131314] border border-purple-500/50 rounded-2xl p-6 hover:border-purple-500 transition relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-full h-1 bg-gradient-to-r from-purple-400 to-purple-600"></div>
                     <h3 class="text-xl font-bold text-purple-400 mb-2">پلاس (Plus)</h3>
@@ -417,11 +440,12 @@
                     <ul class="space-y-3 text-sm text-gray-300 mb-6">
                         <li><i class="fa fa-check text-green-400 ml-2"></i> دسترسی به مدل‌های <strong>پایه و میان‌رده</strong></li>
                         <li><i class="fa fa-check text-green-400 ml-2"></i> محدودیت روزانه <strong>4,۰۰۰</strong> توکن</li>
-                        <li><i class="fa fa-check text-green-400 ml-2"></i> سرعت پاسخگویی استاندارد</li>
+                        <li><i class="fa fa-check text-green-400 ml-2"></i> فضای ابری اختصاصی</li>
                     </ul>
                     <button class="w-full py-2 bg-purple-600/20 text-purple-400 rounded-xl border border-purple-500/50 hover:bg-purple-600 hover:text-white transition">خرید اشتراک</button>
                 </div>
 
+                <!-- Pro Plan -->
                 <div class="bg-[#131314] border border-yellow-500/50 rounded-2xl p-6 hover:border-yellow-500 transition relative overflow-hidden transform md:-translate-y-4 shadow-[0_0_20px_rgba(234,179,8,0.1)]">
                     <div class="absolute top-0 right-0 w-full h-1 bg-gradient-to-r from-yellow-400 to-yellow-600"></div>
                     <div class="absolute top-4 left-4 bg-yellow-500/20 text-yellow-500 text-[10px] font-bold px-2 py-1 rounded">محبوب‌ترین</div>
@@ -430,11 +454,12 @@
                     <ul class="space-y-3 text-sm text-gray-300 mb-6">
                         <li><i class="fa fa-check text-green-400 ml-2"></i> دسترسی به <strong>تمام مدل‌های پیشرفته</strong></li>
                         <li><i class="fa fa-check text-green-400 ml-2"></i> محدودیت روزانه <strong>13,۰۰۰</strong> توکن</li>
-                        <li><i class="fa fa-check text-green-400 ml-2"></i> اولویت در پردازش (سریع)</li>
+                        <li><i class="fa fa-check text-green-400 ml-2"></i> فضای ابری (Cloud Sync)</li>
                     </ul>
                     <button class="w-full py-2 bg-yellow-600 text-white rounded-xl hover:bg-yellow-500 transition shadow-lg shadow-yellow-600/20">خرید اشتراک</button>
                 </div>
 
+                <!-- Pro Plus Plan -->
                 <div class="bg-[#131314] border border-red-500/50 rounded-2xl p-6 hover:border-red-500 transition relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-full h-1 bg-gradient-to-r from-red-400 to-red-600"></div>
                     <h3 class="text-xl font-bold text-red-400 mb-2">پرو پلاس (+Pro)</h3>
@@ -442,7 +467,7 @@
                     <ul class="space-y-3 text-sm text-gray-300 mb-6">
                         <li><i class="fa fa-check text-green-400 ml-2"></i> دسترسی به <strong>تمام مدل‌ها</strong></li>
                         <li><i class="fa fa-check text-green-400 ml-2"></i> محدودیت روزانه <strong>30,۰۰۰</strong> توکن</li>
-                        <li><i class="fa fa-check text-green-400 ml-2"></i> حداکثر سرعت و استدلال نامحدود</li>
+                        <li><i class="fa fa-check text-green-400 ml-2"></i> پردازش سریع و همگام‌سازی ابری</li>
                     </ul>
                     <button class="w-full py-2 bg-red-600/20 text-red-400 rounded-xl border border-red-500/50 hover:bg-red-600 hover:text-white transition">خرید اشتراک</button>
                 </div>
@@ -450,10 +475,11 @@
         </div>
     </div>
 
+    <!-- تنظیمات -->
     <div id="settings-modal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-[#1e1f22] w-full max-w-md p-6 rounded-3xl border border-gray-700 shadow-2xl">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-medium text-white"><i class="fa fa-sliders text-blue-400 mr-2"></i> تنظیمات</h2>
+                <h2 class="text-xl font-medium text-white"><i class="fa fa-sliders text-blue-400 mr-2"></i> تنظیمات ابری</h2>
                 <button onclick="toggleSettings()" class="text-gray-400 hover:text-white"><i class="fa fa-times"></i></button>
             </div>
             <div class="space-y-5">
@@ -468,7 +494,7 @@
                         <input type="password" id="set-vip-password" class="flex-1 bg-[#131314] text-white rounded-xl p-3 outline-none border border-gray-700 focus:border-blue-500 transition text-sm" placeholder="کد پلن خریداری شده...">
                         <button onclick="togglePricing()" class="bg-[#2a2b2f] hover:bg-[#333538] border border-gray-700 text-white px-4 rounded-xl text-xs whitespace-nowrap transition"><i class="fa fa-info-circle ml-1"></i> پلن‌ها</button>
                     </div>
-                    <p class="text-[10px] text-gray-500 mt-2">با وارد کردن رمز Plus, Pro یا Pro Plus محدودیت‌ها و مدل‌های شما باز می‌شوند.</p>
+                    <p class="text-[10px] text-gray-500 mt-2">رمز خود را وارد کنید تا چت‌های شما از فضای ابری لود شده و مدل‌های PRO باز شوند.</p>
                 </div>
 
                 <div>
@@ -480,12 +506,14 @@
                     <input type="checkbox" id="set-think" class="w-5 h-5 accent-blue-500 rounded">
                 </div>
                 <div class="flex items-center justify-between bg-[#131314] p-4 rounded-xl border border-gray-700">
-                    <label class="text-sm text-red-400 flex items-center gap-2"><i class="fa fa-trash"></i> حذف همه داده‌ها</label>
-                    <button onclick="clearChats()" class="text-xs bg-red-600/20 text-red-400 px-3 py-1.5 rounded-lg hover:bg-red-600 hover:text-white transition">پاکسازی</button>
+                    <label class="text-sm text-red-400 flex items-center gap-2"><i class="fa fa-trash"></i> حذف پیام‌های من</label>
+                    <button onclick="clearChats()" class="text-xs bg-red-600/20 text-red-400 px-3 py-1.5 rounded-lg hover:bg-red-600 hover:text-white transition">پاکسازی ابری</button>
                 </div>
             </div>
             <div class="mt-8 flex justify-end">
-                <button onclick="saveSettings()" class="w-full py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-500 transition font-medium">ذخیره تنظیمات</button>
+                <button onclick="saveSettings()" class="w-full py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-500 transition font-medium flex items-center justify-center gap-2">
+                    <i id="save-spinner" class="fa fa-circle-notch fa-spin hidden"></i> ذخیره و همگام‌سازی
+                </button>
             </div>
         </div>
     </div>
@@ -553,14 +581,15 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
 گرم، صمیمی و دوستانه پاسخ بده`;
 
         // ==========================================
-        // نقشه‌برداری سطح دسترسی مدل‌ها
         const MODEL_TIERS = {
             'grok-4.3': 0, 'deepseek-v4-flash': 0, 'gemini-2.5-flash-lite': 0, 'gpt-4.1': 0, 'qwen3-coder': 0, 'claude-sonnet-4-6': 0,
             'gemini-3.5-flash': 1, 'gpt-5.1': 1, 'qwen3-235b-a22b': 1, 'claude-fable-5': 1,
             'deepseek-v4-pro': 2, 'gemini-3.1-pro-preview': 2, 'gpt-5.4': 2, 'gpt-5.6-luna': 2, 'qwen3-coder-480b-a35b-instruct': 2, 'claude-opus-4-7': 2
         };
         const MAX_HISTORY_MESSAGES = 30;
+        
         let serverTimeOffset = 0; 
+        window.serverTierInfo = { level: 0, name: 'عادی', limit: 500 };
         // ==========================================
 
         let chats = JSON.parse(localStorage.getItem('ai_chats')) || [];
@@ -580,6 +609,7 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
         let editingMessageIndex = -1;
         let currentAttachments = [];
 
+        // --- سیستم زمان و محدودیت‌ها ---
         async function syncServerTime() {
             try {
                 const res = await fetch('https://worldtimeapi.org/api/timezone/Asia/Tehran');
@@ -589,7 +619,7 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
                     serverTimeOffset = serverTime - Date.now();
                 }
             } catch (error) {
-                console.warn("خطا در دریافت ساعت سرور، از ساعت سیستم استفاده می‌شود.", error);
+                console.warn("خطا در دریافت زمان جهانی");
             }
         }
 
@@ -597,29 +627,43 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
             return new Date(Date.now() + serverTimeOffset);
         }
 
-        // --- سیستم جدید شناسایی سطح (Tier) کاربر ---
+        function getResetKey() {
+            const now = getCurrentRealTime();
+            if (now.getHours() < 22) {
+                let prevDay = new Date(now);
+                prevDay.setDate(prevDay.getDate() - 1);
+                return prevDay.toLocaleDateString('en-US') + "_22:00";
+            }
+            return now.toLocaleDateString('en-US') + "_22:00";
+        }
+
+        // --- توابع هیبرید (محلی + سرور) ---
         function getUserTier() {
             const pass = settings.vipPassword;
-            if (typeof PASSWORDS !== 'undefined') {
+            
+            // بررسی سریع و محلی از روی فایل کانفیگ
+            if (typeof PASSWORDS !== 'undefined' && pass) {
+                const tierName = PASSWORDS[pass];
+                if (tierName === 'PRO_PLUS') return { level: 3, name: 'Pro Plus', limit: LIMITS.PRO_PLUS };
+                if (tierName === 'PRO') return { level: 2, name: 'Pro', limit: LIMITS.PRO };
+                if (tierName === 'PLUS') return { level: 1, name: 'Plus', limit: LIMITS.PLUS };
+                
+                // در صورتی که از فرمت قبلی کانفیگ استفاده شود
                 if (pass === PASSWORDS.PRO_PLUS) return { level: 3, name: 'Pro Plus', limit: LIMITS.PRO_PLUS };
                 if (pass === PASSWORDS.PRO) return { level: 2, name: 'Pro', limit: LIMITS.PRO };
                 if (pass === PASSWORDS.PLUS) return { level: 1, name: 'Plus', limit: LIMITS.PLUS };
             }
-            return { level: 0, name: 'عادی', limit: typeof LIMITS !== 'undefined' ? LIMITS.FREE : 10000 };
+            
+            // استفاده از اطلاعات تایید شده سرور
+            if (window.serverTierInfo && window.serverTierInfo.level > 0) {
+                return window.serverTierInfo;
+            }
+            
+            return { level: 0, name: 'عادی', limit: typeof LIMITS !== 'undefined' ? LIMITS.FREE : 500 };
         }
 
         function getDailyUsage() {
-            const now = getCurrentRealTime();
-            let currentDayStr = now.toLocaleDateString('fa-IR');
-            
-            if (now.getHours() < 22) {
-                let prevDay = new Date(now);
-                prevDay.setDate(prevDay.getDate() - 1);
-                currentDayStr = prevDay.toLocaleDateString('fa-IR') + "_22:00";
-            } else {
-                currentDayStr = now.toLocaleDateString('fa-IR') + "_22:00";
-            }
-
+            let currentDayStr = getResetKey();
             let usage = JSON.parse(localStorage.getItem('ai_daily_usage'));
             if (!usage || usage.date !== currentDayStr) {
                 usage = { date: currentDayStr, count: 0 };
@@ -633,11 +677,6 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
             usage.count += tokens;
             localStorage.setItem('ai_daily_usage', JSON.stringify(usage));
             return usage.count;
-        }
-
-        function getCleanLength(text) {
-            if (!text) return 0;
-            return text.replace(/<think>[\s\S]*?(<\/think>|$)/gi, '').length;
         }
 
         function updateStats(liveResponseTokens = 0) {
@@ -660,6 +699,80 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
             el.classList.toggle('text-red-400', percent > 90);
         }
 
+        // --- سیستم همگام‌سازی ابری ---
+        async function serverVerify() {
+            try {
+                const res = await fetch('server.php', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        action: 'verify',
+                        code: settings.vipPassword || '',
+                        date: getResetKey()
+                    })
+                });
+                if(!res.ok) return false;
+                const data = await res.json();
+                
+                let lvl = 0;
+                if(data.tier === 'PLUS') lvl = 1;
+                if(data.tier === 'PRO') lvl = 2;
+                if(data.tier === 'PRO_PLUS') lvl = 3;
+                window.serverTierInfo = { level: lvl, name: data.tier, limit: data.limit };
+                
+                let usage = JSON.parse(localStorage.getItem('ai_daily_usage')) || { date: getResetKey(), count: 0 };
+                usage.count = data.usage;
+                localStorage.setItem('ai_daily_usage', JSON.stringify(usage));
+                
+                if(data.valid && data.chats && data.chats.length > 0) {
+                    chats = data.chats;
+                    if (!chats.find(c => c.id === currentChatId)) {
+                        currentChatId = chats[0].id;
+                    }
+                }
+                return true;
+            } catch(e) {
+                console.warn('دیتابیس در دسترس نیست. سیستم در حالت محلی اجرا می‌شود.');
+                return false;
+            }
+        }
+
+        async function syncUsageAndChats(addedTokens) {
+            const syncIcon = document.getElementById('sync-icon');
+            if(syncIcon) syncIcon.classList.remove('opacity-0');
+            try {
+                const res = await fetch('server.php', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        action: 'sync',
+                        code: settings.vipPassword || '',
+                        date: getResetKey(),
+                        usage_add: addedTokens,
+                        chats: chats
+                    })
+                });
+                const data = await res.json();
+                if (data.usage !== undefined) {
+                    let usage = JSON.parse(localStorage.getItem('ai_daily_usage'));
+                    if(usage) {
+                        usage.count = data.usage;
+                        localStorage.setItem('ai_daily_usage', JSON.stringify(usage));
+                        updateStats();
+                    }
+                }
+            } catch(e) {
+                // نادیده گرفتن خطا در حالت آفلاین
+            } finally {
+                if(syncIcon) setTimeout(() => syncIcon.classList.add('opacity-0'), 1000);
+            }
+        }
+
+        function getCleanLength(text) {
+            if (!text) return 0;
+            return text.replace(/<think>[\s\S]*?(<\/think>|$)/gi, '').length;
+        }
+
         function escapeHtml(text) {
             if (!text) return '';
             return text
@@ -672,7 +785,6 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
 
         function parseMarkdownWithMath(t) {
             if (!t) return '';
-            
             const mathBlocks = [];
             let mathIndex = 0;
 
@@ -708,10 +820,8 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
                 } catch (e) {
                     rendered = `<code class="text-red-400">${escapeHtml(block.content)}</code>`;
                 }
-
                 html = html.split(marker).join(rendered);
             }
-
             return html;
         }
 
@@ -866,10 +976,10 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
 
         function selectModel(modelValue, modelName, provider, reqLevel) {
             const userTier = getUserTier();
-            
             if (reqLevel > userTier.level) {
                 let reqName = reqLevel === 1 ? 'پلاس (Plus)' : 'پرو (Pro)';
-                alert(`مدل انتخابی در سطح ${reqName} است!\nشما باید اشتراک بالاتری تهیه کنید.`);
+                if (reqLevel === 3) reqName = 'پرو پلاس (+Pro)';
+                alert(`این مدل در سطح اشتراک ${reqName} و بالاتر فعال است.\nلطفاً رمز پلن بالاتری وارد کنید.`);
                 if(document.getElementById('library-modal').classList.contains('hidden') === false) {
                     toggleLibrary();
                 }
@@ -949,7 +1059,12 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
             const chat = chats.find(c => c.id === id);
             if (!chat) return;
             const newTitle = prompt('عنوان جدید:', chat.title);
-            if (newTitle?.trim()) { chat.title = newTitle.trim(); saveData(); renderChatList(); }
+            if (newTitle?.trim()) { 
+                chat.title = newTitle.trim(); 
+                saveData(); 
+                renderChatList(); 
+                syncUsageAndChats(0);
+            }
         }
 
         function deleteSingleChat(id) {
@@ -958,7 +1073,11 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
                 chats = chats.filter(c => c.id !== id);
                 if (chats.length === 0) createNewChat();
                 else if (currentChatId === id) switchChat(chats[0].id);
-                else { saveData(); renderChatList(); }
+                else { 
+                    saveData(); 
+                    renderChatList(); 
+                    syncUsageAndChats(0); 
+                }
             }
         }
 
@@ -977,9 +1096,11 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
         }
 
         function deleteMessage(index) {
-            if (isGenerating || !confirm('حذف شود؟')) return;
+            if (isGenerating || !confirm('پیام حذف شود؟')) return;
             getCurrentChat().messages.splice(index, 1);
-            saveData(); renderMessages();
+            saveData(); 
+            renderMessages();
+            syncUsageAndChats(0);
         }
 
         function openEditModal(index) {
@@ -1014,6 +1135,7 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
                 await fetchAIResponse(chat);
             } else {
                 saveData(); renderMessages(); closeEditModal();
+                syncUsageAndChats(0);
             }
         }
 
@@ -1097,9 +1219,10 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
             let userTier = getUserTier();
             let reqLvl = MODEL_TIERS[settings.selectedModel] || 0;
             
-            // بررسی دسترسی مدل قبل از ارسال
             if (reqLvl > userTier.level) {
-                alert('این مدل در سطح اشتراک شما فعال نیست.\nلطفاً رمز پلن بالاتری وارد کنید.');
+                let reqName = reqLvl === 1 ? 'پلاس (Plus)' : 'پرو (Pro)';
+                if (reqLvl === 3) reqName = 'پرو پلاس (+Pro)';
+                alert(`این مدل در سطح اشتراک ${reqName} و بالاتر فعال است.\nلطفاً رمز پلن بالاتری وارد کنید.`);
                 toggleSettings();
                 return;
             }
@@ -1144,7 +1267,9 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
             } else {
                 userTokens += Math.ceil(userContent.length / 3.5);
             }
+            
             addDailyUsage(userTokens);
+            syncUsageAndChats(userTokens); // آپلود به سرور
 
             if (chat.title === 'گفتگوی جدید')
                 chat.title = text ? text.substring(0, 30) + '...' : 'پیوست فایل';
@@ -1183,13 +1308,10 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
                 const fetchKey = typeof GAPGPT_API_KEY !== 'undefined' ? GAPGPT_API_KEY : '';
 
                 let finalSystemPrompt = '';
-                
                 finalSystemPrompt += HIDDEN_SYSTEM_PROMPT;
-
                 if (settings.systemPrompt?.trim()) {
                     finalSystemPrompt += '\n\n' + settings.systemPrompt.trim();
                 }
-                
                 if (!settings.showThink) {
                     finalSystemPrompt += '\n\n' + "دستور: از تگ <think> استفاده نکن و مستقیم جواب بده.";
                 }
@@ -1203,7 +1325,6 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
                 if (finalSystemPrompt.trim()) {
                     apiMessages.push({ role: 'system', content: finalSystemPrompt });
                 }
-                
                 apiMessages.push(...trimmedHistory.map(m => ({ role: m.role, content: m.content })));
 
                 const requestPayload = {
@@ -1255,7 +1376,6 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
                                         }
                                         chat.messages[botMsgIndex].content += delta.reasoning_content;
                                     }
-                                    
                                     if (delta.content !== undefined && delta.content !== null) {
                                         if (chat.messages[botMsgIndex].hasStartedThinking && !chat.messages[botMsgIndex].hasFinishedThinking) {
                                             chat.messages[botMsgIndex].content += '\n</think>\n\n';
@@ -1271,10 +1391,8 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
                     const now = Date.now();
                     if (now - lastRender >= 80) {
                         updateLastMessageContent(chat.messages[botMsgIndex].content, true);
-                        
                         let currentCleanLen = getCleanLength(chat.messages[botMsgIndex].content);
                         updateStats(Math.ceil(currentCleanLen / 3.5)); 
-                        
                         lastRender = now;
                     }
                 }
@@ -1287,7 +1405,9 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
                 updateLastMessageContent(chat.messages[botMsgIndex].content, false);
                 
                 let finalCleanLen = getCleanLength(chat.messages[botMsgIndex].content);
-                addDailyUsage(Math.ceil(finalCleanLen / 3.5));
+                let addedTokens = Math.ceil(finalCleanLen / 3.5);
+                addDailyUsage(addedTokens);
+                syncUsageAndChats(addedTokens); // آپلود به سرور
 
             } catch (error) {
                 const errText = error.name === 'AbortError' ? '\n*(متوقف شد)*' : `\n**[خطا]** ${error.message}`;
@@ -1306,9 +1426,11 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
         function stopGeneration() { if (abortController) abortController.abort(); }
 
         function clearChats() {
-            if (!confirm('حذف شود؟')) return;
+            if (!confirm('حذف شود؟ با این کار اطلاعات ابری شما نیز پاک می‌شود.')) return;
             localStorage.removeItem('ai_chats'); localStorage.removeItem('ai_current_chat');
-            chats = []; createNewChat(); toggleSettings();
+            chats = []; createNewChat(); 
+            syncUsageAndChats(0); // آپدیت سرور برای پاک کردن
+            toggleSettings();
         }
 
         function updateSidebarUser() {
@@ -1322,7 +1444,7 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
             
             if (roleEl) {
                 const tier = getUserTier();
-                if (tier.level === 3) { roleEl.innerText = 'کاربر Pro Plus'; roleEl.className = 'text-[11px] text-red-400 font-bold tracking-wider'; }
+                if (tier.level === 3) { roleEl.innerText = 'کاربر +Pro'; roleEl.className = 'text-[11px] text-red-400 font-bold tracking-wider'; }
                 else if (tier.level === 2) { roleEl.innerText = 'کاربر Pro'; roleEl.className = 'text-[11px] text-yellow-400 font-bold tracking-wider'; }
                 else if (tier.level === 1) { roleEl.innerText = 'کاربر Plus'; roleEl.className = 'text-[11px] text-purple-400 font-bold tracking-wider'; }
                 else { roleEl.innerText = 'کاربر عادی'; roleEl.className = 'text-[11px] text-blue-400 font-semibold tracking-wider'; }
@@ -1340,17 +1462,21 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
             } else { modal.classList.add('hidden'); }
         }
 
-        function saveSettings() {
+        async function saveSettings() {
+            const spinner = document.getElementById('save-spinner');
+            if(spinner) spinner.classList.remove('hidden');
+            
             settings.username = document.getElementById('set-username').value || 'کاربر';
             settings.systemPrompt = document.getElementById('set-system').value;
             settings.showThink = document.getElementById('set-think').checked;
+            
             settings.vipPassword = document.getElementById('set-vip-password').value;
             
-            saveData(); 
-            toggleSettings(); 
-            renderMessages(); 
+            // درخواست به سرور برای دریافت اطلاعات اکانت
+            await serverVerify();
             
-            // بررسی داون‌گرید شدن مدل
+            saveData(); 
+            
             let userTier = getUserTier();
             let reqLvl = MODEL_TIERS[settings.selectedModel] || 0;
             if (reqLvl > userTier.level) {
@@ -1360,10 +1486,31 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
             
             updateSidebarUser();
             updateStats();
+            
+            renderChatList();
+            renderMessages();
+            
+            if(spinner) spinner.classList.add('hidden');
+            toggleSettings(); 
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
+            // سیستم نوتیفیکیشن
+            if (typeof APP_NOTIFICATION !== 'undefined' && APP_NOTIFICATION.enabled) {
+                const alertEl = document.getElementById('global-alert');
+                const textEl = document.getElementById('global-alert-text');
+                if (alertEl && textEl) {
+                    textEl.innerHTML = APP_NOTIFICATION.message;
+                    alertEl.classList.remove('hidden');
+                    alertEl.classList.add('flex');
+                    alertEl.className = `shrink-0 w-full z-[60] text-white text-xs md:text-sm px-4 py-2.5 flex items-center justify-between shadow-md ${APP_NOTIFICATION.color}`;
+                }
+            }
+
             await syncServerTime(); 
+            
+            // همگام‌سازی اولیه با سرور 
+            await serverVerify();
             
             let userTier = getUserTier();
             let reqLvl = MODEL_TIERS[settings.selectedModel] || 0;

@@ -1,7 +1,5 @@
 <?php
-// افزایش حافظه برای چت‌های طولانی
-ini_set('memory_limit', '256M');
-
+// رفع مشکل CORS برای ارتباط فرانت‌اند و بک‌اند
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
@@ -13,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 header('Content-Type: application/json; charset=utf-8');
 
-// لیست اکانت‌ها (دقیقاً مطابق کانفیگ)
+// لیست اکانت‌ها (باید دقیقاً با config.js برابر باشد)
 $VALID_CODES = [
     'plus123'    => 'PLUS',
     'plus999'    => 'PLUS',
@@ -23,7 +21,12 @@ $VALID_CODES = [
     'vip999'     => 'PRO_PLUS'
 ];
 
-$LIMITS = [ 'FREE' => 500, 'PLUS' => 4000, 'PRO' => 13000, 'PRO_PLUS' => 30000 ];
+$LIMITS = [
+    'FREE'     => 500,
+    'PLUS'     => 4000,
+    'PRO'      => 13000,
+    'PRO_PLUS' => 30000
+];
 
 $dataDir = __DIR__ . '/data';
 if (!is_dir($dataDir)) {
@@ -48,7 +51,6 @@ if ($code !== '' && array_key_exists($code, $VALID_CODES)) {
 }
 $limit = $LIMITS[$tier];
 
-// تعیین نام فایل دیتابیس
 if ($code === '' || $tier === 'FREE') {
     $userIp = $_SERVER['REMOTE_ADDR'] ?? 'unknown_ip';
     $fileName = 'free_' . md5($userIp);
@@ -58,30 +60,15 @@ if ($code === '' || $tier === 'FREE') {
 
 $userFile = $dataDir . '/' . $fileName . '.json';
 
-// سیستم امن خواندن و نوشتن فایل (تضمین جلوگیری از پاک شدن ناگهانی چت‌ها)
-$fp = fopen($userFile, 'c+');
-if (!$fp) {
-    echo json_encode(['error' => 'Server filesystem error']);
-    exit;
-}
-
-// قفل کردن فایل برای جلوگیری از تداخل
-flock($fp, LOCK_EX);
-
-// خواندن اطلاعات فعلی
-$raw = stream_get_contents($fp);
 $db = ['usage' => [], 'chats' => []];
-if (!empty($raw)) {
-    $decoded = json_decode($raw, true);
-    if (is_array($decoded)) {
-        $db = $decoded;
+if (file_exists($userFile)) {
+    $fileData = json_decode(file_get_contents($userFile), true);
+    if (is_array($fileData)) {
+        $db = $fileData;
     }
 }
 
-// پردازش تاییدیه ورود و دریافت چت‌ها
 if ($action === 'verify') {
-    flock($fp, LOCK_UN);
-    fclose($fp);
     echo json_encode([
         'valid' => ($tier !== 'FREE'),
         'tier'  => $tier,
@@ -92,7 +79,6 @@ if ($action === 'verify') {
     exit;
 }
 
-// پردازش سینک کردن اطلاعات و توکن‌ها
 if ($action === 'sync') {
     if (isset($input['usage_add']) && is_numeric($input['usage_add']) && $input['usage_add'] > 0) {
         if (!isset($db['usage'][$date])) {
@@ -105,18 +91,7 @@ if ($action === 'sync') {
         $db['chats'] = $input['chats'];
     }
 
-    // تولید جیسون با پشتیبانی کامل از ایموجی و حروف فارسی
-    $jsonOutput = json_encode($db, JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE);
-    
-    // فقط در صورتی روی فایل مینویسیم که مشکلی در کدهای بالا رخ نداده باشه
-    if ($jsonOutput !== false) {
-        ftruncate($fp, 0);
-        rewind($fp);
-        fwrite($fp, $jsonOutput);
-    }
-    
-    flock($fp, LOCK_UN);
-    fclose($fp);
+    file_put_contents($userFile, json_encode($db), LOCK_EX);
 
     echo json_encode([
         'status' => 'success',
@@ -125,7 +100,5 @@ if ($action === 'sync') {
     exit;
 }
 
-flock($fp, LOCK_UN);
-fclose($fp);
 echo json_encode(['error' => 'Invalid action']);
 exit;

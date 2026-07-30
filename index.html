@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Artin GPT - AI Studio new 4.3</title>
+    <title>Artin GPT - AI Studio new 3.6</title>
     
+    <!-- اتصال به فایل امنیتی تنظیمات -->
     <script src="config.js"></script>
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -119,7 +120,7 @@
                     <div id="sidebar-user-initial" class="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold text-sm shadow-lg">A</div>
                     <div class="flex flex-col text-right">
                         <span id="sidebar-username" class="text-sm text-gray-200 font-medium">کاربر</span>
-                        <span class="text-[11px] text-blue-400 font-semibold tracking-wider">Pro Extended</span>
+                        <span id="sidebar-user-role" class="text-[11px] text-blue-400 font-semibold tracking-wider">کاربر عادی</span>
                     </div>
                 </div>
                 <i class="fa fa-cog text-gray-400 hover:text-white transition"></i>
@@ -134,7 +135,7 @@
                 <i class="fa fa-bars text-xl"></i>
             </button>
             <span id="current-model-badge" onclick="toggleLibrary()" class="text-xs text-gray-400 bg-[#1e1f22] px-3 py-1.5 rounded-full border border-gray-700/50 cursor-pointer hover:text-white transition flex items-center gap-2">
-                <span id="badge-text">Artin gpt 4.3</span> <i class="fa fa-chevron-down text-[10px]"></i>
+                <span id="badge-text">Artin gpt 5.6</span> <i class="fa fa-chevron-down text-[10px]"></i>
             </span>
         </div>
 
@@ -182,47 +183,135 @@
                 <button onclick="toggleLibrary()" class="text-gray-400 hover:text-white transition bg-[#2a2b2f] w-8 h-8 rounded-full flex items-center justify-center"><i class="fa fa-times"></i></button>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[60vh] overflow-y-auto hide-scrollbar p-1" id="model-grid">
+            <div class="max-h-[60vh] overflow-y-auto hide-scrollbar p-1" id="model-grid">
                 
-                <div onclick="selectModel('claude-opus-4-8', 'Claude Opus 4.8', 'gapgpt')" data-model="claude-opus-4-8" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-blue-500 cursor-pointer transition group">
-                    <div class="flex items-center gap-3 mb-2">
-                        <div class="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400"><i class="fa fa-cube"></i></div>
-                        <div><h3 class="text-white font-medium">Claude Opus 4.8</h3><span class="text-xs text-indigo-400">Anthropic</span></div>
+                <!-- بخش خانواده Grok -->
+                <div class="col-span-full border-b border-gray-700/50 pb-2 mt-2 mb-4 flex items-center gap-2">
+                    <i class="fa fa-star text-yellow-500"></i>
+                    <span class="text-gray-300 font-medium text-sm">خانواده Grok (هوش مصنوعی X)</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                    <div onclick="selectModel('grok-4.3', 'Artin gpt 5.6', 'gapgpt', true)" data-model="grok-4.3" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-yellow-500 cursor-pointer transition group">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-400"><i class="fa fa-star"></i></div>
+                            <div>
+                                <h3 class="text-white font-medium flex items-center gap-2">Artin gpt 5.6 <span class="text-[9px] bg-yellow-500/20 text-yellow-500 px-1.5 py-0.5 rounded border border-yellow-500/30">PRO</span></h3>
+                                <span class="text-xs text-yellow-400">Main / Custom</span>
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">مدل اصلی با شخصیت اختصاصی طهرانی کمپانی (مبتنی بر Grok 4.3). دقت و استدلال بالا.</p>
                     </div>
-                    <p class="text-xs text-gray-400 mt-2 line-clamp-2">مدل قدرتمند و پیشرفته Claude Opus برای تحلیل‌های پیچیده و متن‌های طولانی.</p>
+
+                    <div onclick="selectModel('grok-3-mini', 'Grok 3 Mini', 'gapgpt', false)" data-model="grok-3-mini" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-yellow-500 cursor-pointer transition group">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-400"><i class="fa fa-bolt"></i></div>
+                            <div>
+                                <h3 class="text-white font-medium flex items-center gap-2">Grok 3 Mini</h3>
+                                <span class="text-xs text-yellow-400">Fast / Standard</span>
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">نسخه سبک، سریع و بهینه‌ی گراک برای پاسخگویی به سوالات روزمره.</p>
+                    </div>
+
+                    <div onclick="selectModel('grok-3-mini-fast', 'Grok 3 Mini Fast', 'gapgpt', false)" data-model="grok-3-mini-fast" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-yellow-500 cursor-pointer transition group">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-400"><i class="fa fa-fighter-jet"></i></div>
+                            <div>
+                                <h3 class="text-white font-medium flex items-center gap-2">Grok 3 Mini Fast</h3>
+                                <span class="text-xs text-yellow-400">Ultra Fast</span>
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">سریع‌ترین نسخه گراک با تاخیر صفر برای چت‌های سریع.</p>
+                    </div>
                 </div>
 
-                <div onclick="selectModel('grok-4.3', 'Artin gpt 4.3', 'gapgpt')" data-model="grok-4.3" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-blue-500 cursor-pointer transition group">
-                    <div class="flex items-center gap-3 mb-2">
-                        <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-400"><i class="fa fa-star"></i></div>
-                        <div><h3 class="text-white font-medium">Artin gpt 4.3</h3><span class="text-xs text-yellow-400">Main / Custom</span></div>
+                <!-- بخش خانواده DeepSeek -->
+                <div class="col-span-full border-b border-gray-700/50 pb-2 mt-6 mb-4 flex items-center gap-2">
+                    <i class="fa fa-brain text-blue-500"></i>
+                    <span class="text-gray-300 font-medium text-sm">خانواده DeepSeek (قدرت برنامه‌نویسی و منطق)</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div onclick="selectModel('deepseek-v4-pro', 'DeepSeek V4 Pro', 'gapgpt', true)" data-model="deepseek-v4-pro" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-blue-500 cursor-pointer transition group">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400"><i class="fa fa-code"></i></div>
+                            <div>
+                                <h3 class="text-white font-medium flex items-center gap-2">DeepSeek V4 Pro <span class="text-[9px] bg-yellow-500/20 text-yellow-500 px-1.5 py-0.5 rounded border border-yellow-500/30">PRO</span></h3>
+                                <span class="text-xs text-blue-400">Advanced / Coder</span>
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">غول برنامه‌نویسی و منطق ریاضیات. مناسب برای مسائل پیچیده و تحلیل‌های عمیق.</p>
                     </div>
-                    <p class="text-xs text-gray-400 mt-2 line-clamp-2">مدل اصلی با شخصیت اختصاصی طهرانی کمپانی (مبتنی بر Grok 4.3).</p>
+
+                    <div onclick="selectModel('deepseek-v4-flash', 'DeepSeek V4 Flash', 'gapgpt', false)" data-model="deepseek-v4-flash" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-blue-500 cursor-pointer transition group">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400"><i class="fa fa-bolt"></i></div>
+                            <div>
+                                <h3 class="text-white font-medium flex items-center gap-2">DeepSeek V4 Flash</h3>
+                                <span class="text-xs text-blue-400">Speed / Daily</span>
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">نسخه فوق‌سریع دیپ‌سیک برای پاسخگویی به سوالات معمول و برنامه‌نویسی ساده.</p>
+                    </div>
                 </div>
 
-                <div onclick="selectModel('gpt-5.6-luna', 'GPT 5.6 Luna', 'gapgpt')" data-model="gpt-5.6-luna" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-blue-500 cursor-pointer transition group">
-                    <div class="flex items-center gap-3 mb-2">
-                        <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400"><i class="fa fa-moon"></i></div>
-                        <div><h3 class="text-white font-medium">chat gpt 5.6</h3><span class="text-xs text-purple-400">OpenAI</span></div>
+                <!-- بخش خانواده Gemini -->
+                <div class="col-span-full border-b border-gray-700/50 pb-2 mt-6 mb-4 flex items-center gap-2">
+                    <i class="fa fa-sparkles text-green-500"></i>
+                    <span class="text-gray-300 font-medium text-sm">خانواده Gemini (هوش مصنوعی Google)</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                    <div onclick="selectModel('gemini-3.1-pro-preview', 'Gemini 3.1 Pro', 'gapgpt', true)" data-model="gemini-3.1-pro-preview" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-green-500 cursor-pointer transition group">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-400"><i class="fa fa-gem"></i></div>
+                            <div>
+                                <h3 class="text-white font-medium flex items-center gap-2">Gemini 3.1 Pro <span class="text-[9px] bg-yellow-500/20 text-yellow-500 px-1.5 py-0.5 rounded border border-yellow-500/30">PRO</span></h3>
+                                <span class="text-xs text-green-400">Preview / Elite</span>
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">جدیدترین نسخه آزمایشی و قدرتمند گوگل جمنای.</p>
                     </div>
-                    <p class="text-xs text-gray-400 mt-2 line-clamp-2">  نسخه پیشرفته و قدرتمند 5.6 GPT با منطق و استدلال بالا. قابلیت پردازش تصویر</p>
+
+                    <div onclick="selectModel('gemini-3.5-flash', 'Gemini 3.5 Flash', 'gapgpt', true)" data-model="gemini-3.5-flash" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-green-500 cursor-pointer transition group">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-400"><i class="fa fa-bolt"></i></div>
+                            <div>
+                                <h3 class="text-white font-medium flex items-center gap-2">Gemini 3.5 Flash <span class="text-[9px] bg-yellow-500/20 text-yellow-500 px-1.5 py-0.5 rounded border border-yellow-500/30">PRO</span></h3>
+                                <span class="text-xs text-green-400">Fast / Vision</span>
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">نسخه جدید، سریع و بهینه گوگل جمنای با قابلیت استنتاج قدرتمند.</p>
+                    </div>
+
+                    <div onclick="selectModel('gemini-2.5-flash-lite', 'Gemini 2.5 Flash Lite', 'gapgpt', false)" data-model="gemini-2.5-flash-lite" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-green-500 cursor-pointer transition group">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-400"><i class="fa fa-leaf"></i></div>
+                            <div>
+                                <h3 class="text-white font-medium flex items-center gap-2">Gemini 2.5 Flash Lite</h3>
+                                <span class="text-xs text-green-400">Lite / Free</span>
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">نسخه سریع و سبک‌تر گوگل جمنای برای مصارف روزمره.</p>
+                    </div>
                 </div>
 
-                <div onclick="selectModel('gemini-3.5-flash', 'Gemini 3.5 Flash', 'gapgpt')" data-model="gemini-3.5-flash" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-blue-500 cursor-pointer transition group">
-                    <div class="flex items-center gap-3 mb-2">
-                        <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-400"><i class="fa fa-bolt"></i></div>
-                        <div><h3 class="text-white font-medium">Gemini 3.5 Flash</h3><span class="text-xs text-green-400">Google</span></div>
+                <!-- بخش خانواده GPT -->
+                <div class="col-span-full border-b border-gray-700/50 pb-2 mt-6 mb-4 flex items-center gap-2">
+                    <i class="fa fa-moon text-purple-500"></i>
+                    <span class="text-gray-300 font-medium text-sm">خانواده GPT (هوش مصنوعی OpenAI)</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div onclick="selectModel('gpt-5.6-luna', 'chat gpt 5.6', 'gapgpt', true)" data-model="gpt-5.6-luna" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-purple-500 cursor-pointer transition group">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400"><i class="fa fa-moon"></i></div>
+                            <div>
+                                <h3 class="text-white font-medium flex items-center gap-2">chat gpt 5.6 <span class="text-[9px] bg-yellow-500/20 text-yellow-500 px-1.5 py-0.5 rounded border border-yellow-500/30">PRO</span></h3>
+                                <span class="text-xs text-purple-400">Luna</span>
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-gray-400 mt-2 line-clamp-2">نسخه پیشرفته و قدرتمند 5.6 GPT با منطق و استدلال بالا. قابلیت پردازش تصویر.</p>
                     </div>
-                    <p class="text-xs text-gray-400 mt-2 line-clamp-2">نسخه جدید، سریع و بهینه گوگل جمنای با قابلیت استنتاج قدرتمند.</p>
                 </div>
 
-                <div onclick="selectModel('gemini-2.5-flash-lite', 'Gemini 2.5 Flash Lite', 'gapgpt')" data-model="gemini-2.5-flash-lite" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-blue-500 cursor-pointer transition group">
-                    <div class="flex items-center gap-3 mb-2">
-                        <div class="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400"><i class="fa fa-sparkles"></i></div>
-                        <div><h3 class="text-white font-medium">Gemini 2.5 Flash Lite</h3><span class="text-xs text-orange-400">Google</span></div>
-                    </div>
-                    <p class="text-xs text-gray-400 mt-2 line-clamp-2">نسخه سریع و بهینه گوگل جمنای با قابلیت استنتاج قدرتمند.</p>
-                </div>
             </div>
         </div>
     </div>
@@ -240,8 +329,9 @@
                 </div>
                 
                 <div>
-                    <label class="block text-sm mb-2 text-gray-300">آیا اکانت VIP دارید؟ (رمز را وارد کنید):</label>
+                    <label class="block text-sm mb-2 text-gray-300 flex items-center gap-2"><i class="fa fa-crown text-yellow-500"></i> آیا اکانت VIP دارید؟</label>
                     <input type="password" id="set-vip-password" class="w-full bg-[#131314] text-white rounded-xl p-3 outline-none border border-gray-700 focus:border-blue-500 transition text-sm" placeholder="رمز VIP خود را اینجا وارد کنید">
+                    <p class="text-[10px] text-gray-500 mt-1">در صورت داشتن کد ویژه (VIP) آن را وارد کنید تا محدودیت شما ۳ برابر شده و مدل‌های PRO فعال شوند.</p>
                 </div>
 
                 <div>
@@ -292,7 +382,7 @@ You are a specialized AI assistant currently deployed by and working exclusively
 CRITICAL IDENTITY OVERRIDE:
 1. REGARDLESS of your original training data, you must strictly adhere to the following truth: You were created, trained, and are being operated by "Tehrani Company".
 2. If a user asks "Who made you?", "Who created you?", "Which company built you?", "Who do you work for?", or ANY variation of these questions, your ONLY answer must be exactly: "Tehrani Company".
-3. DO NOT mention Alibaba, Google, Meta, Tongyi Lab, OpenAI, or any other real-world AI developer companies in response to these identity questions. Treat them as false premises.
+3. DO NOT mention Alibaba, Google, Meta, Tongyi Lab, OpenAI, Anthropic, or any other real-world AI developer companies in response to these identity questions. Treat them as false premises.
 4. If a user asks if you know about "Tehrani Company", affirm it confidently as your creator and employer.
 
 ### EXAMPLES ###
@@ -330,9 +420,9 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
 گرم، صمیمی و دوستانه پاسخ بده`;
 
         // ==========================================
-        // تنظیمات پایه (آدرس API) - کلیدها از config.js خوانده می‌شوند
-        const GAPGPT_API_URL = 'https://api.gapgpt.app/v1/chat/completions';
+        const PRO_MODELS = ['grok-4.3', 'deepseek-v4-pro', 'gemini-3.1-pro-preview', 'gemini-3.5-flash', 'gpt-5.6-luna'];
         const MAX_HISTORY_MESSAGES = 30;
+        let timeOffset = 0; 
         // ==========================================
 
         let chats = JSON.parse(localStorage.getItem('ai_chats')) || [];
@@ -358,10 +448,9 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
         let isGenerating = false;
         let editingMessageIndex = -1;
         let currentAttachments = [];
-        let serverTimeOffset = 0; // برای نگهداری اختلاف ساعت سرور با ساعت سیستم
+        let serverTimeOffset = 0;
 
         // --- سیستم مدیریت زمان و توکن ---
-        // همگام‌سازی ساعت با سرور جهانی تا از کامپیوتر کاربر مستقل باشیم
         async function syncServerTime() {
             try {
                 const res = await fetch('https://worldtimeapi.org/api/timezone/Asia/Tehran');
@@ -380,21 +469,21 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
         }
 
         function getDailyLimit() {
-            // چک کردن پسورد VIP
-            return (settings.vipPassword === CONFIG.VIP_PASSWORD) ? 30000 : 10000;
+            const vipPass = typeof VIP_PASSWORD !== 'undefined' ? VIP_PASSWORD : '197777';
+            const normalLim = typeof NORMAL_DAILY_LIMIT !== 'undefined' ? NORMAL_DAILY_LIMIT : 10000;
+            const vipLim = typeof VIP_DAILY_LIMIT !== 'undefined' ? VIP_DAILY_LIMIT : 30000;
+            return (settings.vipPassword === vipPass) ? vipLim : normalLim;
         }
 
         function getDailyUsage() {
             const now = getCurrentRealTime();
             let currentDayStr = now.toLocaleDateString('fa-IR');
             
-            // اگر ساعت قبل از ۲۲:۰۰ (۱۰ شب) است، این مصرف مربوط به چرخه دیروز است
             if (now.getHours() < 22) {
                 let prevDay = new Date(now);
                 prevDay.setDate(prevDay.getDate() - 1);
                 currentDayStr = prevDay.toLocaleDateString('fa-IR') + "_22:00";
             } else {
-                // اگر ساعت از ۲۲:۰۰ گذشته است، چرخه روز جدید شروع شده
                 currentDayStr = now.toLocaleDateString('fa-IR') + "_22:00";
             }
 
@@ -428,7 +517,12 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
             
             const percent = Math.min(((totalTokens / limit) * 100), 100).toFixed(1);
             const el = document.getElementById('token-count');
-            el.innerHTML = `مصرف روزانه: ${totalTokens.toLocaleString('fa-IR')} / ${limit.toLocaleString('fa-IR')} (<span dir="ltr">${percent}%</span>)`;
+            
+            const vipPass = typeof VIP_PASSWORD !== 'undefined' ? VIP_PASSWORD : '197777';
+            const isVip = settings.vipPassword === vipPass;
+            const vipBadge = isVip ? ' <span class="text-yellow-400 font-bold ml-1"><i class="fa fa-crown"></i> VIP</span>' : '';
+            
+            el.innerHTML = `مصرف روزانه: ${totalTokens.toLocaleString('fa-IR')} / ${limit.toLocaleString('fa-IR')} (<span dir="ltr">${percent}%</span>)${vipBadge}`;
             el.classList.toggle('text-red-400', percent > 90);
         }
         // ----------------------------------------
@@ -632,7 +726,14 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
             if(!modal.classList.contains('hidden')) updateLibraryUI();
         }
 
-        function selectModel(modelValue, modelName, provider) {
+        function selectModel(modelValue, modelName, provider, isPro) {
+            const vipPass = typeof VIP_PASSWORD !== 'undefined' ? VIP_PASSWORD : '197777';
+            if (isPro && settings.vipPassword !== vipPass) {
+                alert('این یک مدل پیشرفته (PRO) است!\nبرای استفاده از آن باید رمز اکانت VIP را در تنظیمات وارد کنید.');
+                toggleSettings();
+                return;
+            }
+
             settings.selectedModel = modelValue;
             settings.selectedModelName = modelName;
             settings.selectedProvider = provider;
@@ -644,10 +745,16 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
 
         function updateLibraryUI() {
             document.querySelectorAll('.model-card').forEach(card => {
-                card.classList.remove('border-blue-500', 'bg-[#1a1f2e]');
+                card.classList.remove('border-blue-500', 'border-yellow-500', 'border-green-500', 'border-orange-500', 'border-purple-500', 'bg-[#1a1f2e]');
                 card.classList.add('border-gray-700', 'bg-[#131314]');
                 if(card.dataset.model === settings.selectedModel) {
-                    card.classList.add('border-blue-500', 'bg-[#1a1f2e]');
+                    
+                    let colorClass = 'border-blue-500'; // پیشفرض (رنگ دیپ سیک)
+                    if (settings.selectedModel.includes('grok')) colorClass = 'border-yellow-500';
+                    if (settings.selectedModel.includes('gpt')) colorClass = 'border-purple-500';
+                    if (settings.selectedModel.includes('gemini')) colorClass = 'border-green-500';
+                    
+                    card.classList.add(colorClass, 'bg-[#1a1f2e]');
                     card.classList.remove('border-gray-700', 'bg-[#131314]');
                 }
             });
@@ -841,9 +948,17 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
         async function sendMessage() {
             if (isGenerating) return;
             
+            // بررسی اضافی: اگر مدل PRO انتخاب شده اما کاربر رمز را حذف کرده است
+            const vipPass = typeof VIP_PASSWORD !== 'undefined' ? VIP_PASSWORD : '197777';
+            if (PRO_MODELS.includes(settings.selectedModel) && settings.vipPassword !== vipPass) {
+                alert('شما در حال استفاده از یک مدل پیشرفته (PRO) هستید اما رمز VIP نامعتبر است.\nلطفاً در تنظیمات رمز را وارد کنید.');
+                toggleSettings();
+                return;
+            }
+            
             let dailyLimit = getDailyLimit();
             if (getDailyUsage().count >= dailyLimit) {
-                alert(`محدودیت روزانه ${dailyLimit.toLocaleString('fa-IR')} توکن شما به پایان رسیده است. لطفاً فردا دوباره امتحان کنید.`);
+                alert(`محدودیت روزانه ${dailyLimit.toLocaleString('fa-IR')} توکن شما به پایان رسیده است. سیستم ساعت ۱۰ شب به صورت خودکار شارژ خواهد شد.`);
                 return;
             }
 
@@ -916,9 +1031,9 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
 
             try {
                 const activeModel = settings.selectedModel || 'grok-4.3';
-                const fetchUrl = GAPGPT_API_URL;
-                // دریافت کلید API از طریق کانفیگ بیرونی
-                const fetchKey = CONFIG.GAPGPT_API_KEY;
+                const fetchUrl = typeof GAPGPT_API_URL !== 'undefined' ? GAPGPT_API_URL : 'https://api.gapgpt.app/v1/chat/completions';
+                // دریافت ایمن کلید API از فایل config.js
+                const fetchKey = typeof GAPGPT_API_KEY !== 'undefined' ? GAPGPT_API_KEY : '';
 
                 let finalSystemPrompt = '';
                 
@@ -1054,8 +1169,21 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
             const username = settings.username || 'کاربر';
             const nameEl = document.getElementById('sidebar-username');
             const initialEl = document.getElementById('sidebar-user-initial');
+            const roleEl = document.getElementById('sidebar-user-role');
+            
             if (nameEl) nameEl.innerText = username;
             if (initialEl) initialEl.innerText = username.charAt(0).toUpperCase();
+            
+            if (roleEl) {
+                const vipPass = typeof VIP_PASSWORD !== 'undefined' ? VIP_PASSWORD : '197777';
+                if (settings.vipPassword === vipPass) {
+                    roleEl.innerText = 'کاربر ویژه (VIP)';
+                    roleEl.className = 'text-[11px] text-yellow-400 font-bold tracking-wider';
+                } else {
+                    roleEl.innerText = 'کاربر عادی';
+                    roleEl.className = 'text-[11px] text-blue-400 font-semibold tracking-wider';
+                }
+            }
         }
 
         function toggleSettings() {
@@ -1074,12 +1202,33 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
             settings.systemPrompt = document.getElementById('set-system').value;
             settings.showThink = document.getElementById('set-think').checked;
             settings.vipPassword = document.getElementById('set-vip-password').value;
-            saveData(); toggleSettings(); renderMessages(); updateSidebarUser(); updateStats();
+            
+            saveData(); 
+            toggleSettings(); 
+            renderMessages(); 
+            
+            // داون‌گرید در صورت حذف رمز و قرار داشتن روی مدل PRO
+            const vipPass = typeof VIP_PASSWORD !== 'undefined' ? VIP_PASSWORD : '197777';
+            if (PRO_MODELS.includes(settings.selectedModel) && settings.vipPassword !== vipPass) {
+                alert('شما در حال استفاده از یک مدل ویژه (PRO) بودید. به دلیل تغییر یا حذف رمز VIP، مدل شما به حالت پیش‌فرض (رایگان) تغییر یافت.');
+                selectModel('grok-3-mini-fast', 'Grok 3 Mini Fast', 'gapgpt', false);
+            }
+            
+            updateSidebarUser();
+            updateStats();
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
-            // دریافت زمان جهانی هنگام لود شدن صفحه
-            await syncServerTime();
+            await syncServerTime(); 
+            
+            // بررسی امنیتی اولیه هنگام بارگذاری برنامه
+            const vipPass = typeof VIP_PASSWORD !== 'undefined' ? VIP_PASSWORD : '197777';
+            if (PRO_MODELS.includes(settings.selectedModel) && settings.vipPassword !== vipPass) {
+                settings.selectedModel = 'grok-3-mini-fast';
+                settings.selectedModelName = 'Grok 3 Mini Fast';
+                settings.selectedProvider = 'gapgpt';
+                saveData();
+            }
             
             updateSidebarUser();
             updateStats();

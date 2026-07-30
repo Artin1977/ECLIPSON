@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Artin GPT - AI Studio new 3.6</title>
+    <title>Artin GPT - AI Studio new 4.3</title>
+    
+    <script src="config.js"></script>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -165,7 +168,7 @@
             </div>
             <div class="max-w-4xl mx-auto text-center flex flex-col items-center gap-1 mt-3 pointer-events-auto">
                 <span class="text-[11px] text-gray-500">Artin gpt isn't human. It can make mistakes, so double-check it.</span>
-                <span id="token-count" class="text-[10px] text-gray-400 font-mono transition-colors">مصرف روزانه: 0 / 20000 (0.0%)</span>
+                <span id="token-count" class="text-[10px] text-gray-400 font-mono transition-colors">بارگذاری وضعیت توکن...</span>
             </div>
         </div>
     </div>
@@ -180,7 +183,6 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[60vh] overflow-y-auto hide-scrollbar p-1" id="model-grid">
-                
                 <div onclick="selectModel('grok-4.3', 'Artin gpt 5.6', 'gapgpt')" data-model="grok-4.3" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-blue-500 cursor-pointer transition group">
                     <div class="flex items-center gap-3 mb-2">
                         <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-400"><i class="fa fa-star"></i></div>
@@ -212,7 +214,6 @@
                     </div>
                     <p class="text-xs text-gray-400 mt-2 line-clamp-2">نسخه سریع و بهینه گوگل جمنای با قابلیت استنتاج قدرتمند.</p>
                 </div>
-
             </div>
         </div>
     </div>
@@ -228,6 +229,12 @@
                     <label class="block text-sm mb-2 text-gray-300">نام کاربری شما:</label>
                     <input type="text" id="set-username" class="w-full bg-[#131314] text-white rounded-xl p-3 outline-none border border-gray-700 focus:border-blue-500 transition text-sm">
                 </div>
+                
+                <div>
+                    <label class="block text-sm mb-2 text-gray-300">آیا اکانت VIP دارید؟ (رمز را وارد کنید):</label>
+                    <input type="password" id="set-vip-password" class="w-full bg-[#131314] text-white rounded-xl p-3 outline-none border border-gray-700 focus:border-blue-500 transition text-sm" placeholder="رمز VIP خود را اینجا وارد کنید">
+                </div>
+
                 <div>
                     <label class="block text-sm mb-2 text-gray-300">پرامپت اضافی (اعمال روی همه مدل‌ها):</label>
                     <textarea id="set-system" class="w-full bg-[#131314] text-white rounded-xl p-3 outline-none border border-gray-700 h-24 focus:border-blue-500 transition resize-none text-sm"></textarea>
@@ -314,11 +321,8 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
 گرم، صمیمی و دوستانه پاسخ بده`;
 
         // ==========================================
-        // تنظیمات API
+        // تنظیمات پایه (آدرس API) - کلیدها از config.js خوانده می‌شوند
         const GAPGPT_API_URL = 'https://api.gapgpt.app/v1/chat/completions';
-        const GAPGPT_API_KEY = 'sk-c4Lsmm4OV6HU0YgwwF2kJrcc8fxAAG7NAW8hDe4FflPO7EE6'; // کلید خریده شده‌ی جدید GapGPT
-        
-        const DAILY_TOKEN_LIMIT = 20000; 
         const MAX_HISTORY_MESSAGES = 30;
         // ==========================================
 
@@ -330,7 +334,8 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
             showThink: false,
             selectedModel: 'grok-4.3',
             selectedModelName: 'Artin gpt 5.6',
-            selectedProvider: 'gapgpt'
+            selectedProvider: 'gapgpt',
+            vipPassword: ''
         };
 
         if (!settings.selectedProvider || settings.selectedProvider === 'groq') {
@@ -344,19 +349,49 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
         let isGenerating = false;
         let editingMessageIndex = -1;
         let currentAttachments = [];
+        let serverTimeOffset = 0; // برای نگهداری اختلاف ساعت سرور با ساعت سیستم
 
-        // تابعی برای محاسبه طول متن بدون در نظر گرفتن تگ‌های تفکر
-        function getCleanLength(text) {
-            if (!text) return 0;
-            return text.replace(/<think>[\s\S]*?(<\/think>|$)/gi, '').length;
+        // --- سیستم مدیریت زمان و توکن ---
+        // همگام‌سازی ساعت با سرور جهانی تا از کامپیوتر کاربر مستقل باشیم
+        async function syncServerTime() {
+            try {
+                const res = await fetch('https://worldtimeapi.org/api/timezone/Asia/Tehran');
+                if (res.ok) {
+                    const data = await res.json();
+                    const serverTime = new Date(data.datetime).getTime();
+                    serverTimeOffset = serverTime - Date.now();
+                }
+            } catch (error) {
+                console.warn("خطا در دریافت ساعت سرور، از ساعت سیستم استفاده می‌شود.", error);
+            }
         }
 
-        // --- سیستم مدیریت محدودیت توکن روزانه ---
+        function getCurrentRealTime() {
+            return new Date(Date.now() + serverTimeOffset);
+        }
+
+        function getDailyLimit() {
+            // چک کردن پسورد VIP
+            return (settings.vipPassword === CONFIG.VIP_PASSWORD) ? 30000 : 10000;
+        }
+
         function getDailyUsage() {
-            const today = new Date().toLocaleDateString('fa-IR');
+            const now = getCurrentRealTime();
+            let currentDayStr = now.toLocaleDateString('fa-IR');
+            
+            // اگر ساعت قبل از ۲۲:۰۰ (۱۰ شب) است، این مصرف مربوط به چرخه دیروز است
+            if (now.getHours() < 22) {
+                let prevDay = new Date(now);
+                prevDay.setDate(prevDay.getDate() - 1);
+                currentDayStr = prevDay.toLocaleDateString('fa-IR') + "_22:00";
+            } else {
+                // اگر ساعت از ۲۲:۰۰ گذشته است، چرخه روز جدید شروع شده
+                currentDayStr = now.toLocaleDateString('fa-IR') + "_22:00";
+            }
+
             let usage = JSON.parse(localStorage.getItem('ai_daily_usage'));
-            if (!usage || usage.date !== today) {
-                usage = { date: today, count: 0 };
+            if (!usage || usage.date !== currentDayStr) {
+                usage = { date: currentDayStr, count: 0 };
                 localStorage.setItem('ai_daily_usage', JSON.stringify(usage));
             }
             return usage;
@@ -369,17 +404,22 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
             return usage.count;
         }
 
+        function getCleanLength(text) {
+            if (!text) return 0;
+            return text.replace(/<think>[\s\S]*?(<\/think>|$)/gi, '').length;
+        }
+
         function updateStats(liveResponseTokens = 0) {
             const textInput = document.getElementById('message-input').value.trim();
             const draftChars = textInput.length;
             
             let usage = getDailyUsage();
-            // جمع زدن توکن‌های مصرف شده قطعی + توکن‌های در حال استریم فعلی + توکن‌های پیش‌نویس پیام
+            let limit = getDailyLimit();
             let totalTokens = usage.count + liveResponseTokens + Math.ceil(draftChars / 3.5);
             
-            const percent = Math.min(((totalTokens / DAILY_TOKEN_LIMIT) * 100), 100).toFixed(1);
+            const percent = Math.min(((totalTokens / limit) * 100), 100).toFixed(1);
             const el = document.getElementById('token-count');
-            el.innerHTML = `مصرف روزانه: ${totalTokens} / ${DAILY_TOKEN_LIMIT} (<span dir="ltr">${percent}%</span>)`;
+            el.innerHTML = `مصرف روزانه: ${totalTokens.toLocaleString('fa-IR')} / ${limit.toLocaleString('fa-IR')} (<span dir="ltr">${percent}%</span>)`;
             el.classList.toggle('text-red-400', percent > 90);
         }
         // ----------------------------------------
@@ -792,8 +832,9 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
         async function sendMessage() {
             if (isGenerating) return;
             
-            if (getDailyUsage().count >= DAILY_TOKEN_LIMIT) {
-                alert('محدودیت روزانه ۲۰,۰۰۰ توکن شما به پایان رسیده است. لطفاً فردا دوباره امتحان کنید.');
+            let dailyLimit = getDailyLimit();
+            if (getDailyUsage().count >= dailyLimit) {
+                alert(`محدودیت روزانه ${dailyLimit.toLocaleString('fa-IR')} توکن شما به پایان رسیده است. لطفاً فردا دوباره امتحان کنید.`);
                 return;
             }
 
@@ -802,7 +843,7 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
             if (!text && !currentAttachments.length) return;
 
             const chat = getCurrentChat();
-            const timeStr = new Date().toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' });
+            const timeStr = getCurrentRealTime().toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' });
 
             let combinedText = text;
             let imageObjects = [];
@@ -822,7 +863,6 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
             const userMsg = { role: 'user', content: userContent, time: timeStr };
             chat.messages.push(userMsg);
 
-            // محاسبه توکن پیام جدید کاربر
             let userTokens = 0;
             if (Array.isArray(userContent)) {
                 userContent.forEach(c => {
@@ -859,7 +899,7 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
             document.getElementById('mic-btn').classList.add('hidden');
             document.getElementById('stop-btn').classList.remove('hidden');
 
-            const timeStr = new Date().toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' });
+            const timeStr = getCurrentRealTime().toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' });
             const botMsg = { role: 'assistant', content: '', time: timeStr, hasStartedThinking: false, hasFinishedThinking: false };
             chat.messages.push(botMsg);
             const botMsgIndex = chat.messages.length - 1;
@@ -868,7 +908,8 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
             try {
                 const activeModel = settings.selectedModel || 'grok-4.3';
                 const fetchUrl = GAPGPT_API_URL;
-                const fetchKey = GAPGPT_API_KEY;
+                // دریافت کلید API از طریق کانفیگ بیرونی
+                const fetchKey = CONFIG.GAPGPT_API_KEY;
 
                 let finalSystemPrompt = '';
                 
@@ -1014,6 +1055,7 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
                 document.getElementById('set-username').value = settings.username;
                 document.getElementById('set-system').value = settings.systemPrompt;
                 document.getElementById('set-think').checked = settings.showThink;
+                document.getElementById('set-vip-password').value = settings.vipPassword || '';
                 modal.classList.remove('hidden');
             } else { modal.classList.add('hidden'); }
         }
@@ -1022,10 +1064,14 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
             settings.username = document.getElementById('set-username').value || 'کاربر';
             settings.systemPrompt = document.getElementById('set-system').value;
             settings.showThink = document.getElementById('set-think').checked;
-            saveData(); toggleSettings(); renderMessages(); updateSidebarUser();
+            settings.vipPassword = document.getElementById('set-vip-password').value;
+            saveData(); toggleSettings(); renderMessages(); updateSidebarUser(); updateStats();
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            // دریافت زمان جهانی هنگام لود شدن صفحه
+            await syncServerTime();
+            
             updateSidebarUser();
             updateStats();
             

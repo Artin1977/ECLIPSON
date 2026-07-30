@@ -3,8 +3,7 @@ header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json; charset=utf-8');
 
 // ----------------------------------------------------
-// ۱. تنظیمات کدهای VIP و سطح دسترسی آن‌ها (بسیار امن)
-// می‌توانی بی‌نهایت کد برای مشتریان یا خودت اضافه کنی
+// تنظیمات کدهای VIP و سطح دسترسی آن‌ها
 // ----------------------------------------------------
 $VALID_CODES = [
     'plus123'    => 'PLUS',       // اکانت پلاس اول
@@ -15,7 +14,7 @@ $VALID_CODES = [
     'vip999'     => 'PRO_PLUS'    // اکانت پرو پلاس دوم
 ];
 
-// ۲. محدودیت‌های روزانه
+// محدودیت‌های روزانه
 $LIMITS = [
     'FREE'     => 500,
     'PLUS'     => 4000,
@@ -35,20 +34,18 @@ if (!$input) {
     exit;
 }
 
-$action = $input['action'] ?? '';
+$action =$input['action'] ?? '';
 $code = trim($input['code'] ?? '');
-$date = $input['date'] ?? date('Y-m-d'); // تاریخ دریافتی از مرورگر کاربر
+$date =$input['date'] ?? date('Y-m-d');
 
 // تشخیص سطح اشتراک کاربر
 $tier = 'FREE';
-if ($code !== '' && array_key_exists($code, $VALID_CODES)) {
-    $tier = $VALID_CODES[$code];
+if ($code !== '' && array_key_exists($code, $VALID_CODES)) {$tier = $VALID_CODES[$code];
 }
 $limit = $LIMITS[$tier];
 
 // ساخت فایل دیتابیس اختصاصی برای این رمز عبور
-$fileName = ($code === '' || $tier === 'FREE') ? 'free_users' : md5($code);
-$userFile = $dataDir . '/' . $fileName . '.json';
+$fileName = ($code === '' \vert{}\vert{}$tier === 'FREE') ? 'free_users' : md5($code);$userFile = $dataDir . '/' .$fileName . '.json';
 
 if (!file_exists($userFile)) {
     file_put_contents($userFile, json_encode(['usage' => [], 'chats' => []]));
@@ -61,8 +58,7 @@ if ($action === 'verify') {
         'valid' => ($tier !== 'FREE'),
         'tier'  => $tier,
         'limit' => $limit,
-        'usage' => $db['usage'][$date] ?? 0,
-        'chats' => $db['chats'] ?? []
+        'usage' => $db['usage'][$date] ?? 0,         'chats' =>$db['chats'] ?? []
     ]);
     exit;
 }
@@ -70,16 +66,13 @@ if ($action === 'verify') {
 // درخواست ذخیره اطلاعات (آپلود مصرف و پیام‌های جدید)
 if ($action === 'sync') {
     // بروزرسانی توکن مصرفی
-    if (isset($input['usage_add']) && $input['usage_add'] > 0) {
-        if (!isset($db['usage'][$date])) {
-            $db['usage'][$date] = 0;
-        }
-        $db['usage'][$date] += $input['usage_add'];
+    if (isset($input['usage_add']) &&$input['usage_add'] > 0) {
+        if (!isset($db['usage'][$date])) {$db['usage'][$date] = 0;         }$db['usage'][$date] +=$input['usage_add'];
     }
 
-    // همگام‌سازی چت‌ها فقط برای کاربران VIP انجام می‌شود تا دیتابیس سنگین نشود
+    // همگام‌سازی چت‌ها برای اکانت‌های ویژه
     if ($tier !== 'FREE' && isset($input['chats'])) {
-        $db['chats'] = $input['chats'];
+        $db['chats'] =$input['chats'];
     }
 
     file_put_contents($userFile, json_encode($db));

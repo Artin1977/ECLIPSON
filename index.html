@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Artin GPT-AI Studio 5.7  </title>
+    <title>Artin GPT - AI Studio new 3.6</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -131,7 +131,7 @@
                 <i class="fa fa-bars text-xl"></i>
             </button>
             <span id="current-model-badge" onclick="toggleLibrary()" class="text-xs text-gray-400 bg-[#1e1f22] px-3 py-1.5 rounded-full border border-gray-700/50 cursor-pointer hover:text-white transition flex items-center gap-2">
-                <span id="badge-text">Artin gpt 5.6</span> <i class="fa fa-chevron-down text-[10px]"></i>
+                <span id="badge-text">Artin gpt 4.3</span> <i class="fa fa-chevron-down text-[10px]"></i>
             </span>
         </div>
 
@@ -181,45 +181,38 @@
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[60vh] overflow-y-auto hide-scrollbar p-1" id="model-grid">
                 
-                <div onclick="selectModel('openai/gpt-oss-120b', 'Artin gpt 5.6', 'groq')" data-model="openai/gpt-oss-120b" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-blue-500 cursor-pointer transition group">
+                <div onclick="selectModel('grok-4.3', 'Artin gpt 5.6', 'gapgpt')" data-model="grok-4.3" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-blue-500 cursor-pointer transition group">
                     <div class="flex items-center gap-3 mb-2">
-                        <div class="w-10 h-10 rounded-full bg-blue-600/20 flex items-center justify-center text-blue-400"><i class="fa fa-star"></i></div>
-                        <div><h3 class="text-white font-medium">Artin gpt 5.6</h3><span class="text-xs text-blue-400">Main / Custom</span></div>
+                        <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-400"><i class="fa fa-star"></i></div>
+                        <div><h3 class="text-white font-medium">Artin gpt 4.3</h3><span class="text-xs text-yellow-400">Main / Custom</span></div>
                     </div>
-                    <p class="text-xs text-gray-400 mt-2 line-clamp-2">مدل اصلی 120 میلیاردی با شخصیت اختصاصی طهرانی کمپانی.</p>
+                    <p class="text-xs text-gray-400 mt-2 line-clamp-2">مدل اصلی با شخصیت اختصاصی طهرانی کمپانی (مبتنی بر Grok 4.3).</p>
+                </div>
+
+                <div onclick="selectModel('gpt-5.6-luna', 'GPT 5.6 Luna', 'gapgpt')" data-model="gpt-5.6-luna" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-blue-500 cursor-pointer transition group">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400"><i class="fa fa-moon"></i></div>
+                        <div><h3 class="text-white font-medium">chat gpt 5.6</h3><span class="text-xs text-purple-400">OpenAI</span></div>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-2 line-clamp-2">  نسخه پیشرفته و قدرتمند 5.6 GPT با منطق و استدلال بالا. قابلیت پردازش تصویر</p>
+                </div>
+
+                <div onclick="selectModel('gemini-3.5-flash', 'Gemini 3.5 Flash', 'gapgpt')" data-model="gemini-3.5-flash" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-blue-500 cursor-pointer transition group">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-400"><i class="fa fa-bolt"></i></div>
+                        <div><h3 class="text-white font-medium">Gemini 3.5 Flash</h3><span class="text-xs text-green-400">Google</span></div>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-2 line-clamp-2">نسخه جدید، سریع و بهینه گوگل جمنای با قابلیت استنتاج قدرتمند.</p>
                 </div>
 
                 <div onclick="selectModel('gemini-2.5-flash-lite', 'Gemini 2.5 Flash Lite', 'gapgpt')" data-model="gemini-2.5-flash-lite" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-blue-500 cursor-pointer transition group">
                     <div class="flex items-center gap-3 mb-2">
-                        <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400"><i class="fa fa-sparkles"></i></div>
-                        <div><h3 class="text-white font-medium">Gemini 2.5 Flash Lite</h3><span class="text-xs text-blue-400">Google / GapGPT</span></div>
+                        <div class="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400"><i class="fa fa-sparkles"></i></div>
+                        <div><h3 class="text-white font-medium">Gemini 2.5 Flash Lite</h3><span class="text-xs text-orange-400">Google</span></div>
                     </div>
                     <p class="text-xs text-gray-400 mt-2 line-clamp-2">نسخه سریع و بهینه گوگل جمنای با قابلیت استنتاج قدرتمند.</p>
                 </div>
 
-                <div onclick="selectModel('llama-3.3-70b-versatile', 'Llama 3.3 (70B)', 'groq')" data-model="llama-3.3-70b-versatile" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-blue-500 cursor-pointer transition group">
-                    <div class="flex items-center gap-3 mb-2">
-                        <div class="w-10 h-10 rounded-full bg-purple-600/20 flex items-center justify-center text-purple-400"><i class="fa fa-bolt"></i></div>
-                        <div><h3 class="text-white font-medium">Llama 3.3 (70B)</h3><span class="text-xs text-purple-400">Versatile</span></div>
-                    </div>
-                    <p class="text-xs text-gray-400 mt-2 line-clamp-2">جدیدترین شاهکار متا. فوق‌سریع و عالی برای کدنویسی.</p>
-                </div>
-
-                <div onclick="selectModel('qwen/qwen3.6-27b', 'Qwen 3.6 (27B)', 'groq')" data-model="qwen/qwen3.6-27b" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-blue-500 cursor-pointer transition group">
-                    <div class="flex items-center gap-3 mb-2">
-                        <div class="w-10 h-10 rounded-full bg-green-600/20 flex items-center justify-center text-green-400"><i class="fa fa-eye"></i></div>
-                        <div><h3 class="text-white font-medium">Qwen 3.6 (27B)</h3><span class="text-xs text-green-400">Vision / Math</span></div>
-                    </div>
-                    <p class="text-xs text-gray-400 mt-2 line-clamp-2">مدل بسیار هوشمند با قابلیت پردازش تصویر.</p>
-                </div>
-
-                <div onclick="selectModel('groq/compound', 'Groq Compound', 'groq')" data-model="groq/compound" class="model-card relative p-4 rounded-2xl border border-gray-700 bg-[#131314] hover:border-blue-500 cursor-pointer transition group">
-                    <div class="flex items-center gap-3 mb-2">
-                        <div class="w-10 h-10 rounded-full bg-orange-600/20 flex items-center justify-center text-orange-400"><i class="fa fa-network-wired"></i></div>
-                        <div><h3 class="text-white font-medium">Groq Compound</h3><span class="text-xs text-orange-400">Router</span></div>
-                    </div>
-                    <p class="text-xs text-gray-400 mt-2 line-clamp-2">مسیریاب هوشمند که بهترین مدل را انتخاب می‌کند.</p>
-                </div>
             </div>
         </div>
     </div>
@@ -322,11 +315,8 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
 
         // ==========================================
         // تنظیمات API
-        const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
-        const GROQ_API_KEY = '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'; // کلید گراک شما
-        
         const GAPGPT_API_URL = 'https://api.gapgpt.app/v1/chat/completions';
-        const GAPGPT_API_KEY = 'sk-2zQHSyMcaObePLOJ869kml5rMxjHi4qj5U3PAnCmgvpp1bD1'; // کلید خریده شده‌ی GapGPT
+        const GAPGPT_API_KEY = 'sk-c4Lsmm4OV6HU0YgwwF2kJrcc8fxAAG7NAW8hDe4FflPO7EE6'; // کلید خریده شده‌ی جدید GapGPT
         
         const DAILY_TOKEN_LIMIT = 20000; 
         const MAX_HISTORY_MESSAGES = 30;
@@ -338,13 +328,16 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
             username: 'آرتین',
             systemPrompt: '',
             showThink: false,
-            selectedModel: 'openai/gpt-oss-120b',
+            selectedModel: 'grok-4.3',
             selectedModelName: 'Artin gpt 5.6',
-            selectedProvider: 'groq'
+            selectedProvider: 'gapgpt'
         };
 
-        if (!settings.selectedProvider) {
-            settings.selectedProvider = 'groq';
+        if (!settings.selectedProvider || settings.selectedProvider === 'groq') {
+            settings.selectedProvider = 'gapgpt';
+            if (settings.selectedModel === 'openai/gpt-oss-120b') {
+                settings.selectedModel = 'grok-4.3';
+            }
         }
 
         let abortController = null;
@@ -873,15 +866,13 @@ Remember: Complete formulas are essential. Never output broken LaTeX.
             appendMessageEl(botMsg, botMsgIndex);
 
             try {
-                const activeModel = settings.selectedModel || 'openai/gpt-oss-120b';
-                const activeProvider = settings.selectedProvider || 'groq'; 
-                
-                const fetchUrl = activeProvider === 'gapgpt' ? GAPGPT_API_URL : GROQ_API_URL;
-                const fetchKey = activeProvider === 'gapgpt' ? GAPGPT_API_KEY : GROQ_API_KEY;
+                const activeModel = settings.selectedModel || 'grok-4.3';
+                const fetchUrl = GAPGPT_API_URL;
+                const fetchKey = GAPGPT_API_KEY;
 
                 let finalSystemPrompt = '';
                 
-                if (activeModel === 'openai/gpt-oss-120b') {
+                if (activeModel === 'grok-4.3') {
                     finalSystemPrompt += HIDDEN_SYSTEM_PROMPT;
                 }
 

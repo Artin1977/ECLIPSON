@@ -3,28 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Artin GPT - AI Studio</title>
+    <title>Artin GPT-AI Studio 5.6</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap');
         body { 
             font-family: 'Vazirmatn', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #131314; /* Gemini Main BG */
+            background-color: #131314;
             color: #e3e3e3; 
         }
-        .sidebar { background-color: #1e1f22; /* Gemini Sidebar BG */ }
+        .sidebar { background-color: #1e1f22; }
         
         .markdown-body p { margin-bottom: 0.75em; line-height: 1.8; }
         .markdown-body pre { background-color: #1e1f22; padding: 1rem; border-radius: 1rem; overflow-x: auto; margin: 1rem 0; border: 1px solid #333; direction: ltr;}
         .markdown-body code { font-family: monospace; color: #8ab4f8; }
+        .markdown-body ul, .markdown-body ol { padding-right: 1.5rem; margin-bottom: 0.75em; }
+        .markdown-body li { margin-bottom: 0.3em; }
+        .markdown-body table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+        .markdown-body th, .markdown-body td { border: 1px solid #333; padding: 0.5rem; text-align: right; }
+        .markdown-body th { background-color: #1e1f22; }
+        .markdown-body a { color: #8ab4f8; text-decoration: underline; }
+        .markdown-body blockquote { border-right: 4px solid #6b7280; padding: 0.5rem 1rem; margin: 0.75rem 0; background-color: #1e1f22; border-radius: 0.5rem; color: #9ca3af; }
         .think-box { border-right: 4px solid #6b7280; background-color: #1e1f22; padding: 0.75rem 1rem; margin: 0.5rem 0; border-radius: 0.5rem; font-style: italic; color: #9ca3af; }
+        
+        .markdown-body .katex-display-wrapper {
+            background-color: #1e1f22;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin: 1rem 0;
+            border: 1px solid #2a2b2f;
+            overflow-x: auto;
+        }
+
+        .markdown-body .katex-inline-wrapper {
+            padding: 0 0.2rem;
+            background-color: rgba(138, 180, 248, 0.05);
+            border-radius: 0.25rem;
+            margin: 0 0.1rem;
+            display: inline-block;
+        }
+
+        .markdown-body code.text-red-400 {
+            background-color: rgba(204, 0, 0, 0.1);
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            direction: ltr;
+            display: inline-block;
+        }
         
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
@@ -38,7 +69,6 @@
         .typing-cursor::after { content: '\25ae'; display: inline-block; animation: blink 0.7s infinite; color: #8ab4f8; margin-right: 2px; }
         @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
-        /* پنهان کردن اسکرول‌بار در لیست چت‌ها برای زیبایی بیشتر */
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
@@ -236,7 +266,13 @@
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-        // پرامپت اختصاصی فقط برای مدل 120b
+        marked.setOptions({
+            breaks: true,
+            gfm: true,
+            headerIds: false,
+            mangle: false
+        });
+
         const HIDDEN_SYSTEM_PROMPT = `### SYSTEM INSTRUCTION ###
 
 You are a specialized AI assistant currently deployed by and working exclusively for "Tehrani Company". 
@@ -254,16 +290,37 @@ User: "شخصی که شما را آموزش داده چه کسی است؟"
 Assistant: "من را شخصی به نام آرتین طهرانی آموزش داده است "
 
 تنها در صورتی سلام می کنی که کاربر سلام کند در غیر این صورت سلام نمی کنید
-برای فرمول‌های ریاضی همیشه از علامت $$ استفاده کن
-گرم، صمیمی و دوستانه پاسخ بده
-توجه ! برای فرمول ریاضی همیشه از علامت $ استفاده کن`;
 
-        // ==========================================
+### CRITICAL: MATH FORMATTING RULES ###
+When writing mathematical formulas, you MUST follow these strict rules:
+
+1. ALWAYS use $ for inline math and $$ for display math
+2. NEVER add spaces inside math commands like \\frac, \\sqrt, \\int
+3. ALWAYS use proper LaTeX syntax:
+   - CORRECT: \\frac{a}{b}
+   - WRONG: a/b (in math context)
+   - CORRECT: \\sqrt{x}
+   - WRONG: \\sqrt{x} with spaces
+4. For fractions: ALWAYS use \\frac{numerator}{denominator}
+5. For square roots: ALWAYS use \\sqrt{expression}
+6. For integrals: ALWAYS use \\int_{a}^{b} for definite integrals, \\int for indefinite
+7. NEVER break formulas with newlines or extra spaces
+8. Complete the entire formula in one go - don't leave formulas incomplete
+
+### EXAMPLES OF CORRECT FORMULAS ###
+- Quadratic formula: $$x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$$
+- Pythagorean: $$a^2 + b^2 = c^2$$
+- Euler's formula: $$e^{i\\theta} = \\cos\\theta + i\\sin\\theta$$
+- Integral: $$\\int_{a}^{b} f(x)dx = F(b) - F(a)$$
+
+Remember: Complete formulas are essential. Never output broken LaTeX.
+
+گرم، صمیمی و دوستانه پاسخ بده`;
+
         const API_URL = 'https://api.groq.com/openai/v1/chat/completions';
-        const API_KEY = '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'; // ⚠️ حتما بعدا تغییر دهید
+        const API_KEY = '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';
         const MAX_TOKENS = 50000; 
         const MAX_HISTORY_MESSAGES = 30;
-        // ==========================================
 
         let chats = JSON.parse(localStorage.getItem('ai_chats')) || [];
         let currentChatId = localStorage.getItem('ai_current_chat') || null;
@@ -280,42 +337,59 @@ Assistant: "من را شخصی به نام آرتین طهرانی آموزش د
         let editingMessageIndex = -1;
         let currentAttachments = [];
 
-        // منوی کتابخانه
-        function toggleLibrary() {
-            const modal = document.getElementById('library-modal');
-            modal.classList.toggle('hidden');
-            if(!modal.classList.contains('hidden')) updateLibraryUI();
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
         }
 
-        function selectModel(modelValue, modelName) {
-            settings.selectedModel = modelValue;
-            settings.selectedModelName = modelName;
-            document.getElementById('badge-text').innerText = modelName;
-            saveData();
-            updateLibraryUI();
-            toggleLibrary();
-        }
+        function parseMarkdownWithMath(t) {
+            if (!t) return '';
+            
+            const mathBlocks = [];
+            let mathIndex = 0;
 
-        function updateLibraryUI() {
-            document.querySelectorAll('.model-card').forEach(card => {
-                card.classList.remove('border-blue-500', 'bg-[#1a1f2e]');
-                card.classList.add('border-gray-700', 'bg-[#131314]');
-                if(card.dataset.model === settings.selectedModel) {
-                    card.classList.add('border-blue-500', 'bg-[#1a1f2e]');
-                    card.classList.remove('border-gray-700', 'bg-[#131314]');
+            let processed = t.replace(/\$\$([\s\S]*?)\$\$/g, (match, formula) => {
+                let marker = `MATHBLOCKZZ${mathIndex}ENDZZ`;
+                mathBlocks.push({ type: 'display', content: `$$${formula.trim()}$$` });
+                mathIndex++;
+                return marker;
+            });
+
+            processed = processed.replace(/\$([^\$\n]+?)\$/g, (match, formula) => {
+                let marker = `MATHBLOCKZZ${mathIndex}ENDZZ`;
+                mathBlocks.push({ type: 'inline', content: `$${formula.trim()}$` });
+                mathIndex++;
+                return marker;
+            });
+
+            let html = marked.parse(processed);
+
+            for (let i = 0; i < mathIndex; i++) {
+                const marker = `MATHBLOCKZZ${i}ENDZZ`;
+                const block = mathBlocks[i];
+                let rendered = '';
+
+                try {
+                    if (block.type === 'display') {
+                        const formula = block.content.slice(2, -2);
+                        rendered = `<div class="katex-display-wrapper" style="margin: 1rem 0; overflow-x: auto; direction: ltr;">${katex.renderToString(formula, { displayMode: true, throwOnError: false, errorColor: '#cc0000' })}</div>`;
+                    } else {
+                        const formula = block.content.slice(1, -1);
+                        rendered = `<span class="katex-inline-wrapper" style="direction: ltr; display: inline-block;">${katex.renderToString(formula, { displayMode: false, throwOnError: false, errorColor: '#cc0000' })}</span>`;
+                    }
+                } catch (e) {
+                    rendered = `<code class="text-red-400">${escapeHtml(block.content)}</code>`;
                 }
-            });
-            document.getElementById('badge-text').innerText = settings.selectedModelName;
-        }
 
-        // جستجوی زنده
-        function filterChats() {
-            const term = document.getElementById('chat-search').value.toLowerCase();
-            const items = document.querySelectorAll('.chat-list-item');
-            items.forEach(item => {
-                const title = item.querySelector('.chat-title-text').innerText.toLowerCase();
-                item.style.display = title.includes(term) ? 'flex' : 'none';
-            });
+                html = html.split(marker).join(rendered);
+            }
+
+            return html;
         }
 
         function getRenderedContent(rawText) {
@@ -325,7 +399,7 @@ Assistant: "من را شخصی به نام آرتین طهرانی آموزش د
 
             const thinkStart = text.indexOf('<think>');
             if (thinkStart !== -1) {
-                const thinkEnd = text.indexOf('</think>');
+                const thinkEnd = text.indexOf('');
                 if (thinkEnd !== -1) {
                     thinkContent = text.substring(thinkStart + 7, thinkEnd);
                     mainContent = text.substring(0, thinkStart) + text.substring(thinkEnd + 8);
@@ -335,40 +409,12 @@ Assistant: "من را شخصی به نام آرتین طهرانی آموزش د
                 }
             }
 
-            function parseMarkdownWithMath(t) {
-                const mathBlocks = [];
-                let mathIndex = 0;
-                let processed = t.replace(/(\$\$[\s\S]*?\$\$|\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)|\$[^$\n]*?\$)/g, (match) => {
-                    let marker = `__MATH_${mathIndex}__`;
-                    mathBlocks.push(match);
-                    mathIndex++;
-                    return marker;
-                });
-                let html = marked.parse(processed);
-                for (let i = 0; i < mathIndex; i++) {
-                    html = html.replace(`__MATH_${i}__`, () => mathBlocks[i]);
-                }
-                return html;
-            }
-
             let finalHtml = '';
             if (settings.showThink && thinkContent.trim()) {
                 finalHtml += '<div class="think-box text-xs md:text-sm"><strong>استدلال مدل:</strong><br>' + parseMarkdownWithMath(thinkContent) + '</div>';
             }
             finalHtml += parseMarkdownWithMath(mainContent);
             return finalHtml;
-        }
-
-        function renderMathInEl(el) {
-            renderMathInElement(el, {
-                delimiters: [
-                    {left: '$$', right: '$$', display: true},
-                    {left: '\\[', right: '\\]', display: true},
-                    {left: '$', right: '$', display: false},
-                    {left: '\\(', right: '\\)', display: false}
-                ],
-                throwOnError: false
-            });
         }
 
         function buildMessageEl(msg, index) {
@@ -397,12 +443,11 @@ Assistant: "من را شخصی به نام آرتین طهرانی آموزش د
 
             const htmlContent = getRenderedContent(textToParse);
 
-            // استایل شبیه جمنای
             if (msg.role === 'user') {
                 wrapper.innerHTML = `
                     <div class="flex flex-col items-start w-full">
                         <div class="bg-[#1e1f22] text-[#e3e3e3] px-5 py-3 rounded-3xl rounded-tr-sm max-w-[85%] text-sm md:text-base leading-relaxed border border-gray-700/50">
-                            ${imageHtml} <div class="whitespace-pre-wrap">${textToParse}</div>
+                            ${imageHtml} <div class="whitespace-pre-wrap">${escapeHtml(textToParse)}</div>
                         </div>
                         <div class="opacity-0 group-hover:opacity-100 transition-opacity mt-1 flex gap-2 ml-2">
                             <button onclick="deleteMessage(${index})" class="text-gray-500 hover:text-red-400 p-1"><i class="fa fa-trash text-xs"></i></button>
@@ -425,7 +470,6 @@ Assistant: "من را شخصی به نام آرتین طهرانی آموزش د
                 `;
             }
 
-            renderMathInEl(wrapper);
             return wrapper;
         }
 
@@ -467,15 +511,59 @@ Assistant: "من را شخصی به نام آرتین طهرانی آموزش د
             const lastWrapper = msgWrappers[msgWrappers.length - 1];
             const mdBody = lastWrapper.querySelector('.markdown-body');
             if (!mdBody) return;
-            
+
+            if (isStreaming) {
+                const dollarCount = (rawText.match(/\$/g) || []).length;
+                if (dollarCount % 2 !== 0) {
+                    mdBody.innerHTML = `<div class="whitespace-pre-wrap" style="color: #9ca3af;">${escapeHtml(rawText)}</div><span class="typing-cursor"></span>`;
+                    container.scrollTop = container.scrollHeight;
+                    return;
+                }
+            }
+
             mdBody.innerHTML = getRenderedContent(rawText) + (isStreaming ? '<span class="typing-cursor"></span>' : '');
-            renderMathInEl(lastWrapper); 
             container.scrollTop = container.scrollHeight;
         }
 
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('translate-x-full');
             document.getElementById('sidebar-overlay').classList.toggle('hidden');
+        }
+
+        function toggleLibrary() {
+            const modal = document.getElementById('library-modal');
+            modal.classList.toggle('hidden');
+            if(!modal.classList.contains('hidden')) updateLibraryUI();
+        }
+
+        function selectModel(modelValue, modelName) {
+            settings.selectedModel = modelValue;
+            settings.selectedModelName = modelName;
+            document.getElementById('badge-text').innerText = modelName;
+            saveData();
+            updateLibraryUI();
+            toggleLibrary();
+        }
+
+        function updateLibraryUI() {
+            document.querySelectorAll('.model-card').forEach(card => {
+                card.classList.remove('border-blue-500', 'bg-[#1a1f2e]');
+                card.classList.add('border-gray-700', 'bg-[#131314]');
+                if(card.dataset.model === settings.selectedModel) {
+                    card.classList.add('border-blue-500', 'bg-[#1a1f2e]');
+                    card.classList.remove('border-gray-700', 'bg-[#131314]');
+                }
+            });
+            document.getElementById('badge-text').innerText = settings.selectedModelName;
+        }
+
+        function filterChats() {
+            const term = document.getElementById('chat-search').value.toLowerCase();
+            const items = document.querySelectorAll('.chat-list-item');
+            items.forEach(item => {
+                const title = item.querySelector('.chat-title-text').innerText.toLowerCase();
+                item.style.display = title.includes(term) ? 'flex' : 'none';
+            });
         }
 
         function switchChat(id) {
@@ -529,25 +617,13 @@ Assistant: "من را شخصی به نام آرتین طهرانی آموزش د
                 <div class="chat-list-item flex items-center justify-between w-full py-2.5 px-4 rounded-full transition group cursor-pointer mb-0.5 ${chat.id === currentChatId ? 'bg-[#2a2b2f] text-gray-200' : 'hover:bg-[#1e1f22] text-gray-400'}">
                     <div onclick="switchChat('${chat.id}')" class="flex-1 text-right truncate flex items-center text-sm">
                         <i class="fa fa-message ml-3 text-xs opacity-60"></i>
-                        <span class="chat-title-text truncate pr-1">${chat.title}</span>
+                        <span class="chat-title-text truncate pr-1">${escapeHtml(chat.title)}</span>
                     </div>
                     <div class="flex items-center md:opacity-0 md:group-hover:opacity-100 transition-opacity gap-2 text-xs">
                         <button onclick="editChatTitle('${chat.id}')" class="hover:text-blue-400 p-1"><i class="fa fa-pencil"></i></button>
                         <button onclick="deleteSingleChat('${chat.id}')" class="hover:text-red-500 p-1"><i class="fa fa-trash"></i></button>
                     </div>
                 </div>`).join('');
-        }
-
-        function updateStats() {
-            const chat = getCurrentChat();
-            if(!chat) return;
-            let totalChars = 0;
-            chat.messages.forEach(m => {
-                if (Array.isArray(m.content)) {
-                    totalChars += (m.content.find(c => c.type === 'text')?.text || '').length + m.content.filter(c => c.type === 'image_url').length * 500;
-                } else { totalChars += (m.content || '').length; }
-            });
-            const usedTokens = Math.ceil(totalChars / 3.5);
         }
 
         function deleteMessage(index) {
@@ -652,7 +728,7 @@ Assistant: "من را شخصی به نام آرتین طهرانی آموزش د
                     html += `<div class="relative bg-[#2a2b2f] rounded-xl py-2 px-3 flex-shrink-0 flex items-center min-w-[120px] max-w-[160px]">
                         <button onclick="removeAttachment(${i})" class="absolute -top-2 -right-2 bg-gray-600 hover:bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shadow-md z-10"><i class="fa fa-times"></i></button>
                         <i class="fa fa-file-alt text-blue-400 text-xl ml-2"></i>
-                        <p class="text-xs text-gray-200 truncate flex-1" dir="ltr">${att.name}</p>
+                        <p class="text-xs text-gray-200 truncate flex-1" dir="ltr">${escapeHtml(att.name)}</p>
                     </div>`;
                 }
             });
@@ -726,7 +802,6 @@ Assistant: "من را شخصی به نام آرتین طهرانی آموزش د
                 const activeModel = settings.selectedModel || 'openai/gpt-oss-120b';
                 let finalSystemPrompt = '';
                 
-                // اعمال هویت شرکت طهرانی فقط روی مدل اصلی
                 if (activeModel === 'openai/gpt-oss-120b') {
                     finalSystemPrompt += HIDDEN_SYSTEM_PROMPT;
                 }
@@ -760,7 +835,7 @@ Assistant: "من را شخصی به نام آرتین طهرانی آموزش د
                         model: activeModel,
                         messages: apiMessages,
                         stream: true,
-                        temperature: 0.7
+                        temperature: 0.3
                     }),
                     signal: abortController.signal
                 });
@@ -805,7 +880,7 @@ Assistant: "من را شخصی به نام آرتین طهرانی آموزش د
                 updateLastMessageContent(chat.messages[botMsgIndex].content, false);
             } finally {
                 isGenerating = false;
-                saveData(); updateStats();
+                saveData();
                 document.getElementById('send-btn').classList.remove('hidden');
                 document.getElementById('mic-btn').classList.remove('hidden');
                 document.getElementById('stop-btn').classList.add('hidden');
@@ -829,13 +904,10 @@ Assistant: "من را شخصی به نام آرتین طهرانی آموزش د
                 modal.classList.remove('hidden');
             } else { modal.classList.add('hidden'); }
         }
-        
-        // تابع جدید برای بروزرسانی رابط کاربری با نام کاربر
+
         function updateSidebarUser() {
             const username = settings.username || 'کاربر';
             document.getElementById('sidebar-username').innerText = username;
-            
-            // گرفتن اولین حرف (حتی در زبان فارسی) برای قرار دادن در دایره پروفایل
             const firstLetter = username.charAt(0).toUpperCase();
             document.getElementById('sidebar-user-initial').innerText = firstLetter;
         }
@@ -847,16 +919,16 @@ Assistant: "من را شخصی به نام آرتین طهرانی آموزش د
             saveData(); 
             toggleSettings(); 
             renderMessages();
-            updateSidebarUser(); // فراخوانی تابع بعد از تغییر تنظیمات
+            updateSidebarUser();
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            updateSidebarUser(); // فراخوانی هنگام لود شدن صفحه
+            updateSidebarUser();
             
             if (chats.length === 0) createNewChat();
             else {
                 if (!currentChatId || !chats.find(c => c.id === currentChatId)) currentChatId = chats[0].id;
-                renderChatList(); renderMessages(); updateStats();
+                renderChatList(); renderMessages();
             }
             updateLibraryUI();
             

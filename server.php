@@ -22,8 +22,8 @@ $VALID_CODES = [
 ];
 
 $LIMITS = [
-    'FREE'     => 500,
-    'PLUS'     => 4000,
+    'FREE'     => 1500,
+    'PLUS'     => 5000,
     'PRO'      => 13000,
     'PRO_PLUS' => 30000
 ];
